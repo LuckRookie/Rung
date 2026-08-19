@@ -59,10 +59,10 @@ Codex 提供 `$skill-installer` 时，也可以直接发送：
 https://github.com/LuckRookie/Rung/tree/main/rung
 ```
 
-完整的作用域、冲突处理、手动安装和验证规则见 [INSTALL.md](INSTALL.md)。该文件也可以直接交给 Coding Agent：
+完整的作用域、冲突处理、手动安装和验证规则见 [INSTALL.md](INSTALL.md)。该文件也可以直接交给 Coding Agent；私有仓库沿用 Agent 环境中已经配置的 GitHub 访问权限：
 
 ```text
-读取 https://raw.githubusercontent.com/LuckRookie/Rung/main/INSTALL.md，
+从 https://github.com/LuckRookie/Rung.git 获取 main 分支，完整读取根目录 INSTALL.md，
 按照其中的安装契约把 Rung 安装到用户级作用域，并在完成后验证安装结果。
 ```
 

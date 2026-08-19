@@ -120,9 +120,17 @@ verification: <checks-and-results>
 将下面的指令发送给能够访问 GitHub 和本地文件系统的 Coding Agent：
 
 ```text
-读取 https://raw.githubusercontent.com/LuckRookie/Rung/main/INSTALL.md，
+从 https://github.com/LuckRookie/Rung.git 获取 main 分支，完整读取根目录 INSTALL.md，
 按照其中的安装契约把 Rung 安装到用户级作用域。
 写入前说明安装方式和目标路径；已有安装不得覆盖；完成后验证并报告来源 revision。
+```
+
+私有仓库使用 Agent 环境中已经配置的 Git 或 GitHub 凭据。安装过程不要求用户把访问令牌写入提示词、项目文件或安装报告。
+
+仓库公开后，也可以把原始文档地址直接交给 Agent：
+
+```text
+https://raw.githubusercontent.com/LuckRookie/Rung/main/INSTALL.md
 ```
 
 Skill 会以 Coding Agent 的权限读取文件、执行命令和修改项目。安装前应审阅仓库中的 `rung/SKILL.md` 及其引用资源。
