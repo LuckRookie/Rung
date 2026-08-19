@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "run_id": "rung-project-quality",
+  "revision": "working-tree",
+  "checks": [
+    {
+      "name": "script behavior tests",
+      "claim": "Rung deterministic scripts satisfy their tested contracts",
+      "tier": 1,
+      "command": ["python", "-B", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "cwd": ".",
+      "timeout_seconds": 120
+    },
+    {
+      "name": "Python static checks",
+      "claim": "Rung Python sources satisfy the repository lint policy",
+      "tier": 1,
+      "command": ["ruff", "check", "--no-cache", "."],
+      "cwd": ".",
+      "timeout_seconds": 120
+    }
+  ]
+}

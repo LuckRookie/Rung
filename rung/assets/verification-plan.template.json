@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "run_id": "{{run_id}}",
+  "revision": "{{revision}}",
+  "checks": [
+    {
+      "name": "{{check_name}}",
+      "claim": "{{claim_supported}}",
+      "tier": 1,
+      "command": ["{{executable}}", "{{argument}}"],
+      "cwd": ".",
+      "timeout_seconds": 300
+    }
+  ]
+}
