@@ -24,7 +24,7 @@ def run_script(name: str, *arguments: str) -> subprocess.CompletedProcess[str]:
 
 
 class SkillStructureTests(unittest.TestCase):
-    def test_skill_entrypoint_has_metadata_and_resolvable_links(self) -> None:
+    def test_skill_entrypoint_has_metadata(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         self.assertTrue(skill.startswith("---\n"))
         frontmatter_end = skill.find("\n---\n", 4)
@@ -34,10 +34,48 @@ class SkillStructureTests(unittest.TestCase):
         self.assertRegex(frontmatter, r"(?m)^description:\s*\S.+$")
         self.assertNotIn("TODO", frontmatter)
 
-        links = re.findall(r"\]\(([^)#]+)(?:#[^)]+)?\)", skill)
-        self.assertGreater(len(links), 0)
-        missing = [link for link in links if not (SKILL_ROOT / link).exists()]
+    def test_internal_markdown_links_resolve(self) -> None:
+        missing: list[str] = []
+        for document in SKILL_ROOT.rglob("*.md"):
+            content = document.read_text(encoding="utf-8")
+            links = re.findall(r"\]\(([^)#]+)(?:#[^)]+)?\)", content)
+            for link in links:
+                if re.match(r"^[a-z][a-z0-9+.-]*:", link, re.IGNORECASE):
+                    continue
+                target = (document.parent / link).resolve()
+                if not target.exists():
+                    missing.append(f"{document.relative_to(SKILL_ROOT)} -> {link}")
+
         self.assertEqual(missing, [])
+
+    def test_progressive_governance_prompt_budget(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        self.assertLessEqual(len(skill), 1800)
+        self.assertLessEqual(len(skill.splitlines()), 60)
+
+        concern_cards = [
+            "clarify.md",
+            "inspect.md",
+            "design.md",
+            "plan.md",
+            "implement.md",
+            "verify.md",
+            "review.md",
+            "release.md",
+        ]
+        for name in concern_cards:
+            with self.subTest(concern_card=name):
+                content = (SKILL_ROOT / "references" / name).read_text(encoding="utf-8")
+                self.assertLessEqual(len(content), 900)
+
+        for name in ["workflow.md", "risk-signals.md", "artifacts.md"]:
+            with self.subTest(shared_reference=name):
+                content = (SKILL_ROOT / "references" / name).read_text(encoding="utf-8")
+                self.assertLessEqual(len(content), 1400)
+
+        for profile in (SKILL_ROOT / "profiles").glob("*.md"):
+            with self.subTest(profile=profile.name):
+                self.assertLessEqual(len(profile.read_text(encoding="utf-8")), 300)
 
     def test_json_assets_and_verification_plan_are_valid(self) -> None:
         paths = [
@@ -188,7 +226,38 @@ class VerificationRunnerTests(unittest.TestCase):
 
 
 class ArtifactValidationTests(unittest.TestCase):
-    def test_standard_artifact_set_passes_then_reports_missing_file(self) -> None:
+    def test_discovers_and_validates_present_artifacts_without_profile(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            run_directory = Path(temporary_directory)
+            (run_directory / "brief.md").write_text("complete\n", encoding="utf-8")
+            (run_directory / "evidence.json").write_text(
+                '{"status": "pass"}\n', encoding="utf-8"
+            )
+
+            result = run_script(
+                "validate_artifacts.py", "--run-dir", str(run_directory)
+            )
+
+            self.assertEqual(result.returncode, 0, result.stdout)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["selection"], "discovered")
+            self.assertEqual(
+                [item["path"] for item in report["files"]],
+                ["brief.md", "evidence.json"],
+            )
+
+    def test_empty_artifact_directory_reports_no_selection(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            result = run_script(
+                "validate_artifacts.py", "--run-dir", temporary_directory
+            )
+
+            self.assertEqual(result.returncode, 1, result.stdout)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["files"], [])
+            self.assertIn("no supported artifacts", report["problems"][0])
+
+    def test_explicit_artifact_set_passes_then_reports_missing_file(self) -> None:
         required = {
             "brief.md": "complete\n",
             "context.md": "complete\n",
@@ -205,24 +274,16 @@ class ArtifactValidationTests(unittest.TestCase):
             for name, content in required.items():
                 (run_directory / name).write_text(content, encoding="utf-8")
 
-            result = run_script(
-                "validate_artifacts.py",
-                "--run-dir",
-                str(run_directory),
-                "--profile",
-                "standard",
-            )
+            arguments = ["--run-dir", str(run_directory)]
+            for name in required:
+                arguments.extend(["--require", name])
+
+            result = run_script("validate_artifacts.py", *arguments)
             self.assertEqual(result.returncode, 0, result.stdout)
             self.assertEqual(json.loads(result.stdout)["status"], "pass")
 
             (run_directory / "design.md").unlink()
-            missing = run_script(
-                "validate_artifacts.py",
-                "--run-dir",
-                str(run_directory),
-                "--profile",
-                "standard",
-            )
+            missing = run_script("validate_artifacts.py", *arguments)
             self.assertEqual(missing.returncode, 1)
             report = json.loads(missing.stdout)
             design = next(item for item in report["files"] if item["path"] == "design.md")
@@ -230,6 +291,43 @@ class ArtifactValidationTests(unittest.TestCase):
 
 
 class ReleaseContractTests(unittest.TestCase):
+    def test_ready_release_can_use_revision_without_independent_artifact(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            (project / "verification.md").write_text("pass\n", encoding="utf-8")
+            manifest = project / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    schema_version: 1
+                    run_id: "RUN-LIGHT"
+                    version: "unversioned"
+                    revision: "working-tree"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "verification.md"
+                    documentation: not-applicable
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 0, result.stdout)
+            self.assertEqual(json.loads(result.stdout)["status"], "pass")
+
     def test_ready_release_with_local_evidence_passes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             project = Path(temporary_directory)

@@ -3,14 +3,10 @@ run_id: "{{run_id}}"
 version: "{{version}}"
 revision: "{{revision}}"
 status: blocked
-artifacts:
-  - "{{artifact_path_or_uri}}"
+artifacts: []
 acceptance: blocked
 verification: "{{verification_report_path}}"
 documentation: blocked
-known_limitations:
-  - "{{known_limitation}}"
-unverified_risks:
-  - "{{unverified_risk}}"
-publish_actions:
-  - "{{pending_or_completed_action}}"
+known_limitations: []
+unverified_risks: []
+publish_actions: []

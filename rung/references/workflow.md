@@ -1,51 +1,47 @@
-# DevelopmentRun 工作流
+# 渐进式治理工作流
 
-在开始 DevelopmentRun、恢复中断任务或需要判断阶段回退时读取本文件。
+任务同时出现多个治理信号、需要跨会话恢复或当前路径难以判断时读取本文件。
 
-## 状态模型
+## 关注面
 
-一次 DevelopmentRun 记录：
+Clarify、Inspect、Design、Plan、Implement、Verify、Review 和 Release 是可组合的开发关注面。Agent 根据当前决策自由选择和组织这些提示。
 
-- `run_id`：稳定标识；
-- `work_type`：Greenfield、Feature、Bugfix、Refactor、Migration、Dependency、Docs/Config 或 Release-only；
-- `profile`：Lite、Standard 或 Strict；
-- `stage`：当前开发阶段；
-- `acceptance`：验收条件及状态；
-- `artifacts`：事实源或持久化制品位置；
-- `open_questions`：待决策事项；
-- `evidence`：命令、结果、revision 和覆盖范围；
-- `release_status`：implementation complete、verification complete、release ready、published 或 blocked。
+| 关注面 | 主要价值 |
+|---|---|
+| Clarify | 减少目标、范围和验收方式的关键歧义 |
+| Inspect | 用仓库事实、项目规则和用户修改校准判断 |
+| Design | 处理边界、接口、数据、依赖和错误语义选择 |
+| Plan | 协调多步骤、跨模块、迁移、协作和恢复 |
+| Implement | 保持变更范围、事实源和已有工作一致 |
+| Verify | 为行为、兼容、构建和制品结论取得证据 |
+| Review | 从需求、工程和交付角度寻找遗漏 |
+| Release | 整理 revision、制品、说明、风险和交接状态 |
 
-## 八阶段
+## 选择循环
 
-| Stage | 进入条件 | 核心结果 | Gate 关注点 |
-|---|---|---|---|
-| Clarify | 收到开发意图 | 可开发、可验收的目标 | 目标、范围、验收、开放问题 |
-| Inspect | Clarify 足以指导项目检查 | 基于仓库事实的 ProjectContext | 路径、命令、约束、Git 状态、风险 |
-| Design | ProjectContext 足以判断影响 | 满足需求的最小合理设计 | 边界、接口、数据、兼容性 |
-| Plan | 设计方向稳定 | 可执行的变更与验证顺序 | 验收条件均有实现和验证路径 |
-| Implement | Change Plan 可执行 | 代码、配置、测试和必要文档变更 | 计划范围完成、变化已路由 |
-| Verify | 实现可运行 | 与风险匹配的 Evidence | 验收、回归、构建、未覆盖项 |
-| Review | 主要验证已有结果 | 需求与工程审查结论 | 范围、架构、兼容、安全、文档 |
-| Release | Review 达到发布条件 | Release Package 与 Manifest | 版本、revision、制品、证据、风险 |
+1. 观察当前最可能影响结果的未知、风险或交付信号。
+2. 读取对应的一个 Concern Card。
+3. 使用其中有助于当前判断的提醒，继续正常开发。
+4. 新证据改变方向时，读取新的相关卡片或回访先前关注面。
 
-## Gate 结果
+普通任务可以合并多个关注面。已有可靠事实源时直接复用。内部路由无需向用户逐项报告。
 
-- `pass`：条件满足并关联 Evidence；
-- `fail`：条件未满足，返回对应阶段修复；
-- `blocked`：等待用户决策、权限、工具或外部状态；
-- `waived`：用户明确接受残余风险，记录范围和理由。
+## 常见组合
 
-Stage 在 Gate 完成评估前保持当前状态。`waived` 只覆盖被明确接受的条件。
+- 局部 Bugfix：Inspect → Implement → Verify → 简短 Handoff；
+- 普通 Feature：Clarify + Inspect → Design/Plan 按需 → Implement → Verify；
+- 跨模块重构：Inspect → Design → Plan → Implement + Verify → Review；
+- 数据迁移：Clarify → Inspect → Design + Plan → Implement → Verify + Release；
+- Release-only：Inspect 现有 revision 与证据 → Verify 缺口 → Release。
 
-## 返回路径
+这些组合提供导航示例。任务事实决定实际顺序和深度。
 
-```text
-Verify fail  → Implement
-Review issue → Design / Plan / Implement
-New unknown  → Clarify / Inspect
-Blocked      → 保存 Artifact 和下一步恢复条件
-Resume       → 重读目标、当前 Stage、未解决问题和最新 Git 状态
-```
+## 轻量检查点
 
-恢复任务时，先验证持久化 Artifact 与当前仓库 revision 的关系。仓库已经变化时更新 ProjectContext，并重新评估 Profile、Plan 和 Evidence。
+切换关注面前只需判断一个问题：当前信息是否足以继续下一项有价值的行动？
+
+关键产品决策、权限或外部状态缺失时向用户说明阻塞。普通工程细节由 Agent 结合项目事实处理。风险或范围扩大时增加相关治理深度。
+
+## 恢复
+
+跨会话任务可以保存目标、关键决策、当前代码基线、已完成工作、下一步、证据和未解决风险。恢复时先比较持久信息与最新 Git 状态，再选择当前最相关的 Concern Card。

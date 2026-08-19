@@ -1,15 +1,13 @@
-# Standard Profile
+# Standard 深度提示
 
-适用于普通 Feature、多文件修改、新模块、常规依赖升级和中等范围重构。
+适用于多文件、多模块、新模块、中等重构或需要跨会话协调的任务。
 
-## 最低责任
+根据实际需要增加：
 
-- 持久化 Development Brief 与 Project Context；
-- 记录影响分析和 Solution Design；
-- 形成 Change Plan 与 Verification Plan；
-- 将验收条件映射到实现步骤和 Evidence；
-- 执行 Tier 1–2 的模块、集成或构建验证；
-- 同步项目事实源和用户文档；
-- 生成 Review Result、Release Manifest 和 Release Package。
+- 简短持久目标、Project Context 或 Change Plan；
+- 接口、数据、依赖和行为保持边界；
+- 验收结果与实现、验证的映射；
+- 模块、集成或构建级检查；
+- 文档和发布影响审查。
 
-Standard 是普通 DevelopmentRun 的默认档位。升级信号出现时切换到 Strict，并补齐对应 Artifact。
+只持久化能够改善协调、恢复或审查的信息。高风险信号可以在局部使用 Strict 提示，其余工作继续保持轻量。

@@ -164,13 +164,19 @@ def validate_manifest(data: dict[str, Any], project: Path) -> dict[str, Any]:
     if status in {"ready", "published"}:
         if data.get("acceptance") != "pass":
             problems.append("acceptance must be pass for a ready or published release")
-        if data.get("documentation") not in {"complete", "pass", "updated"}:
-            problems.append("documentation must be complete, pass, or updated")
+        if data.get("documentation") not in {
+            "complete",
+            "pass",
+            "updated",
+            "unchanged",
+            "not-applicable",
+        }:
+            problems.append(
+                "documentation must be complete, pass, updated, unchanged, or not-applicable"
+            )
 
         artifacts = data.get("artifacts")
-        if not isinstance(artifacts, list) or not artifacts:
-            problems.append("artifacts must contain at least one release artifact")
-        else:
+        if isinstance(artifacts, list):
             for index, artifact in enumerate(artifacts, 1):
                 validate_local_reference(project, artifact, f"artifact {index}", problems)
 

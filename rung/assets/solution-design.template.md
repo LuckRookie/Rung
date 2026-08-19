@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Run ID | `{{run_id}}` |
-| Profile | `{{profile}}` |
+| Governance depth | `{{governance_depth_or_none}}` |
 | Related acceptance criteria | {{acceptance_ids}} |
 | ADR | `{{adr_path_or_none}}` |
 

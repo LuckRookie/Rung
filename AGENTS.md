@@ -5,9 +5,9 @@
 - `Rung.md` is the source of truth for product shape, system boundary, workflow, profiles, concepts, and release contract.
 - `INSTALL.md` is the source of truth for package coordinates, installation scope, conflict handling, and installation verification.
 - `rung/SKILL.md` is the user-facing Skill entrypoint. Keep it concise and route conditional detail to references.
-- `rung/references/` contains instructions loaded for a specific Stage or decision.
-- `rung/profiles/` defines the minimum responsibilities for Lite, Standard, and Strict.
-- `rung/assets/` contains templates copied into DevelopmentRun output.
+- `rung/references/` contains concern cards and governance reminders loaded only when their signals are present.
+- `rung/profiles/` contains optional depth hints for Lite, Standard, and Strict governance.
+- `rung/assets/` contains optional templates selected when persistence improves coordination, recovery, review, or handoff.
 - `rung/scripts/` contains deterministic, dependency-free helpers.
 
 ## Documentation style
@@ -16,6 +16,9 @@
 - Use direct statements. Category-exclusion inventories and comparison slogans do not belong in product descriptions.
 - Keep each fact in one maintained location and link to it from other documents.
 - Preserve the Intent-to-Release boundary established in `Rung.md`.
+- Preserve progressive governance: thin by default, signal-driven, composable, and proportional to risk.
+- New prompt content must justify its context cost by changing a meaningful Agent decision.
+- Concern cards provide questions and evidence hints; they do not impose a mandatory stage sequence or default Artifact set.
 
 ## Implementation conventions
 

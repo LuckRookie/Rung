@@ -53,4 +53,4 @@
 - Dependencies: {{dependency_impact}}
 - Known risks: {{known_risks}}
 - Areas not inspected: {{uninspected_areas}}
-- Selected Profile and Tier: {{profile_and_tier}}
+- Governance depth and verification scope: {{governance_depth_and_verification_scope}}

@@ -1,6 +1,6 @@
 # Rung
 
-Rung 是一个面向 Coding Agent 的软件开发编排 Skill。它从用户意图出发，组织需求澄清、项目检查、方案设计、开发计划、实现、验证、工程审查和版本发布，最终交付具有实际证据的 Release Package。
+Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从用户意图覆盖到可验证 Release，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载相关提醒、模板和确定性工具。
 
 项目当前处于 MVP 构建阶段。产品定义、系统边界和实现约束以 [Rung.md](Rung.md) 为准。
 
@@ -8,30 +8,40 @@ Rung 是一个面向 Coding Agent 的软件开发编排 Skill。它从用户意�
 
 | 能力 | 结果 |
 |---|---|
-| 开发闭环 | 同一次 DevelopmentRun 连接需求、设计、实施、验证与发布 |
-| 项目适配 | 从仓库事实、现有规则和工具链建立 ProjectContext |
-| 风险自适应 | Lite、Standard、Strict 控制制品深度与验证强度 |
-| 证据追踪 | 验收条件、代码变更、命令结果和 Release 状态保持关联 |
-| 发布交付 | 生成可复现的 Release Package、Release Manifest 和风险说明 |
+| 薄层导航 | 默认只提醒 Outcome、Context、Approach、Evidence 和 Handoff |
+| 按需治理 | 当前信号决定加载哪个开发关注面和治理深度 |
+| 项目适配 | 仓库事实、现有规则、工具链和用户修改进入当前判断 |
+| 相称证据 | 完成、兼容和可发布结论关联与风险相称的实际结果 |
+| 发布交接 | 整理 revision、制品、说明、限制和下游待办 |
 
-## Development Workflow
+## Progressive Governance
 
 ```text
-Clarify → Inspect → Design → Plan → Implement → Verify → Review → Release
+正常开发
+   │
+   ├─ 出现治理信号 → 加载一个相关提示卡 → 继续开发
+   │
+   └─ 收集相称证据 → Release 交接
 ```
 
-流程支持按证据返回先前阶段，并通过持久 Artifact 恢复中断任务。
+Rung 覆盖八个可组合关注面：
+
+```text
+Clarify · Inspect · Design · Plan · Implement · Verify · Review · Release
+```
+
+Agent 可以合并、跳过和回访这些关注面。普通任务不创建 Rung 工作区；复杂、跨会话或高风险任务可以按需使用 Profile、Artifact 和脚本。
 
 ## Skill 包
 
 ```text
 rung/
-├── SKILL.md                 # Skill 入口与阶段路由
+├── SKILL.md                 # 薄提示与信号路由
 ├── agents/openai.yaml       # Codex UI 元数据
-├── references/              # 八阶段、风险和 Artifact 契约
-├── profiles/                # Lite、Standard、Strict
-├── assets/                  # DevelopmentRun 制品模板
-└── scripts/                 # 项目检查、验证执行和 Release Gate
+├── references/              # 按需加载的关注面与治理提醒
+├── profiles/                # 可选治理深度提示
+├── assets/                  # 可选开发制品模板
+└── scripts/                 # 确定性检查助手
 ```
 
 ## 安装
@@ -72,9 +82,11 @@ https://github.com/LuckRookie/Rung/tree/main/rung
 $rung 为现有项目实现导出功能，并准备一个经过验证的可发布版本。
 ```
 
-Rung 会根据任务和项目风险选择 Profile，按阶段推进，并在最终结果中报告实现、验证证据、残余风险和 Release 状态。
+Rung 默认保持轻量，根据当前任务信号加载相关提示。最终结果与任务规模相称，说明实现结果、实际验证、残余风险和 Release 交接状态。
 
-## 确定性工具
+## 可选确定性工具
+
+重复执行、结构化证据或可靠退出码能够改善任务时，可以使用以下脚本。
 
 项目检查：
 
@@ -95,13 +107,14 @@ python rung/scripts/run_verification.py \
 
 ```bash
 python rung/scripts/validate_artifacts.py \
-  --run-dir .rung/runs/RUN_ID \
-  --profile standard
+  --run-dir .rung/runs/RUN_ID
 
 python rung/scripts/check_release.py \
   --manifest .rung/runs/RUN_ID/release.yaml \
   --project .
 ```
+
+Artifact 检查默认验证运行目录中实际存在的 Rung 制品；需要特定集合时可以重复使用 `--require` 精确声明。
 
 所有脚本只使用 Python 标准库，并输出机器可读 JSON。
 
@@ -127,13 +140,14 @@ AGENTS.md                  # 本仓库的 Agent 开发约定
 
 ## 当前里程碑
 
-第一条纵向切片已经包含：
+渐进式治理基线已经包含：
 
-- 单一 Rung Skill 入口；
-- 八阶段 Stage Contract；
-- Lite、Standard、Strict 三档 Profile；
-- DevelopmentRun Artifact 模板；
-- 项目检查、验证执行、Artifact 检查和 Release Gate 脚本；
+- 单一、轻量的 Rung Skill 入口；
+- 五个默认治理提示与信号驱动路由；
+- 八张可组合的开发关注面提示卡；
+- Lite、Standard、Strict 可选深度提示；
+- 可选 DevelopmentRun Artifact 模板；
+- 项目检查、验证执行、Artifact 与 Release 检查脚本；
 - 脚本行为测试。
 
-下一轮通过真实 Bugfix 和 Feature 场景校准工作流，再扩展 Greenfield、Refactor 与 Migration 验收。
+下一轮通过真实 Bugfix 和 Feature 场景校准触发准确性、治理收益和上下文成本，再扩展 Greenfield、Refactor 与 Migration 验收。

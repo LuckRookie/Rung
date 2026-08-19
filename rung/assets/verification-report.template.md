@@ -4,7 +4,7 @@
 |---|---|
 | Run ID | `{{run_id}}` |
 | Revision | `{{revision}}` |
-| Profile / Tier | `{{profile}} / {{tier}}` |
+| Governance depth / Verification scope | `{{governance_depth}} / {{verification_scope}}` |
 | Evidence file | `{{evidence_path}}` |
 | Overall result | `{{pass_fail_blocked_or_waived}}` |
 

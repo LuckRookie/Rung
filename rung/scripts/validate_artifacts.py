@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the persisted Artifact set for a Rung DevelopmentRun."""
+"""Validate selected or discovered Artifacts for a Rung DevelopmentRun."""
 
 from __future__ import annotations
 
@@ -10,31 +10,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
-REQUIRED_BY_PROFILE = {
-    "lite": ["brief.md", "context.md", "verification.md", "review.md", "release.yaml"],
-    "standard": [
-        "brief.md",
-        "context.md",
-        "design.md",
-        "plan.md",
-        "verification-plan.json",
-        "verification.md",
-        "review.md",
-        "evidence.json",
-        "release.yaml",
-    ],
-    "strict": [
-        "brief.md",
-        "context.md",
-        "design.md",
-        "plan.md",
-        "verification-plan.json",
-        "verification.md",
-        "review.md",
-        "evidence.json",
-        "release.yaml",
-    ],
-}
+ARTIFACT_FILES = [
+    "brief.md",
+    "context.md",
+    "design.md",
+    "plan.md",
+    "verification-plan.json",
+    "verification.md",
+    "review.md",
+    "evidence.json",
+    "release.yaml",
+]
 
 PLACEHOLDER = re.compile(r"\{\{[^{}]+\}\}")
 
@@ -67,10 +53,20 @@ def inspect_file(path: Path) -> list[str]:
     return problems
 
 
-def validate(run_dir: Path, profile: str) -> dict[str, Any]:
-    required = REQUIRED_BY_PROFILE[profile]
+def select_artifacts(run_dir: Path, explicit: list[str]) -> tuple[list[str], str]:
+    if explicit:
+        selected = explicit
+        selection = "explicit"
+    else:
+        selected = [name for name in ARTIFACT_FILES if (run_dir / name).is_file()]
+        selection = "discovered"
+
+    return list(dict.fromkeys(selected)), selection
+
+
+def validate(run_dir: Path, selected: list[str], selection: str) -> dict[str, Any]:
     files: list[dict[str, Any]] = []
-    for relative in required:
+    for relative in selected:
         path = run_dir / relative
         if not path.is_file():
             files.append(
@@ -90,12 +86,18 @@ def validate(run_dir: Path, profile: str) -> dict[str, Any]:
             }
         )
 
-    status = "pass" if all(item["status"] == "pass" for item in files) else "fail"
+    problems = [] if files else ["no supported artifacts selected or found"]
+    status = (
+        "pass"
+        if files and all(item["status"] == "pass" for item in files)
+        else "fail"
+    )
     return {
         "schema_version": 1,
         "run_dir": str(run_dir),
-        "profile": profile,
+        "selection": selection,
         "status": status,
+        "problems": problems,
         "files": files,
     }
 
@@ -103,7 +105,14 @@ def validate(run_dir: Path, profile: str) -> dict[str, Any]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", required=True)
-    parser.add_argument("--profile", required=True, choices=sorted(REQUIRED_BY_PROFILE))
+    parser.add_argument(
+        "--require",
+        action="append",
+        default=[],
+        choices=ARTIFACT_FILES,
+        metavar="ARTIFACT",
+        help="Require one known Artifact; repeat for multiple files",
+    )
     parser.add_argument("--output", default="-", help="JSON output path, or - for stdout")
     return parser.parse_args()
 
@@ -115,7 +124,8 @@ def main() -> int:
         print(json.dumps({"status": "error", "message": f"Run directory not found: {run_dir}"}))
         return 2
 
-    report = validate(run_dir, args.profile)
+    selected, selection = select_artifacts(run_dir, args.require)
+    report = validate(run_dir, selected, selection)
     payload = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.output == "-":
         sys.stdout.write(payload)

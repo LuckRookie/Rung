@@ -4,7 +4,7 @@
 |---|---|
 | Run ID | `{{run_id}}` |
 | Work type | `{{work_type}}` |
-| Profile | `{{profile}}` |
+| Governance depth | `{{governance_depth_or_none}}` |
 | Owner | `{{owner}}` |
 | Status | `{{status}}` |
 

@@ -1,3 +1,3 @@
 interface:
   display_name: "Rung"
-  short_description: "为 Coding Agent 编排从用户意图到可发布版本的完整软件开发工作流"
+  short_description: "按风险加载从用户意图到可验证发布的软件开发治理提醒"

@@ -4,7 +4,7 @@
 |---|---|
 | Run ID | `{{run_id}}` |
 | Baseline revision | `{{revision}}` |
-| Profile | `{{profile}}` |
+| Governance depth | `{{governance_depth_or_none}}` |
 | Plan status | `{{status}}` |
 
 ## Change units
