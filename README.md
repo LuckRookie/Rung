@@ -34,15 +34,37 @@ rung/
 └── scripts/                 # 项目检查、验证执行和 Release Gate
 ```
 
-### 安装到 Codex
+## 安装
 
-将 `rung/` 目录复制到 Codex 的 Skills 目录：
+Rung 采用 Agent Skills 仓库分发方式。`skills` CLI 会在仓库中发现 `rung/SKILL.md`，安装完整 Skill 包，并记录来源和内容哈希。
+
+交互式安装：
 
 ```bash
-cp -R rung ~/.codex/skills/rung
+npx skills add LuckRookie/Rung
 ```
 
-开发期间也可以使用符号链接，使仓库修改立即生效。
+Codex 用户级安装：
+
+```bash
+npx skills add LuckRookie/Rung --skill rung --agent codex --global --yes
+```
+
+安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。
+
+Codex 提供 `$skill-installer` 时，也可以直接发送：
+
+```text
+使用 $skill-installer 安装这个 Skill：
+https://github.com/LuckRookie/Rung/tree/main/rung
+```
+
+完整的作用域、冲突处理、手动安装和验证规则见 [INSTALL.md](INSTALL.md)。该文件也可以直接交给 Coding Agent：
+
+```text
+读取 https://raw.githubusercontent.com/LuckRookie/Rung/main/INSTALL.md，
+按照其中的安装契约把 Rung 安装到用户级作用域，并在完成后验证安装结果。
+```
 
 ### 调用
 
@@ -96,6 +118,7 @@ Codex 环境中还应使用 `skill-creator` 提供的 `quick_validate.py` 检查
 
 ```text
 Rung.md                    # 产品与架构事实源
+INSTALL.md                 # 人与 Coding Agent 共用的安装契约
 rung/                      # 可安装 Skill 包
 tests/                     # 确定性脚本测试
 .github/workflows/ci.yml   # 持续集成

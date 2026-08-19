@@ -1,6 +1,6 @@
 # Rung 产品需求与系统设计
 
-> 状态：Draft v0.3
+> 状态：Draft v0.4
 > 更新日期：2026-08-19
 > 文档职责：Rung 的产品定位、系统边界与实现约束的唯一事实源
 
@@ -336,6 +336,21 @@ Verified Release Package
          ▼
 Repository / Registry / Delivery Pipeline
 ```
+
+### 6.7 分发与发现
+
+Rung 通过 Agent Skills 仓库分发。仓库中的 `rung/` 目录是可安装单元，`rung/SKILL.md` 是发现入口。
+
+安装器执行四项操作：
+
+1. 获取指定仓库和 revision；
+2. 扫描并解析 `SKILL.md` 的名称与描述；
+3. 将完整 Skill 目录复制或链接到 Coding Agent Host 的项目级或用户级发现目录；
+4. 记录来源、Skill 路径和内容标识，供验证与更新使用。
+
+项目级安装使仓库成员共享同一版本的 Rung；用户级安装使 Rung 可用于该用户的多个项目。宿主启动或刷新 Skill 清单时发现 `name: rung`，随后支持自然语言触发和 `$rung` 显式调用。
+
+根目录 `INSTALL.md` 维护安装坐标、安装方式、作用域规则、冲突处理和验证契约。开发者可以直接执行标准 Agent Skills 安装命令，也可以让 Coding Agent 读取该契约并完成安装。
 
 ---
 
@@ -1097,6 +1112,7 @@ Rung 必须遵守以下规则：
 ### 17.1 MVP 必须包含
 
 - 一个可显式调用和按描述触发的 Rung Skill；
+- 标准 Agent Skills 安装入口和 AI 可执行的安装契约；
 - Clarify 到 Release 的八阶段工作流；
 - Lite、Standard、Strict 三种 Profile；
 - Greenfield、Feature、Bugfix、Refactor、Migration 五类验收场景；
@@ -1111,6 +1127,7 @@ Rung 必须遵守以下规则：
 | 领域 | MVP 方案 |
 |---|---|
 | 产品入口 | 单一 Rung Skill |
+| 分发方式 | Agent Skills 仓库与 `INSTALL.md` 安装契约 |
 | 执行环境 | 用户现有的 Coding Agent Host |
 | 状态存储 | 项目文件与可选 `.rung/` 工作区 |
 | 交互方式 | 自然语言、结构化 Artifact 和 Gate 结果 |
@@ -1124,7 +1141,7 @@ Rung 必须遵守以下规则：
 
 ```text
 1. 固化产品规格与 Stage Contract
-2. 建立单一 Rung Skill 骨架
+2. 建立单一 Rung Skill 骨架与标准安装入口
 3. 实现 Profile 与 Artifact 模板
 4. 实现最小确定性脚本
 5. 跑通五类验收场景

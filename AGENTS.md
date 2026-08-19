@@ -3,6 +3,7 @@
 ## Product facts
 
 - `Rung.md` is the source of truth for product shape, system boundary, workflow, profiles, concepts, and release contract.
+- `INSTALL.md` is the source of truth for package coordinates, installation scope, conflict handling, and installation verification.
 - `rung/SKILL.md` is the user-facing Skill entrypoint. Keep it concise and route conditional detail to references.
 - `rung/references/` contains instructions loaded for a specific Stage or decision.
 - `rung/profiles/` defines the minimum responsibilities for Lite, Standard, and Strict.
