@@ -17,12 +17,13 @@ Create an Artifact when it improves resumption, coordination, review, migration,
 
 For recovery, retain outcome, decisions and delegated scope, root and baseline, protected user work, authoritative facts, design, completed units, next action, evidence, gaps, and risks. On resume, compare saved and current Git state.
 
-`.rung/` is optional. Create useful files such as `brief.md`, `context.md`, `design.md`, `plan.md`, `harness-change.md`, `verification-harness.md`, `verification-plan.json`, `verification.md`, `review.md`, `evidence.json`, or `release.yaml`. Reuse project artifacts by path and revision.
+`.rung/` is optional. Create useful files such as `brief.md`, `context.md`, `project-model.md`, `design.md`, `plan.md`, `harness-change.md`, `verification-harness.md`, `verification-plan.json`, `verification.md`, `review.md`, `evidence.json`, or `release.yaml`. Reuse project artifacts by path and revision.
 
 ## Templates
 
 - collaborative outcome and decisions: `assets/development-brief.template.md`
 - inspected facts: `assets/project-context.template.md`
+- shared project identity and fit: `assets/project-model.template.md`
 - durable design: `assets/solution-design.template.md`
 - coordinated execution: `assets/change-plan.template.md`
 - existing Harness evolution: `assets/harness-change.template.md`

@@ -6,12 +6,16 @@
 | Primary Agent | `{{primary_agent}}` |
 | Governance depth | `{{governance_depth_or_none}}` |
 | Related acceptance criteria | {{acceptance_ids}} |
+| Project Model | `{{project_model_path_or_session}}` |
 | ADR | `{{adr_path_or_none}}` |
 | Durable owner | `{{project_fact_owner_or_session_only}}` |
 
 ## Design summary
 
 {{design_summary}}
+
+- Model fit and rationale: {{core_fit_adjacent_extension_or_identity_change}}
+- Project Model assumptions or revisions: {{model_assumptions_or_revisions}}
 
 ## Decision authority
 

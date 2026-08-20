@@ -34,6 +34,39 @@ class SkillStructureTests(unittest.TestCase):
         self.assertRegex(frontmatter, r"(?m)^description:\s*\S.+$")
         self.assertNotIn("TODO", frontmatter)
 
+    def test_discovery_scope_and_runtime_gate_are_consistent(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        frontmatter_end = skill.find("\n---\n", 4)
+        frontmatter = skill[4:frontmatter_end].lower()
+        scope_start = skill.index("## Scope gate")
+        routing_start = skill.index("## Signal routing")
+        scope = skill[scope_start:routing_start]
+        metadata = (SKILL_ROOT / "agents" / "openai.yaml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("project-scoped software development", frontmatter)
+        self.assertIn("deployment-only operations", frontmatter)
+        self.assertNotIn("configuration changes", frontmatter)
+        self.assertLess(scope_start, routing_start)
+        self.assertIn("(references/development-scope.md)", scope)
+        self.assertIn("Runtime only", scope)
+        self.assertIn("load no Rung reference or artifact", scope)
+        self.assertIn("Mixed", scope)
+        self.assertIn("do not preload future phases", skill)
+        self.assertRegex(
+            metadata,
+            r"(?m)^\s{2}allow_implicit_invocation:\s*true$",
+        )
+
+        short_description = re.search(
+            r'(?m)^\s{2}short_description:\s*"([^"]+)"$', metadata
+        )
+        self.assertIsNotNone(short_description)
+        assert short_description is not None
+        self.assertGreaterEqual(len(short_description.group(1)), 25)
+        self.assertLessEqual(len(short_description.group(1)), 64)
+
     def test_internal_markdown_links_resolve(self) -> None:
         missing: list[str] = []
         for document in SKILL_ROOT.rglob("*.md"):
@@ -79,9 +112,13 @@ class SkillStructureTests(unittest.TestCase):
 
         detailed_guides = {
             "execution-model.md": 11_000,
+            "development-scope.md": 6000,
             "project-harness.md": 4500,
             "verification-harness.md": 8000,
             "harness-evolution.md": 11_000,
+            "engineering-structure.md": 9_000,
+            "architecture-assessment.md": 11_000,
+            "project-model.md": 11_000,
         }
         for name, budget in detailed_guides.items():
             with self.subTest(detailed_guide=name):
@@ -125,6 +162,57 @@ class SkillStructureTests(unittest.TestCase):
         self.assertIn("(harness-evolution.md)", project_harness)
         self.assertIn("(verification-harness.md)", project_harness)
         self.assertIn("(verification-harness.md)", verify)
+
+    def test_engineering_structure_guides_are_progressively_routed(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        references = SKILL_ROOT / "references"
+        cards = {
+            name: (references / f"{name}.md").read_text(encoding="utf-8")
+            for name in ["design", "implement", "review"]
+        }
+        assessment = (references / "architecture-assessment.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("(references/engineering-structure.md)", skill)
+        self.assertIn("(references/architecture-assessment.md)", skill)
+        for card in cards.values():
+            self.assertIn("(engineering-structure.md)", card)
+        self.assertIn("(architecture-assessment.md)", cards["review"])
+        self.assertIn("(engineering-structure.md)", assessment)
+
+    def test_project_model_is_progressively_routed(self) -> None:
+        references = SKILL_ROOT / "references"
+        cards = {
+            name: (references / f"{name}.md").read_text(encoding="utf-8")
+            for name in ["clarify", "inspect", "design", "review"]
+        }
+        engineering = (references / "engineering-structure.md").read_text(
+            encoding="utf-8"
+        )
+        assessment = (references / "architecture-assessment.md").read_text(
+            encoding="utf-8"
+        )
+        project_model = (references / "project-model.md").read_text(
+            encoding="utf-8"
+        )
+        execution = (references / "execution-model.md").read_text(encoding="utf-8")
+        artifacts = (references / "artifacts.md").read_text(encoding="utf-8")
+
+        for card in cards.values():
+            self.assertIn("(project-model.md)", card)
+        self.assertIn("(project-model.md)", engineering)
+        self.assertIn("(project-model.md)", assessment)
+        self.assertIn("(project-model.md)", execution)
+        for target in [
+            "(design.md)",
+            "(engineering-structure.md)",
+            "(architecture-assessment.md)",
+            "(project-harness.md)",
+        ]:
+            self.assertIn(target, project_model)
+        self.assertIn("assets/project-model.template.md", artifacts)
+        self.assertTrue((SKILL_ROOT / "assets" / "project-model.template.md").is_file())
 
     def test_execution_model_routes_integrated_run_ownership(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -468,6 +556,7 @@ class ArtifactValidationTests(unittest.TestCase):
         required = {
             "brief.md": "complete\n",
             "context.md": "complete\n",
+            "project-model.md": "complete\n",
             "design.md": "complete\n",
             "plan.md": "complete\n",
             "harness-change.md": "complete\n",

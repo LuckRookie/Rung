@@ -4,15 +4,20 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 
 当前稳定版本为 [v0.1.0](https://github.com/LuckRookie/Rung/releases/tag/v0.1.0)。产品定义、系统边界和实现约束以 [Rung.md](Rung.md) 为准。
 
+`main` 分支当前形成 v0.1.1 候选开发内容；稳定安装坐标继续锁定 `v0.1.0` tag。
+
 ## 核心能力
 
 | 能力 | 结果 |
 |---|---|
+| 开发范围路由 | 根据用户 Outcome 与长期 Owner 区分项目开发、运行状态和混合任务 |
 | 薄层导航 | 默认只提醒 Outcome、Context、Approach、Evidence 和 Handoff |
 | 执行责任 | 每次 DevelopmentRun 由一个 Primary Agent 持有全局 Plan、集成结果与 Release Handoff |
 | 按需治理 | 当前信号决定加载哪个开发关注面和治理深度 |
 | 项目适配 | 仓库事实、现有规则、工具链和用户修改进入当前判断 |
-| 工程决策 | 在结构信号出现时检查归属、局部性、信息隐藏、依赖和抽象依据 |
+| 项目画像 | 项目含义、语义中心、能力归属或演进方向存在实质不确定性时，将用户意图与项目现实合成为可修正的 Project Model |
+| 工程结构治理 | Design、Implement 和 Review 出现实质结构信号时，按需检查归属、局部性、信息隐藏、依赖知识、状态语义和抽象依据 |
+| 架构评估 | 显式审查已有架构、模块化、结构债务或框架适配时，以变化场景、仓库证据、因果机制和反证识别主要结构矛盾 |
 | Project Harness 演进 | 复用可靠的已有约束，并在事实源、测试、规则、构建、CI 或 Gate 自身出现问题时进行独立诊断和渐进迁移 |
 | 分层验证系统 | 在证据缺口或 Harness 增长时治理测试、Fixture、文档检查、CI、构建、打包和端到端入口 |
 | 相称证据 | 完成、兼容和可发布结论关联与风险相称的实际结果 |
@@ -21,12 +26,14 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 ## Progressive Governance
 
 ```text
-正常开发
-   │
-   ├─ 出现治理信号 → 加载一个相关提示卡 → 继续开发
-   │
-   └─ 收集相称证据 → Release 交接
+User Intent
+   ↓
+Development Scope Gate
+   ├─ 运行状态 → Host / 运维路径
+   └─ 项目开发 → 按当前信号加载一张提示卡 → Verified Release Handoff
 ```
+
+Rung 根据用户最终要形成的项目行为、结构、制品、证据或 Release 判断进入 DevelopmentRun。单独的服务部署、重启、主机管理、监控和事件响应由 Coding Agent Host 或运维系统处理；混合任务把项目制品推进到 Release Handoff，再由独立运行路径负责环境身份、授权、执行和恢复。Compose、Helm、Terraform、迁移或其他配置的文件类型不会单独决定范围。
 
 Rung 覆盖八个可组合关注面：
 
@@ -40,19 +47,25 @@ Agent 可以合并、跳过和回访这些关注面。普通任务不创建 Rung
 
 项目检查从 Baseline 和 Target 开始，公共接口、持久数据、共享行为、依赖、平台或多模块影响会把半径扩展到 Impact；明确审查、核心架构、广泛迁移、安全边界或 Harness Evolution 使用声明过的 System 边界。局部可逆 Design 可以留在对话、代码与测试中，长期契约和架构事实进入项目自己的事实源，临时恢复状态可以按需进入 `.rung/`。
 
+当稀疏用户表达支持多个产品解释、已有项目事实描绘出冲突身份、新能力接近语义边界、用户准备主动扩展产品方向，或一个仓库包含多个产品中心时，Clarify 与 Inspect 可以按需建立 Project Model。它区分用户确认、仓库证据、Agent 推断、来源冲突和未知信息，并把人、核心情境、结果、语义中心、决策优先级、边界样例和可信演进提供给 Design 与 Review。普通明确任务不生成画像文件。
+
 Primary Agent 编写全局 Plan，也默认执行修改。Worker 接收互不重叠的有界 Task Packet，返回的局部结果由 Primary Agent 复查和集成；最终 Verification 针对组合后的实际代码状态。Multi-Agent 能力取决于 Host，单 Agent Host 可以完整运行 Rung。
 
 Lite / Standard / Strict 控制治理、协调和持久化深度；Verification Tier 0–3 控制证据覆盖范围。两条轴独立选择。完整的责任与覆盖流程见 [Rung.md 的责任流程图](Rung.md#131-责任流程图)。
 
-Rung 按实际加载量控制上下文：`SKILL.md` 和 Concern Cards 保持短小，复杂领域使用按信号加载的详细 Domain Guides。当前 Harness 关系为 `Test System ⊂ Verification Harness ⊂ Project Harness`；局部测试维护沿用正常开发路径，共享判断机制、覆盖、可靠性、成本或 Gate 变化进入 Harness Evolution。
+Rung 按实际加载量控制上下文：Scope Gate 在任何 Reference 前运行，`SKILL.md` 和 Concern Cards 保持短小，复杂领域使用按信号加载的详细 Domain Guides。默认一次只加载当前判断需要的一张 Reference，未来阶段不触发预加载。当前 Harness 关系为 `Test System ⊂ Verification Harness ⊂ Project Harness`；局部测试维护沿用正常开发路径，共享判断机制、覆盖、可靠性、成本或 Gate 变化进入 Harness Evolution。
+
+工程结构同样按两层加载：日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；用户明确请求已有系统架构、模块化、结构债务、依赖形态或框架适配审查时，再读取 Architecture Assessment。重要 Finding 需要连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
+
+Project Model 可以留在 Session 中；跨 Session、多人协作、正式审查或多个后续决策会复用时，可以进入项目已有 Product Definition、README、Requirement、Domain Glossary、Architecture Overview，或临时 `.rung/runs/<run-id>/project-model.md`。可选模板只在持久化具有消费者时使用。
 
 ## Skill 包
 
 ```text
 rung/
-├── SKILL.md                 # 薄提示与信号路由
+├── SKILL.md                 # 开发范围门、薄提示与信号路由
 ├── agents/openai.yaml       # Codex UI 元数据
-├── references/              # Execution Model、关注面与按需 Domain Guides
+├── references/              # Execution Model、Development Scope、关注面、Project Model、Engineering Structure、Architecture Assessment 与其他按需 Domain Guides
 ├── profiles/                # 可选治理深度提示
 ├── assets/                  # 可选开发制品模板
 └── scripts/                 # 确定性检查助手
@@ -74,7 +87,7 @@ Codex 用户级安装：
 npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung --agent codex --global --yes
 ```
 
-安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。
+安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。用户级安装会让 Rung 对该用户的不同项目与工作目录可见；项目级安装把发现范围限制在当前项目。Rung 默认保留隐式调用，并通过精确 description 与 Scope Gate 控制任务相关性。
 
 Codex 提供 `$skill-installer` 时，也可以直接发送：
 
@@ -96,7 +109,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 $rung 为现有项目实现导出功能，并准备一个经过验证的可发布版本。
 ```
 
-Rung 默认保持轻量，根据当前任务信号加载相关提示。最终结果与任务规模相称，说明实现结果、实际验证、残余风险和 Release 交接状态。
+Rung 默认保持轻量，先判断开发范围，再根据当前任务信号加载相关提示。运行状态请求继续走 Host 路径；项目开发结果与任务规模相称，说明实现结果、实际验证、残余风险和 Release 交接状态。
 
 ## 可选确定性工具
 
@@ -154,7 +167,7 @@ Codex 环境中还应使用 `skill-creator` 提供的 `quick_validate.py` 检查
 Rung.md                    # 产品与架构事实源
 INSTALL.md                 # 人与 Coding Agent 共用的安装契约
 rung/                      # 可安装 Skill 包
-evals/                     # 路由、工程决策与上下文成本的行为评测场景
+evals/                     # 路由、项目画像、工程结构、架构评估、Harness 与上下文成本的行为评测场景
 tests/                     # 确定性脚本测试
 .github/workflows/ci.yml   # 持续集成
 AGENTS.md                  # 本仓库的 Agent 开发约定

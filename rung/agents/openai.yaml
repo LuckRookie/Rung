@@ -1,3 +1,6 @@
 interface:
   display_name: "Rung"
-  short_description: "Progressive governance from intent to verified release"
+  short_description: "Project-scoped development to verified release"
+
+policy:
+  allow_implicit_invocation: true

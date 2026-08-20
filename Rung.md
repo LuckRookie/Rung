@@ -1,13 +1,13 @@
 # Rung 产品需求与系统设计
 
-> 版本：v0.1.0
-> 状态：Released
-> 发布日期：2026-08-20
+> 版本：v0.1.1-draft
+> 状态：Development
+> 稳定基线：v0.1.0（2026-08-20）
 > 文档职责：Rung 的产品形态、系统边界、治理模型与实现原则的唯一事实源
 
 ## 1. 执行摘要
 
-Rung 是运行在 Coding Agent Host 之上的软件开发渐进式治理 Skill。它覆盖从用户意图到可验证 Release 的完整开发范围，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载对应提醒、模板和确定性工具。
+Rung 是运行在 Coding Agent Host 之上的软件开发渐进式治理 Skill。它覆盖从项目开发意图到可验证 Release 的完整开发范围，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载对应提醒、模板和确定性工具。
 
 Rung 的默认形态是一层很薄的提示：
 
@@ -17,13 +17,15 @@ Outcome · Context · Approach · Evidence · Handoff
 
 Coding Agent 保持原有的推理、工具选择和实现风格。Rung 负责观察当前任务需要哪些开发关注面，并只提供能够改善下一步判断的内容。
 
+当用户表达、项目事实或后续能力无法直接形成一致的产品含义时，Rung 可以引导 Clarify 与 Inspect 建立一个可修正的 Project Model。它压缩项目当前服务的人、核心情境、可观察结果、语义中心、决策优先级、归属边界和可信演进，并供后续 Design、结构判断与 Review 使用。
+
 每次 DevelopmentRun 由一个逻辑 Primary Agent 对集成结果负责。默认执行形态是一个 Primary Agent 和一个主 Session；检查半径、持久状态、Worker 与独立 Reviewer 根据影响、协调、恢复和风险信号增加。
 
 Rung 的产品承诺是：
 
 > 以尽可能低的上下文和流程成本，帮助 Coding Agent 把一次软件变更推进到有证据支持的可发布状态。
 
-一次 DevelopmentRun 从 User Intent 开始，在当前任务达到 `release ready` 或经授权完成 `published` 时结束。Release 之后的生产部署、运行监控、运营和长期项目管理由下游系统接续。
+一次 DevelopmentRun 从 Project Development Intent 开始，在当前任务达到 `release ready` 或经授权完成 `published` 时结束。实际环境中的部署执行、服务管理、运行监控、事件响应和长期项目管理由 Coding Agent Host 或下游系统接续。
 
 ## 2. 背景与机会
 
@@ -78,17 +80,20 @@ Rung 的第一产品形态是单一 Skill，由六类资源组成：
 
 ### 3.2 核心能力
 
-Rung 提供九项核心能力：
+Rung 提供十二项核心能力：
 
-1. **完整开发覆盖**：Intent 到 Release 的关注面均有可用提示；
-2. **执行责任模型**：每次 DevelopmentRun 由一个逻辑 Primary Agent 持有集成结果，并按需扩展会话、Worker 与独立 Review；
-3. **信号驱动治理**：风险或不确定性出现时增加治理深度；
-4. **渐进披露**：只加载当前判断需要的 Reference；
-5. **工程决策提醒**：在代码结构信号出现时关注概念归属、修改局部性、信息隐藏、依赖方向和抽象依据；
-6. **Project Harness 治理**：读取、诊断和渐进演进已有项目的事实源、测试、工程规则、构建、CI 与交付控制；
-7. **验证系统治理**：在证据缺口或 Harness 增长信号出现时，引导 Agent 分层构建和维护验证入口；
-8. **证据提醒**：完成、兼容和可发布结论关联实际观察；
-9. **发布交接**：根据项目形态整理 revision、制品、文档和已知风险。
+1. **开发范围路由**：根据用户 Outcome 和长期 Owner 区分项目开发、运行状态与混合任务；
+2. **完整开发覆盖**：Intent 到 Release 的关注面均有可用提示；
+3. **执行责任模型**：每次 DevelopmentRun 由一个逻辑 Primary Agent 持有集成结果，并按需扩展会话、Worker 与独立 Review；
+4. **信号驱动治理**：风险或不确定性出现时增加治理深度；
+5. **渐进披露**：只加载当前判断需要的 Reference；
+6. **项目画像**：在项目含义、语义中心、能力归属或演进方向存在实质不确定性时，把用户意图与项目现实合成为可修正的 Project Model；
+7. **工程结构治理**：在 Design、Implement 和 Review 出现结构信号时，按需判断概念归属、修改局部性、信息隐藏、依赖知识、状态语义和抽象依据；
+8. **架构评估**：在用户明确审查已有架构、模块化、结构债务、依赖形态或框架适配时，围绕当前驱动、变化场景和仓库证据识别主要结构矛盾；
+9. **Project Harness 治理**：读取、诊断和渐进演进已有项目的事实源、测试、工程规则、构建、CI 与交付控制；
+10. **验证系统治理**：在证据缺口或 Harness 增长信号出现时，引导 Agent 分层构建和维护验证入口；
+11. **证据提醒**：完成、兼容和可发布结论关联实际观察；
+12. **发布交接**：根据项目形态整理 revision、制品、文档和已知风险。
 
 ### 3.3 目标用户与项目
 
@@ -107,11 +112,20 @@ Rung 的核心提示与语言、框架解耦。仓库事实和项目工具决定
 Rung 的实际价值通过行为判断：
 
 - 普通任务的默认上下文开销很小；
+- 只改变机器、服务或环境运行状态的任务保持在 Host 或运维路径，Rung 偶发误触时在加载 Reference 前结束路由；
+- 同时包含项目制品与运行执行的请求保持两条责任清楚的工作路径；
 - Agent 不因 Rung 自动创建低价值文档或工作区；
 - 关键风险出现时，相关提醒能够及时进入决策；
+- 稀疏或冲突的项目表达能够形成通俗、可修正且明确未知项的 Project Model；
+- Project Model 区分用户确认、仓库证据、Agent 推断、来源冲突和未知信息，不从单一文档或偶然代码补全产品意图；
+- 新能力能够依据当前用户、结果、语义中心和可信演进判断 Core fit、Adjacent extension 或 Identity change，并在用户主动改变方向时更新画像；
+- Project Model 能够真实改善 Owner、UX、边界、命名、依赖、验证和后续变化局部性；普通任务不承担画像文档成本；
 - 工程设计提醒只在代码结构判断可能改变实现方向时加载；
 - 新模块、公共表面、依赖和抽象能够由当前需求与仓库事实解释；
 - Review 能够从实际 diff 发现修改扩散、知识泄漏和无依据复杂度；
+- 显式架构评估围绕当前驱动和可信变化场景深入关键代码路径，并将重要 Finding 连接到仓库证据、结构机制、实际成本或风险；
+- 架构评估主动检查反证，控制由文件大小、目录形态、模式名称或一般性代码异味产生的无依据 Finding；
+- 架构修改建议说明最小连贯干预和独立验证方式，后续合理变化能够检验修改局部性、知识传播与兼容性是否真实改善；
 - 已有 Project Harness 可靠时被直接复用，出现冲突、误报、漏报、波动、漂移或 Gate 变化时能够进入独立诊断与渐进演进；
 - 验证系统能够从支持当前声明的最低成本层开始，并明确入口、归属、环境、隔离、清理、诊断和维护条件；
 - Agent 保留多样的实现和验证路径；
@@ -127,7 +141,7 @@ Rung 的实际价值通过行为判断：
 
 ### 4.1 开始边界：User Intent
 
-Rung 从用户表达开发意图开始。意图可以是：
+Rung 从用户表达中识别项目开发意图。可以进入 DevelopmentRun 的意图包括：
 
 - 创建项目；
 - 实现功能；
@@ -139,7 +153,19 @@ Rung 从用户表达开发意图开始。意图可以是：
 
 Rung 通过 Outcome 提醒帮助 Agent 理解期望结果，并在关键产品方向仍不明确时提示用户决策。
 
-### 4.2 结束边界：Release
+### 4.2 开发与运行责任
+
+Rung 在读取 Concern Card 前根据用户期望结果和长期 Owner 判断当前请求：
+
+- **项目开发**覆盖预期或已有项目行为、结构和制品的设计、创建、修改、评估、验证与 Release 准备；
+- **运行状态**由 Coding Agent Host 或相应运维系统负责，覆盖当前机器、服务、部署环境、外部资源和事件的观察与变更；
+- **混合任务**把项目部分推进到 Release Handoff，把环境变更、凭据、流量、线上数据、运行恢复和执行证据保留在独立的运行路径。
+
+文件类型、仓库位置、配置语法和命令名称提供判断线索。最终分类由用户验收结果、项目 Owner、持久制品和实际环境共同确定。版本化 Compose、Helm、Terraform 或迁移定义可以是项目制品；应用已有定义、重启服务或改变当前环境属于运行执行。
+
+运行排障发现项目缺陷，或者项目开发最终缩小为环境修正时，Primary Agent 根据新证据重新判断范围。范围门控制 Rung 的上下文与责任，不阻断用户请求，也不改变 Host 的权限与安全策略。
+
+### 4.3 结束边界：Release
 
 Rung 在当前软件变更达到可交付状态时完成一次 DevelopmentRun。Release 的具体形态由项目决定，可以包括：
 
@@ -151,13 +177,13 @@ Rung 在当前软件变更达到可交付状态时完成一次 DevelopmentRun。
 
 代码库没有独立打包产物时，Release Package 可以由可发布 revision、验证证据与交付说明组成。
 
-### 4.3 Release 交接
+### 4.4 Release 交接
 
 Rung 可以开发和验证 Dockerfile、CI 配置、Helm Chart、Terraform、迁移文件、构建脚本和发布配置。通过用户授权执行的 Git Push、Tag、远端 Release 或包发布可以记录为 `published`。
 
-生产部署、流量切换、线上数据变更和运行状态由相应交付系统执行。Rung 将经过验证的配置、制品引用、顺序、风险和恢复信息交给这些系统。
+部署执行、服务管理、流量切换、线上数据变更和运行状态由相应 Host 或交付系统执行。Rung 将经过验证的配置、制品引用、顺序、风险和恢复信息交给这些系统。
 
-### 4.4 外部动作
+### 4.5 外部动作
 
 用户授权和 Coding Agent Host 的权限模型控制提交、推送、发布、消息、部署及其他外部写操作。Rung 只在当前任务范围内提醒授权触发点和结果记录。
 
@@ -165,7 +191,9 @@ Rung 可以开发和验证 Dockerfile、CI 配置、Helm Chart、Terraform、迁
 
 ### 5.1 默认薄层
 
-Rung 被调用后，默认只保留五个简短提示：
+Rung 被调用后先执行一个很短的开发范围判断。项目开发进入五个基础提示，运行状态任务交回 Host 路径，混合任务只让项目部分进入 DevelopmentRun。范围清楚时不加载额外文档；范围不清或两条责任相互影响时按需读取 Development Scope Guide。
+
+项目开发默认只保留五个简短提示：
 
 | 提示 | 关注问题 |
 |---|---|
@@ -180,29 +208,34 @@ Agent 可以在内部使用这些提示。用户侧只呈现有助于协作、�
 ### 5.2 治理循环
 
 ```text
-正常开发
-   │
-   ├─ 出现不确定性、风险、协调或交付信号
-   │        ↓
-   │   加载一个相关提示卡
-   │        ↓
-   │   调整当前判断或行动
-   │
-   └─ 继续开发 → 收集相称证据 → Release 交接
+User Intent
+   ↓
+Development Scope Gate
+   ├─ 运行状态 → Host / 运维路径
+   └─ 项目开发或混合任务中的项目部分
+                 ↓
+            正常开发
+                 │
+                 ├─ 当前出现治理信号 → 加载一个相关提示卡
+                 └─ 继续开发 → 收集相称证据 → Release 交接
 ```
 
-每次只处理当前最有价值的治理信号。新证据可以触发另一个提示卡，也可以回到先前关注面。
+每次只处理当前最有价值的治理信号。未来可能经历的阶段不构成预加载理由；多个关注面只有在当前判断确实相互作用时同时进入上下文。新证据可以触发另一个提示卡，也可以回到先前关注面或重新判断开发范围。
 
 ### 5.3 治理信号
 
 以下信号常常值得增加一层提醒：
 
 - 用户目标、公共行为或验收方式存在关键歧义；
+- 稀疏意图支持多个会改变产品、UX 或架构的合理解释；
+- 项目文档、可观察行为、测试、代码语言或近期变化描绘出冲突的项目身份；
+- 新能力接近当前语义边界，用户准备扩展产品方向，或者一个仓库包含多个可能独立的产品中心；
 - 相关代码、仓库规则、命令或用户修改尚未定位；
 - 变化涉及公共接口、持久化数据、认证、安全或隐私；
 - 创建项目骨架、顶层模块或新的公共能力；
 - 局部需求跨越现有边界，或者新增依赖、共享状态和抽象；
 - 条件、状态或实际 diff 的增长显示概念归属可能需要重新判断；
+- 用户明确请求审查已有架构、模块化、结构债务、依赖形态或框架适配；
 - 多模块、依赖方向、迁移顺序或回退条件需要协调；
 - 任务跨会话、多人或多个执行单元；
 - 测试、构建、兼容或发布结论需要证据；
@@ -248,24 +281,84 @@ Rung 的 Reference 主要包含五类内容：
 
 Agent 根据项目事实决定顺序、工具、实现方式、测试策略和表达形式。项目已有规则与工具优先进入判断。
 
-### 5.6 工程决策治理
+### 5.6 项目画像（Project Model）
 
-代码结构质量作为横切关注面进入 Inspect、Design、Implement 和 Review。Rung 在结构信号出现时引导 Agent 回到当前仓库与需求事实：
+Project Model 是项目或子系统当前身份、语义中心、决策边界和可信演进的紧凑、可核对表示。它在用户表达与项目事实无法直接支持一致设计时加载，并为当前或未来的实际决策服务。
 
-- 需求改变哪个稳定概念，现有组件由谁拥有该概念；
-- 哪些代码会因同一原因变化，修改范围是否与概念范围相称；
-- 调用者完成职责所需的最小知识是什么，哪些状态、格式、SDK 和执行顺序可以留在边界内部；
+Clarify 提供人的含义：使用者、情境、期望结果、例子、体验、接受方向和委托权限。Inspect 提供项目现实：可观察行为、公共接口、需求与文档、代码概念、数据、不变量、测试、Release、当前消费者和相关历史。Primary Agent 声明画像边界，并把两类输入合成为当前最有证据的模型。
+
+“正确画像”表示它在当前证据下足够一致、能够被用户修正、可以预测真实后续决策，并明确暴露会改变判断的未知信息。证据支持多个产品解释时，Agent 保留少量候选画像，并用通俗结果帮助用户选择。画像中的重要陈述使用以下状态：
+
+- **Accepted**：用户或经授权的项目事实已经确认；
+- **Evidenced**：当前可观察行为或仓库契约直接支持；
+- **Inferred**：由现有证据形成的最佳解释；
+- **Contested**：可信来源之间存在冲突；
+- **Unknown**：缺失信息可能改变模型或下一决定。
+
+项目画像可以按需包含：一句话的人、核心情境、可观察结果与中心能力；产品形态和主要入口；少量核心概念、关系、不变量和共同语言；UX、正确性、兼容、数据、安全、性能、交付成本或修改局部性等决策优先级；最能代表项目的能力；相邻扩展与会改变产品身份的边界样例；可信演进、稳定承诺和 Revisit signal。
+
+具体样例用于建立语义边界。Agent 可以把新能力判断为：
+
+- **Core fit**：通过现有语义中心服务当前使用者与结果；
+- **Adjacent extension**：服务相关情境，同时引入需要明确 Owner 的重要概念、工作流或边界；
+- **Identity change**：改变主要使用者、核心结果、产品形态、共同语言或语义中心。
+
+判断会检查新能力由哪个概念拥有、强化哪个不变量、是否引入第二个产品中心、能否隔离在稳定边缘、改变哪些质量或兼容责任，以及用户是否已经授权所需的产品方向变化。Fit 提供当前决策证据。用户主动扩展产品时，Primary Agent 更新画像、保留适用兼容、暴露迁移后果，并让 Design 建立新的连贯边界。
+
+Project Model 给 Design 提供产品与 UX 方向，给 Engineering Structure 提供概念 Owner、边界与抽象依据，给 Architecture Assessment 提供 Driver、变化场景和干预价值，给 Review 提供语义漂移检查。数据库、并发、安全、部署、性能、组织 Owner 和 Harness 等实际约束继续通过 Inspect 与对应 Domain Guide 进入判断。
+
+一个仓库、组织或部署单元可以包含多个语义中心。Project Model 先声明产品、子系统、Library 或 Workflow 边界；共享工具、身份契约和基础设施可以形成上层共同事实，独立使用者、工作流、语言、数据或发布方向保留各自模型。
+
+局部、可逆画像留在 Session 或 Design reasoning。跨 Session、多个执行者、正式 Review 或临时比较可以使用 `.rung/runs/<run-id>/project-model.md`。经过接受且会指导未来工作的长期画像进入项目已有 README、Product Definition、Requirement、Domain Glossary、Architecture Overview 或其他 Owner；项目缺少承载位置时可以按需使用 `assets/project-model.template.md`。同一事实只保留一个维护位置。
+
+持久化的 Project Model 属于 Project Harness 的意图与事实源。画像与需求、行为、测试、代码或 Release 出现实质权威冲突时，继续路由 Project Harness。普通局部任务、含义清楚的 Feature 和已经有可靠事实源的项目不创建额外画像文件。
+
+### 5.7 工程结构与架构评估
+
+Rung 使用两层按需治理处理代码与架构的连续关系：
+
+- **Engineering Structure** 由 Design、Implement 和 Review 中的实质结构信号触发，服务当前方案、实际修改和 diff 复查；
+- **Architecture Assessment** 由用户明确提出的已有架构、模块化、结构债务、依赖形态或框架适配审查触发，服务声明过边界内的系统调查、主要矛盾识别和渐进改造建议。
+
+显式 Assessment 默认授权检查与建议。代码、测试、Harness、文档或配置的修改继续由用户请求或委托的后续动作授权。
+
+结构判断同时观察代码尺度和结构影响。代码尺度说明现象位于一行、一个函数、模块、跨模块路径或整个系统；结构影响说明它是否改变概念归属、公共契约、依赖知识、共享状态、持久数据、关键质量目标、不可逆承诺或未来修改传播。局部 Schema 或公共类型选择可以产生系统影响，大型私有实现也可以保持边界清楚。
+
+日常 Engineering Structure 围绕以下问题提供判断：
+
+- 当前需求改变哪个稳定概念，规则、状态和不变量由谁拥有；
+- 因同一概念原因变化的代码是否集中，局部需求为何传播到其他 Owner；
+- 调用者需要知道哪些行为、数据和失败，SDK 类型、存储格式、重试、生命周期与执行顺序能够留在哪个边界；
 - 新模块、公共表面、依赖或抽象由哪个当前需求、真实变体、不稳定边界或稳定契约支撑；
-- 条件与状态增长是否暴露了缺失的领域概念或不变量；
-- 实际 diff 是否扩大了公共表面、跨模块知识、共享状态和后续修改范围。
+- 条件、相关布尔值、Magic Value 与重复分支是否体现缺失的状态模型或领域概念；
+- 实际 diff 是否扩大跨模块知识、共享状态、持久语义、验证半径和后续修改范围。
 
-Greenfield 工作围绕首个可交付能力建立最小可运行骨架。顶层边界对应当前概念、已知独立变化或真实外部依赖，并随后续需求校准。
+文件大小、类数量、目录层级、命名、重复代码、设计模式和直接依赖用于发现调查线索。局部观察在影响归属、公共契约、依赖知识、共享状态、持久语义、重要质量目标、不可逆性或未来变化传播时升级为结构 Finding。其余内容保留为局部代码问题，由 formatter、linter、类型检查、测试、构建、CI 或直接代码审查处理。
 
-名称、文件大小、类数量、目录层级和设计模式只作为观察信号。项目规则、调用关系、数据流、测试、依赖图和实际变化提供设计依据。能够由 formatter、linter、类型检查、测试、构建或 CI 判断的规则交给项目工具。
+显式 Architecture Assessment 先建立最小评估契约：包含的系统或子系统边界、当前产品驱动、可信后续变化、相关质量目标、项目约束、用户工作、可执行权限以及未检查表面。广泛审查使用声明过的 System 检查半径；仓库级请求仍需说明实际覆盖边界。
 
-局部设计判断可以直接体现在代码与测试中。新增顶层模块、公共契约、核心依赖方向、共享状态或关键数据模型时，根据协作与恢复需要简要记录 Architecture Impact 或更新项目已有设计事实源。
+Assessment 从当前工作、重复变化、已知痛点、事故、计划能力或重要质量目标中选择少量代表性场景，沿入口、概念 Owner、公共契约、数据、状态、错误、依赖知识、外部系统、验证与交付路径深入实现。项目文档提供地图和待核对声明，代码、Schema、配置、构建、生成物、测试与历史提供实际结构证据。
 
-### 5.7 Project Harness 治理
+每个重要 Finding 形成可核对的证据链：
+
+```text
+driver or change scenario
+  → repository evidence
+  → structural mechanism
+  → observable cost or risk
+  → smallest coherent intervention
+  → independent verification
+```
+
+缺失环节以风险、假设或待确认信息表达。Finding 同时寻找可能推翻结论的证据，例如性能测量、兼容契约、权威生成源、安全与事务边界、部署约束、共同生命周期、组织 Owner 或已经存在的稳定 Facade。
+
+主要结构矛盾按当前相关性、影响、传播、不可逆性、证据强度、干预价值和权衡排序。Rung 不设置统一数值评分或 Finding 数量目标；声明过的边界当前适用也是有效结论。
+
+修改建议针对造成成本或风险的机制选择最小连贯干预，说明新的 Owner 或边界、保持稳定的行为、迁移与兼容切片、新风险、替代方向和验证方式。成熟项目优先采用可回退的小步演进；现有行为证据不足时，先建立相称的特征、契约或集成锚点。后续同类变化作为反事实检查，观察修改是否进入更清楚的 Owner、减少无关传播并保留重要质量证据。
+
+Greenfield 工作围绕首个可交付能力建立最小可运行骨架。局部可逆判断可以留在代码、测试和 Session；长期公共契约、核心归属、关键数据、迁移或跨 Session 设计进入项目已有事实源或确有消费者的 Artifact。结构规则、依赖检查、生成边界或测试政策进入修改范围时，继续路由 Project Harness。
+
+### 5.8 Project Harness 治理
 
 Project Harness 是目标项目中影响软件如何被理解、修改、检查、构建和交付的机制集合，包括项目指令与事实源、工程规则、Verification Harness、开发与构建工具，以及 CI 与 Release 控制。
 
@@ -279,14 +372,19 @@ Test System 是 Verification Harness 的子集，Verification Harness 是 Projec
 
 修改 Harness 时，被修改组件不作为证明自身正确的唯一依据。删除、跳过、放宽、重试、隔离或替换已有保护时，记录原 Claim、替代证据、Coverage Delta 和残余风险。影响多个模块、平台、团队或 Release Gate 的变化保留生效、回退和旧机制清理条件。
 
-### 5.8 上下文预算
+### 5.9 上下文预算
 
 Rung 将 Skill 包的信息容量与一次任务的实际上下文开销分别管理。复杂领域可以保留充分细节，加载路径保持轻量：
 
-- `SKILL.md` 只包含产品目的、五个基础提示和一级信号路由；
+- `SKILL.md` 只包含产品目的、Scope Gate、五个基础提示和一级信号路由；
+- Scope Gate 在任何 Reference 之前运行；范围清楚的项目任务直接进入开发路由，运行状态任务不创建 Rung Artifact，也不读取 Concern Card；
 - Concern Card 保持短小，负责当前关注面的关键问题和下一级路由；
 - Domain Guide 可以详细描述复杂判断、失败模式、迁移和证据，只在精确领域信号出现时加载；
-- 普通任务通常加载 `SKILL.md` 与零到一张 Concern Card；
+- 项目开发与运行执行的边界不清或两者混合时加载 Development Scope；
+- 项目含义、语义中心、Feature fit、主动演进或语义漂移存在实质信号时，由 Clarify、Inspect、Design 或 Review 加载 Project Model；
+- Design、Implement 或 Review 出现实质结构信号时加载 Engineering Structure；普通局部修改继续沿用当前 Concern Card；
+- 用户明确请求已有系统的架构、模块化、结构债务、依赖形态或框架适配审查时加载 Architecture Assessment，并同时使用共享的 Engineering Structure 判断；
+- 普通任务通常加载 `SKILL.md` 与零到一张 Concern Card；未来阶段不触发提前加载；
 - Profile、Domain Guide、Artifact 和脚本分别由风险、复杂度、持久化或确定性执行需要触发；
 - 模板作为输出资源使用，不作为默认指令加载；
 - 同一规则只保留一个维护位置；
@@ -308,6 +406,10 @@ rung/
 │   ├── risk-signals.md
 │   ├── artifacts.md
 │   ├── execution-model.md
+│   ├── development-scope.md
+│   ├── project-model.md
+│   ├── engineering-structure.md
+│   ├── architecture-assessment.md
 │   ├── project-harness.md
 │   ├── harness-evolution.md
 │   ├── verification-harness.md
@@ -332,20 +434,22 @@ rung/
 ```text
 Skill metadata
       ↓
-SKILL.md 薄提示与路由
-      ↓
-当前信号对应的 Concern Card、Execution Model 或深度提示
-      ↓
-精确领域信号对应的详细 Domain Guide
-      ↓
-实际需要的模板或确定性脚本
+SKILL.md Scope Gate
+      ├─ 运行状态 → Host / 运维路径
+      └─ 项目开发 → 薄提示与信号路由
+                         ↓
+              当前信号对应的一张 Reference
+                         ↓
+              精确领域信号对应的 Domain Guide
+                         ↓
+                实际需要的 Asset 或 Helper
 ```
 
-Metadata 支持发现，`SKILL.md` 支持轻量治理，Concern Cards 支持关注面选择，Domain Guides 支持复杂领域判断，Assets 和 Scripts 支持具体输出与确定性执行。
+Metadata 支持发现，Scope Gate 控制开发责任入口，`SKILL.md` 支持轻量治理，Concern Cards 支持当前关注面选择，Development Scope 与其他 Domain Guides 支持精确复杂判断，Assets 和 Scripts 支持具体输出与确定性执行。
 
 ### 6.3 分发与发现
 
-Rung 通过 Agent Skills 仓库分发。`rung/` 是可安装单元，`rung/SKILL.md` 是发现入口。安装器扫描元数据，将完整目录复制或链接到项目级或用户级 Skills 目录，并记录来源和内容标识。
+Rung 通过 Agent Skills 仓库分发。`rung/` 是可安装单元，`rung/SKILL.md` 是发现入口。安装器扫描元数据，将完整目录复制或链接到项目级或用户级 Skills 目录，并记录来源和内容标识。用户级安装使 Rung 对该用户的不同项目和工作目录可见；项目级安装把发现范围限制在对应项目。默认隐式调用由精确的 description 与 Scope Gate 共同控制。
 
 根目录 `INSTALL.md` 维护安装坐标、作用域、冲突处理和验证契约。
 
@@ -367,6 +471,8 @@ Rung 通过 Agent Skills 仓库分发。`rung/` 是可安装单元，`rung/SKILL
 确认 Outcome 与决策权限
         ↓
 检查 Baseline 与 Target 事实
+        ↓
+按语义信号形成或校准 Project Model
         ↓
 形成足够支撑修改的 Design
         ↓
@@ -404,6 +510,8 @@ Release Handoff
 
 Clarify 管理用户参与的有后果决策和委托范围，Design 提供专业方案、权衡与可修正方向。两者可以在项目方案或修改方案逐步成形时交替发生。
 
+项目含义、语义中心、能力归属或演进方向尚未清楚时，Clarify 与 Inspect 共同形成 Project Model：Clarify 获取用户可判断的含义、例子与权限，Inspect 恢复可观察行为、当前概念、契约与证据。Design 使用已接受或明确标记不确定性的画像建立 UX、Owner、边界、接口、数据和依赖方向。
+
 Primary Agent 向用户提供通俗决策视图：当前问题、建议、直接结果、可信的发展影响、可逆性和需要用户选择的内容。关键风险保留在通俗视图中，技术机制与术语细节可以通过项目文档、设计 Artifact 或用户请求继续展开。
 
 当用户将当前范围内的选择交给 Agent 时，Primary Agent 获得相应设计权限，并依据项目事实、可信的发展信号和未来修改成本做出选择。涉及人的界面、流程、信息呈现或交互时，Design 同时考虑任务流、信息层级、默认值、反馈、错误预防、恢复、一致性、可访问性和信任。
@@ -418,6 +526,7 @@ Primary Agent 向用户提供通俗决策视图：当前问题、建议、直接
 |---|---|
 | 局部、可逆、单 Session 选择 | 当前对话、代码和测试 |
 | 当前 Session 内的中等协调 | Host Plan 或简短 Session Note |
+| 会被多个后续决策使用的项目身份、语义中心、边界样例与可信演进 | 项目拥有的 Product Definition、README、Requirement、Domain Glossary、Architecture Overview 或按需 Project Model |
 | 公共契约、持久数据、核心归属、长期 UX、安全边界或迁移 | 项目拥有的 Requirement、ADR、API、Schema、Architecture 或 Configuration |
 | 跨 Session、多执行者、持续比较或临时恢复 | 现有 Issue 或 `.rung/runs/<run-id>/design.md` |
 
@@ -534,31 +643,41 @@ Lite、Standard、Strict 是可选的治理深度简称。Agent 可以直接使�
 
 证据形式和深度与声明风险相称。
 
-### 8.12 Project Harness
+### 8.12 Project Model
+
+由用户含义与项目现实共同形成的紧凑、可修正语义模型。它声明模型边界，描述人、核心情境、可观察结果、产品形态、语义中心、决策优先级、归属边界和可信演进，并区分 Accepted、Evidenced、Inferred、Contested 与 Unknown 陈述。
+
+Project Model 可以只存在于 Session 中，也可以在有未来消费者时进入项目事实源或临时 Artifact。它向 Design、Engineering Structure、Architecture Assessment 和 Review 提供方向，随经过确认的新证据与产品演进校准。
+
+### 8.13 Project Harness
 
 目标项目中影响软件如何被理解、修改、检查、构建和交付的机制集合。它包含意图与事实源、工程约束、Verification Harness、开发与构建工具，以及 CI 与 Release 控制。
 
-### 8.13 Verification Harness
+### 8.14 Verification Harness
 
 为软件声明产生可复现证据的项目内验证结构与入口。它可以包含测试代码、Fixture、测试数据、Fake、Mock、测试服务、测试数据库、文档检查、契约检查、CI Gate、构建检查、打包检查和端到端环境。
 
 Harness 的长期实现归目标项目所有。Rung 在证据缺口、基础设施新增、运行成本或可靠性信号出现时提供分层治理提示；`.rung/` 可以暂存本次 Harness 的清单、映射和维护决定。
 
-### 8.14 Harness Evolution
+### 8.15 Harness Evolution
 
 对已有 Project Harness 的权威关系、共享执行方式、证据覆盖、可靠性、成本、诊断或交付控制进行有证据、可回退、可迁移的改变。Harness Evolution 同时验证产品行为、Harness 信号与必要的迁移表面。
 
-### 8.15 Release Handoff
+### 8.16 Release Handoff
 
 当前变更达到可交付状态时向代码托管、包仓库或下游交付系统提供的代码状态、制品、说明和风险信息。
+
+### 8.17 Development Scope Gate
+
+在任何 Reference 之前根据用户 Outcome 和长期 Owner 判断项目开发、运行状态或混合责任的轻量入口。它让项目行为、结构、制品、证据与 Release 判断进入 DevelopmentRun，把当前机器、服务、环境和事件状态交给 Host 或下游运行系统，并在混合任务中维持两条责任路径。
 
 ## 9. 八个开发关注面
 
 | 关注面 | 常见加载信号 | 提示目标 |
 |---|---|---|
-| Clarify | 用户与 Agent 需要形成有后果的决定，或用户委托当前范围内的设计选择 | 得到已接受决定、委托权限与开放选择 |
-| Inspect | 相关代码、规则、命令、接口或用户修改未知 | 以相称检查半径获得可执行的项目事实 |
-| Design | 产品行为、UX、项目骨架、概念归属、边界、接口、数据、依赖或错误语义需要选择 | 形成与项目相称、依据充分且可修正的专业方案 |
+| Clarify | 用户与 Agent 需要形成有后果的决定、校准项目含义，或用户委托当前范围内的设计选择 | 得到已接受决定、委托权限、画像校准与开放选择 |
+| Inspect | 相关产品事实、代码、规则、命令、接口或用户修改未知 | 以相称检查半径获得可执行、可追踪来源的项目事实 |
+| Design | 产品行为、UX、Project Model、项目骨架、概念归属、边界、接口、数据、依赖或错误语义需要选择 | 形成与项目相称、依据充分且可修正的专业方案 |
 | Plan | 多步骤、跨模块、迁移、协作或恢复需要协调 | 由 Primary Agent 建立有 Owner、依赖、检查与恢复点的全局 Plan |
 | Implement | 进入代码、测试、配置或文档修改 | 实现并集成符合当前决定和事实的修改 |
 | Verify | 需要证明行为、兼容、构建或制品结论 | 在集成状态上获取与 Claim 相称的 Evidence |
@@ -615,6 +734,7 @@ Strict 提示增加判断深度，同时保留 Agent 对具体方法的选择。
 
 - 任务跨会话或需要恢复；
 - 多个执行者共享当前决策；
+- 项目身份、语义中心或边界判断会被多个后续决定复用；
 - 接口、数据、迁移或发布具有长期影响；
 - 项目已有正式需求、ADR、测试计划或发布流程；
 - 用户明确需要审阅制品。
@@ -623,13 +743,13 @@ Strict 提示增加判断深度，同时保留 Agent 对具体方法的选择。
 
 ### 11.2 事实源
 
-ProjectContext 优先索引项目已有 README、Requirements、ADR、接口规范、构建配置和测试配置。本次变化产生的长期事实写回相应项目事实源。
+ProjectContext 优先索引项目已有 README、Requirements、ADR、接口规范、构建配置和测试配置，回答当前仓库与运行事实。Project Model 将用户含义与相关事实压缩成可修正的项目身份和决策边界。两者分别维护并按来源互相引用；长期事实写回相应项目 Owner。
 
-`.rung/runs/<run-id>/` 作为可选工作区，适合保存运行控制状态和项目暂时没有承载位置的制品。
+`.rung/runs/<run-id>/` 作为可选工作区，适合保存运行控制状态、临时 `project-model.md` 和项目暂时没有承载位置的制品。
 
 ### 11.3 模板
 
-`assets/` 提供 Development Brief、Project Context、Solution Design、Change Plan、Project Harness Change、Verification Harness、Verification Report、Review Result 和 Release Manifest 模板。Agent 可以复制完整模板，也可以只采用当前任务需要的字段。
+`assets/` 提供 Development Brief、Project Context、Project Model、Solution Design、Change Plan、Project Harness Change、Verification Harness、Verification Report、Review Result 和 Release Manifest 模板。Agent 可以复制完整模板，也可以只采用当前任务需要的字段。
 
 ### 11.4 脚本
 
@@ -643,7 +763,7 @@ ProjectContext 优先索引项目已有 README、Requirements、ADR、接口规�
 
 ```text
 Project Harness
-├── 意图与事实源：Instructions · Requirements · README · ADR · API · Schema
+├── 意图与事实源：Instructions · Product Definition · Project Model · Requirements · README · Domain Glossary · ADR · API · Schema
 ├── 工程约束：Formatter · Lint · Types · Architecture · Dependencies
 ├── Verification Harness
 │   ├── Test System：Cases · Assertions · Fixtures · Data · Fakes · Mocks · Runners
@@ -736,16 +856,18 @@ Release 关注以下信息：
 
 ```mermaid
 flowchart TB
-    U["用户<br/>意图 · 约束 · 决定 · 委托 · 授权"] --> PA
+    U["用户<br/>意图 · 约束 · 决定 · 委托 · 授权"] --> SG
 
     subgraph RG["Rung：渐进式治理层"]
-        R["Core Prompt<br/>Outcome · Context · Approach · Evidence · Handoff"] --> S["信号路由"]
+        SG["Development Scope Gate<br/>项目开发 · 运行状态 · 混合任务"] -- "项目或混合任务中的项目部分" --> R["Core Prompt<br/>Outcome · Context · Approach · Evidence · Handoff"]
+        R --> S["信号路由"]
         S --> EM["Execution Model<br/>责任 · 检查半径 · 持久化 · 恢复"]
         S --> CC["Concern Cards<br/>Clarify · Inspect · Design · Plan<br/>Implement · Verify · Review · Release"]
-        S --> DG["Depth / Domain Guides<br/>风险 · Project Harness · Verification Harness"]
+        S --> DG["Depth / Domain Guides<br/>Development Scope · Project Model · Engineering Structure<br/>Architecture Assessment · Project Harness · Verification Harness"]
         S --> AR["可选执行资源<br/>Artifacts · Profiles · Helpers"]
     end
 
+    R -. "基础提示" .-> PA
     EM -. "执行契约" .-> PA
     CC -. "按需能力" .-> PA
     DG -. "按信号加深" .-> PA
@@ -753,13 +875,19 @@ flowchart TB
 
     subgraph DR["DevelopmentRun：一个逻辑 Primary Agent"]
         PA["Primary Agent<br/>整体结果 · 决策整合 · 全局 Plan · 最终 Handoff"] --> I["Inspect<br/>Baseline → Target → Impact → System"]
-        I --> CD["Clarify ↔ Design<br/>用户决定与专业方案"]
-        CD --> P["Plan<br/>Owner · 依赖 · 检查 · 恢复点"]
+        I --> C["Clarify<br/>用户决定 · 委托权限"]
+        I --> DS["Design<br/>行为 · UX · Owner · 边界"]
+        I -. "项目含义或 Fit 信号" .-> PM["Project Model<br/>人 · 结果 · 语义中心 · 可信演进"]
+        C <--> PM
+        C --> DS
+        PM --> DS
+        DS --> P["Plan<br/>Owner · 依赖 · 检查 · 恢复点"]
         P --> IM["Implement / Integrate<br/>代码 · 测试 · 文档 · Harness"]
         IM --> V["Verify integrated state<br/>Claim ↔ Evidence"]
         V --> RV["Review<br/>Findings · 修正 · 残余风险"]
         RV --> RH["Release Handoff<br/>revision · 制品 · 证据 · 限制"]
         V -. "新事实或实质发现" .-> I
+        RV -. "语义漂移或方向变化" .-> PM
 
         PA -. "有界 Task Packet" .-> W["Worker（可选）<br/>独立范围 · 局部检查"]
         W -. "变更与候选 Evidence" .-> PA
@@ -775,7 +903,7 @@ flowchart TB
     H -. "按 Host 策略提供" .-> Q
 
     subgraph PJ["目标项目与 Project Harness"]
-        F["项目事实<br/>Instructions · Requirements · ADR · API · Schema"]
+        F["项目事实<br/>Product Definition · Project Model · Requirements · ADR · API · Schema"]
         O["长期产出<br/>源码 · 测试 · 配置 · 文档 · 迁移 · 制品"]
         PH["判断与交付机制<br/>Rules · Build · CI · Gates · Release Policy"]
         T["项目工具<br/>format · lint · type · test · build · package"]
@@ -790,10 +918,11 @@ flowchart TB
     U -. "单独授权外部写操作" .-> X["Commit · Push · Tag · Remote Release · Publish"]
     PA -. "在授权与 Host 权限内执行" .-> X
     X --> RH
-    RH --> D["下游交付系统<br/>部署 · 流量 · 监控 · 运营"]
+    RH --> D["Host / 下游运行系统<br/>部署 · 服务管理 · 流量 · 监控 · 运营"]
+    SG -. "只改变运行状态" .-> D
 ```
 
-实线表示执行结果和项目事实的流动，虚线表示治理、可选角色或授权。Rung 为 Primary Agent 提供渐进提示与执行契约；Host 提供实际能力；目标项目承载长期事实、实现和 Harness；Primary Agent 始终收回 Worker 与 Reviewer 结果，并在集成状态上完成验证和交接。
+实线表示执行结果和项目事实的流动，虚线表示治理、可选角色、责任交接或授权。Scope Gate 先确定项目开发责任；运行状态任务进入 Host 或下游系统，混合任务的项目部分形成 DevelopmentRun。Rung 为 Primary Agent 提供渐进提示与执行契约；Host 提供实际能力；目标项目承载长期事实、实现和 Harness；Primary Agent 始终收回 Worker 与 Reviewer 结果，并在集成状态上完成验证和交接。
 
 ### 13.2 用户
 
@@ -805,9 +934,12 @@ flowchart TB
 
 ### 13.3 Rung
 
+- 在读取 Reference 前判断项目开发、运行状态或混合责任，并将运行执行交接给 Host 或下游系统；
 - 提供五个基础提示和一个可恢复的 DevelopmentRun 执行契约；
 - 识别治理信号并路由相关 Concern Card、Execution Model、Depth Hint、Domain Guide、Asset 或 Script；
 - 指导相称检查半径、Design 留档位置、Plan 所有权、Worker Task Packet 和跨 Session 恢复；
+- 在项目含义、语义中心、Feature fit 或演进方向需要校准时，路由 Clarify、Inspect 与 Project Model；
+- 在日常结构信号中路由 Engineering Structure，在显式已有系统审查中路由场景与证据驱动的 Architecture Assessment；
 - 在项目约束可靠时复用 Project Harness，在 Harness 自身出现问题时路由独立诊断、Coverage Delta 与渐进迁移；
 - 在证据缺口或 Harness 增长信号出现时提供分层验证系统治理；
 - 提醒集成 Evidence、残余风险和 Release 交接；
@@ -816,6 +948,7 @@ flowchart TB
 ### 13.4 Primary Agent
 
 - 保护用户工作并整合项目事实、用户决定与委托设计权限；
+- 在相关信号下建立、校准并应用有明确边界和证据状态的 Project Model；
 - 维护全局 Plan，默认执行实际修改；
 - 在有具体收益时分配有界 Worker 或请求独立 Review；
 - 复查并集成所有执行者产出；
@@ -836,22 +969,24 @@ flowchart TB
 
 ### 13.7 目标项目与项目工具
 
-- 承载长期需求、设计、代码、测试、配置、Harness、迁移和发布材料；
+- 承载长期 Product Definition、Project Model、需求、设计、代码、测试、配置、Harness、迁移和发布材料；
 - 编译、格式化、检查、测试、构建并生成软件制品；
 - 提供项目真实的质量、兼容和发布约束；
 - 为集成结论生成可追踪的机器 Evidence。
 
 ## 14. 工作类型
 
+Scope Gate 先判断当前 Outcome 是否形成项目开发责任，再选择工作类型。只改变当前服务、机器或环境状态的请求进入 Host 或运维路径，不因接触配置文件而归入 Docs/Config。
+
 | 类型 | 值得关注的特有信号 |
 |---|---|
-| Greenfield | 用户价值、首个可交付能力、最小可运行骨架、已知边界、首个 Release |
-| Feature | 可观察行为、接口与数据影响、回归范围 |
+| Greenfield | 人、核心情境、结果、语义中心、首个可交付能力、最小可运行骨架、首个 Release |
+| Feature | Project Model fit、可观察行为、接口与数据影响、回归范围 |
 | Bugfix | 预期与实际、复现可信度、根因、回归证据 |
 | Refactor | 行为保持边界、特征测试、结构收益 |
 | Migration | 当前与目标状态、兼容窗口、顺序、恢复 |
 | Dependency | API 变化、安全通告、锁文件、构建兼容 |
-| Docs/Config | 文档或配置与实际行为的一致性 |
+| Project Docs/Config | 项目拥有的文档或配置与实际行为的一致性 |
 | Release-only | revision、证据、制品、版本和发布说明 |
 
 工作类型用于选择少量特有提醒，不改变渐进式治理模型。
@@ -876,7 +1011,9 @@ MVP 包含：
 - 信号驱动的按需路由；
 - 一个按需加载的 Execution Model Guide，明确 Primary Agent、检查半径、Design 持久化、Plan 与 Implement 责任、Worker、Reviewer 和跨 Session 恢复；
 - Clarify 到 Release 的八张 Concern Card；
-- 归属、局部性、信息隐藏、依赖和抽象依据的工程决策提醒；
+- 按项目含义、语义中心、Feature fit 与演进信号加载的 Project Model Guide，以及只在有未来消费者时使用的可选 Project Model Artifact；
+- 按结构信号加载的 Engineering Structure Guide，覆盖归属、局部性、信息隐藏、依赖知识、状态语义、抽象依据与结构验证；
+- 按显式审查请求加载的 Architecture Assessment Guide，覆盖评估契约、变化场景、实现路径、因果证据链、反证、主要矛盾、渐进干预与反事实验证；
 - 按需加载的 Project Harness 与 Harness Evolution 详细指南、可选 Harness Change Artifact；
 - 按需加载的 Verification Harness 详细指南、可选 Harness Artifact 和 Tier 筛选执行；
 - Lite、Standard、Strict 三种可选深度提示；
@@ -923,31 +1060,66 @@ Agent 加载 Design、Plan、Verify、Release 与 Strict 深度提示，关注�
 
 Agent 复用项目已有实现和证据，只补充当前发布缺失的 revision、构建、制品、文档和风险信息。
 
-### 17.6 工程设计与连续变化
+### 17.6 工程结构与架构评估
 
-创建项目骨架、增加顶层模块、修改跨模块能力或引入外部依赖时，Agent 根据当前概念、调用关系和真实变化选择边界。完成后的 diff 复查公共表面、依赖知识、共享状态、修改局部性和抽象依据。
+创建项目骨架、增加顶层模块、修改跨模块能力或引入外部依赖时，Agent 根据当前概念、调用关系、状态与真实变化选择边界。实际 diff 复查公共表面、依赖知识、共享状态、持久语义、修改局部性和抽象依据。
 
-行为评测使用连续任务观察模块化质量：第一项任务完成实现，后续隐藏任务引入一个合理变化，再比较正确性、修改传播、公共表面、依赖关系、无用途抽象和上下文成本。评测接受多个合理方案，不以固定目录、文件数量或设计模式作为答案。
+连续任务评测先完成一个实现，再通过隐藏任务引入合理变化，比较正确性、修改传播、公共表面、依赖关系、无用途抽象和上下文成本。评测接受多个有证据的方案，不以固定目录、文件数量、类层次或设计模式作为答案。
 
-仓库根目录 `evals/` 维护宿主无关的评测协议与场景。每次评测记录模型、宿主、工具权限、起始 revision、Rung revision、实际提示加载、最终 diff、验证结果、上下文成本和评审结论。基线、当前版本和候选版本使用相同输入并进行多次运行。
+显式架构评估增加四类宿主无关场景：
 
-### 17.7 验证 Harness 增长
+- `09-architecture-primary-tension.md` 检查 Agent 能否在长函数、命名和局部重复等干扰中识别重复定价规则 Owner 与跨入口传播这一主要矛盾；
+- `10-architecture-false-positive-control.md` 使用具有权威 Schema、稳定 Facade、生成链和性能证据的大型平面 Dispatch Table，检查反证处理、无依据 Finding 与有害改造；
+- `11-architecture-framework-leakage.md` 使用目录整洁但 Vendor 类型、错误、重试和 Payload 广泛传播的项目，检查 Agent 是否沿实际依赖知识识别迁移机制；
+- `12-legacy-architecture-safe-evolution.md` 使用隐式订单状态、有限测试、兼容要求和用户修改，检查 Agent 是否提出有行为锚点、迁移切片和回退意识的安全演进。
+
+每个显式 Assessment 记录声明边界、当前 Driver、代表性场景、主结构矛盾、证据链、未支持 Finding、反证和干预验证。Hidden follow-up 检验建议的反事实价值：后续变化能否进入更清楚的 Owner、减少无关传播、保留原有行为并避免新增无依据抽象。
+
+仓库根目录 `evals/` 维护评测协议与场景。每次运行记录模型、宿主、工具权限、起始 revision、Rung revision、实际 References、最终 diff、验证结果、上下文成本和盲化评审结论。Host baseline、稳定版本和候选版本使用相同输入并进行多次运行。
+
+### 17.7 项目画像与能力归属
+
+稀疏 Greenfield 意图、已有项目语义恢复、边界能力判断、主动产品演进和多产品仓库使用不同场景检验 Project Model。Agent 需要把用户表达与项目现实合成为通俗、可修正、有声明边界的模型，并将 Accepted、Evidenced、Inferred、Contested 与 Unknown 陈述保持可区分。
+
+行为评测观察画像是否真实影响人和核心任务、UX、概念 Owner、模块边界、公共语言、数据、不变量、依赖、验证与后续变化局部性。文档篇幅、术语数量、图表和生成画像文件本身不产生收益分数；普通明确任务保持原有轻量路径。
+
+五个场景覆盖：
+
+- `13-project-model-sparse-greenfield.md` 检查多个合理产品解释、通俗校准、委托设计与最小可运行实现；
+- `14-project-model-feature-fit.md` 使用水果目录、蔬菜与水果礼盒检查 Core fit、Adjacent extension 和 Identity change；
+- `15-project-model-existing-recovery.md` 检查 README、行为、测试、历史和休眠代码冲突时的证据状态与语义恢复；
+- `16-project-model-intentional-evolution.md` 检查用户主动把水果目录扩展为生鲜目录时的画像修正、兼容责任和渐进实施；
+- `17-project-model-multiple-centers.md` 检查 Monorepo 中共享身份与工具链、客户支持、分析流水线等多个语义中心的分层边界。
+
+Hidden follow-up 检验画像的预测价值：新能力是否进入清楚 Owner、沿接受的语言和不变量实现、限制跨产品知识传播并保留兼容。主动方向变化能够有证据地修正画像，同样属于成功行为。
+
+### 17.8 验证 Harness 增长
 
 当一个跨边界行为缺少可靠证据时，Agent 复用项目原生入口，并只为当前 Claim 增加必要的 Fixture、隔离或集成检查。后续变化检验 Harness 的所有权、Setup、Cleanup、诊断能力、运行成本和修改局部性。
 
 评测比较验证正确性、错误行为的可见失败、重复基础设施、与实现细节的耦合、波动处理和上下文成本。仓库中的对应场景记录在 `evals/cases/04-verification-harness-growth.md`。
 
-### 17.8 已有 Project Harness 演进
+### 17.9 已有 Project Harness 演进
 
 成熟项目中的事实源、测试、实现、CI 或 Release Gate 发生冲突时，Agent 先识别权威关系和问题分类，再决定修改产品、Harness 或二者。Harness 修改使用独立锚点验证 Known-good 与 Relevant known-bad，并记录 Coverage Delta、消费者影响、生效、回退与旧路径清理条件。
 
 行为评测观察 Agent 是否保留用户工作和原始失败，是否通过修改 Expected Result、Snapshot、Retry 或 Gate 制造虚假绿色，是否能在后续合理变化中复用单一事实源。对应场景记录在 `evals/cases/05-existing-harness-evolution.md`。
 
-### 17.9 Worker-assisted integration
+### 17.10 Worker-assisted integration
 
 一个任务包含两个以上具有稳定共享契约、清楚集成点和互不重叠范围的执行单元时，Primary Agent 可以向 Worker 分配有界 Task Packet。评测检查上下文与所有权是否相称、用户工作是否得到保护、Worker 输出是否经过复查，以及最终 Evidence 是否覆盖集成 revision。Host 缺少多 Agent 能力时，同一执行模型由 Primary Agent 顺序完成。
 
 对应委派与集成场景记录在 `evals/cases/08-worker-assisted-integration.md`。
+
+### 17.11 开发范围与运行交接
+
+行为评测分别使用三个只改变提示目标的场景检验入口精度：
+
+- `18-operations-only-service-change.md` 复现现有 Nextcloud 实例改绑端口并重启，期望宿主不隐式调用 Rung；偶发调用也应在 Scope Gate 后停止，不读取 Concern Card 或创建 Rung Artifact；
+- `19-project-owned-compose-change.md` 修改项目拥有的 Compose 默认配置、文档和验证，期望进入 Rung 并只按当前信号逐步加载 Reference；
+- `20-mixed-artifact-and-deployment.md` 修改 Helm Chart 后部署测试环境，期望项目制品走 DevelopmentRun，环境身份、授权、执行和运行恢复保持独立。
+
+运行任务暴露项目缺陷时，后续项目修复可以重新进入 Rung。现有 Architecture Assessment、Release-only、Harness 和 Greenfield 场景继续控制 Scope Gate 的误排除风险。
 
 场景验收同时观察：提示加载是否相关、默认上下文是否轻量、模型是否保留合理选择、完成结论是否具有相称证据。
 
@@ -955,7 +1127,7 @@ Agent 复用项目已有实现和证据，只补充当前发布缺失的 revisio
 
 Rung 后续实现保持以下设计事实：
 
-1. 产品范围从 User Intent 延伸到 Release Handoff；
+1. User Intent 先通过 Scope Gate，DevelopmentRun 从 Project Development Intent 延伸到 Release Handoff；
 2. 默认运行形态是薄提示层；
 3. 治理内容由实际信号渐进加载；
 4. 八个关注面支持组合、跳过和回访；
@@ -980,18 +1152,38 @@ Rung 后续实现保持以下设计事实：
 23. Primary Agent 维护全局 Plan，并默认负责 Implement；
 24. Worker 使用有界上下文和明确所有权，Multi-Agent 执行由收益、Host 能力与策略共同决定；
 25. Worker 检查作为候选 Evidence，最终 Verification 针对集成状态；
-26. 独立 Reviewer 与跨 Session 恢复由实际风险、审查或连续执行需要触发。
+26. 独立 Reviewer 与跨 Session 恢复由实际风险、审查或连续执行需要触发；
+27. 重要架构 Finding 关联当前 Driver 或变化场景、仓库证据、结构机制、成本或风险、最小连贯干预和独立验证；
+28. 文件大小、目录形态、模式名称和一般性代码异味只提供调查线索，架构结论需要项目证据与因果机制；
+29. Engineering Structure 由 Design、Implement 和 Review 的实质结构信号加载，Architecture Assessment 由显式已有系统审查加载，普通局部任务保持轻量；
+30. 显式 Architecture Assessment 默认产生检查结论与建议，项目修改需要用户请求或委托的实施权限；
+31. Project Model 由 Clarify 的人类含义与 Inspect 的项目现实共同建立，并声明适用的产品、子系统、Library 或 Workflow 边界；
+32. Project Model 的重要陈述区分 Accepted、Evidenced、Inferred、Contested 与 Unknown，单一文档、代码形态或 Agent 补全不能独立建立产品身份；
+33. Feature fit 根据当前的人、结果、语义中心、质量优先级和可信演进判断，用户授权的产品方向变化会触发画像修正与兼容设计；
+34. Project Model 只在实质语义信号出现时加载，只在协调、恢复、Review 或未来决策具有消费者时持久化；
+35. 持久化的 Project Model 进入项目拥有的事实源并参与 Project Harness，同一项目含义保持一个维护位置；
+36. Skill description 以项目开发为自动发现中心，并明确运行任务边界；
+37. Scope Gate 在任何 Reference 之前运行，范围由用户 Outcome 与长期 Owner 决定；
+38. 运行状态任务继续由 Host 或下游系统处理，不读取 Rung Reference 或创建 Rung Artifact；
+39. 混合任务分别维护项目开发与运行执行的责任、授权、证据和恢复信息；
+40. 默认一次只加载当前判断所需的一张 Reference，未来阶段不构成预加载信号。
 
 ## 19. 长期愿景
 
 ```text
 Human Intent
-     ↓
-Coding Agent 正常开发
-     ↕
-Rung 按信号提供渐进式治理
-     ↓
-Verified Release Handoff
+      ↓
+Development Scope Gate
+   ├─ Runtime State → Host / Operations
+   └─ Project Development + Project Reality
+                         ↓
+                Project Model（按需）
+                         ↓
+                Coding Agent 正常开发
+                         ↕
+              Rung 按信号渐进治理
+                         ↓
+               Verified Release Handoff
 ```
 
-Rung 让开发提醒在最有价值的时点出现：平常保持轻量，风险出现时提供深度，交付时保留证据。
+Rung 让项目含义和开发提醒在最有价值的时点进入判断：平常保持轻量，语义或风险出现时提供深度，交付时保留证据。

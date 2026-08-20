@@ -13,6 +13,7 @@ from typing import Any
 ARTIFACT_FILES = [
     "brief.md",
     "context.md",
+    "project-model.md",
     "design.md",
     "plan.md",
     "harness-change.md",

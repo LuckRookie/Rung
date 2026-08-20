@@ -6,7 +6,7 @@ Read when work type, risk, or evidence scope can materially change the next deci
 
 | Type | Distinct focus |
 |---|---|
-| Greenfield | first value, minimum runnable slice, known boundaries, first release |
+| Greenfield | people, outcome, semantic center, minimum runnable slice, first release |
 | Feature | observable behavior, interface/data impact, regression |
 | Bugfix | expected versus actual, reproduction, root cause, regression evidence |
 | Refactor | preserved behavior, characterization, structural gain |
@@ -16,6 +16,8 @@ Read when work type, risk, or evidence scope can materially change the next deci
 | Release-only | revision, evidence, artifact, version, notes |
 
 Types are routing hints and may overlap.
+
+For uncertain project meaning, feature fit, or intended evolution, read [Project Model](project-model.md).
 
 ## Depth hints
 

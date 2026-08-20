@@ -22,6 +22,7 @@
 | Fact | Source | Relevance to this run |
 |---|---|---|
 | Agent instructions | `{{instruction_path}}` | {{instruction_relevance}} |
+| Project model or product definition | `{{project_model_path}}` | {{project_model_relevance}} |
 | Requirements | `{{requirements_path}}` | {{requirements_relevance}} |
 | Architecture | `{{architecture_path}}` | {{architecture_relevance}} |
 | API or schema | `{{interface_path}}` | {{interface_relevance}} |

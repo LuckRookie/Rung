@@ -41,7 +41,7 @@ For a project-changing request, the Primary Agent normally:
 
 1. grounds the requested outcome and delegated decision scope;
 2. inspects governing instructions, user work, and target facts;
-3. forms a coherent design and records it only when useful;
+3. forms or calibrates a [Project Model](project-model.md) when meaning or fit matters, then forms a coherent design;
 4. coordinates dependent units when coordination adds value;
 5. implements or integrates the scoped change;
 6. verifies claims against the actual integrated state;
@@ -76,6 +76,8 @@ Inspection is sufficient when the next action has a known owner and constraint s
 
 Clarify manages consequential decisions with the user. Design supplies professional reasoning and candidate solutions. They may alternate while a project or change proposal develops.
 
+When project identity, semantic center, feature fit, or intended evolution can change the decision, Clarify and Inspect form a Project Model from human meaning and project reality before Design commits to durable boundaries.
+
 Present a user decision in plain language: the issue, recommendation, immediate consequence, credible development impact, reversibility, and requested choice. Keep mechanisms and terminology available by reference or on request. Decision-relevant risks remain in the plain-language view.
 
 When the user delegates an in-scope decision, the Primary Agent acts as the project designer. Ground the choice in current facts, credible development signals, and change cost. Human-facing surfaces receive UX attention, including task flow, information hierarchy, defaults, feedback, error prevention, recovery, consistency, accessibility, and trust.
@@ -90,6 +92,7 @@ Use the lowest durable surface that has a real future consumer.
 |---|---|
 | Local, reversible, single-session choice | conversation, code, and tests |
 | Moderate coordination within the current session | host plan or concise session note |
+| Recurring project identity, semantic center, fit boundaries, or evolution | owning product fact or `.rung/runs/<run-id>/project-model.md` |
 | Public contract, persistent data, core ownership, lasting UX, security boundary, or migration | owning project requirement, ADR, API, schema, architecture, or configuration |
 | Cross-session, multi-executor, evolving comparison, or temporary recovery state | `.rung/runs/<run-id>/design.md` or an existing project issue |
 

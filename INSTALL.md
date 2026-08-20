@@ -42,6 +42,12 @@ npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung 
 
 `skills` CLI 会在安装记录中保存来源、Skill 路径和内容哈希。项目级安装还会在项目根目录生成或更新 `skills-lock.json`，供后续检查与更新使用。
 
+### 发现范围与调用
+
+用户级安装使 Rung 对该用户的不同项目和普通工作目录可见，适合希望在各项目中自动获得开发治理的用户。项目级安装只在对应项目的 Skill 扫描范围内可见，适合希望按仓库选择治理能力的团队。
+
+Rung 保留隐式调用。宿主先根据 `SKILL.md` 的 name 与 description 判断任务是否属于项目开发；完整 Skill 加载后，Scope Gate 在任何 Reference 前再次区分项目开发、运行状态和混合任务。单独的服务部署、重启、主机管理、监控和事件响应继续由 Host 或运维系统处理。显式 `$rung` 调用始终可用。
+
 ## Codex 原生安装器
 
 Codex 提供 `skill-installer` 时，可以把下面这句话直接发送给 Codex：
@@ -60,7 +66,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 ### 1. 确定作用域
 
 - 用户明确指定用户级或项目级作用域时，采用指定作用域。
-- 用户未指定作用域时，采用用户级作用域，使 Rung 可供该用户的所有项目调用。
+- 用户未指定作用域时，采用用户级作用域，使 Rung 可供该用户的所有项目调用；同时说明它也会在普通工作目录中进入宿主的 Skill 候选列表。
 - 项目级安装写入当前项目；执行前确认项目根目录。
 - 写入前向用户说明安装方式、作用域和目标路径。
 

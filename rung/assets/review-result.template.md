@@ -24,6 +24,7 @@
 ## Scope and architecture
 
 - Plan differences: {{plan_differences}}
+- Project Model fit and semantic drift: {{project_model_fit_and_drift}}
 - Concept ownership and change locality: {{ownership_and_locality_review}}
 - Public surface and information leakage: {{public_surface_review}}
 - Dependency direction: {{dependency_review}}
