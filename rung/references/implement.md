@@ -1,25 +1,16 @@
-# Implement 提示卡
+# Implement Card
 
-## 读取信号
+Read while changing code, tests, configuration, Harness, or project documentation when scope, ownership, integration, user work, or fact synchronization deserves attention.
 
-开始修改代码、测试、配置或项目文档，且范围、已有工作或事实同步值得额外关注时读取。
+## Operate
 
-## 提醒
+- The Primary Agent implements by default; workers receive bounded, non-overlapping ownership only when delegation helps.
+- Tie each material edit to the current outcome, design, or engineering need.
+- Preserve user-owned edits and applicable project instructions.
+- Keep directly enabling refactoring coherent and verifiable; leave unrelated cleanup outside the change.
+- Synchronize tests, configuration, generated sources, and durable fact owners.
+- Run low-cost checks where they expose drift early, then integrate all worker output before final verification.
 
-- 当前修改与哪个用户结果或工程需要相关？
-- 是否存在更小且仍然连贯的变更边界？
-- 重叠区域中的用户已有工作需要怎样保留？
-- 新行为是否同步了相关测试、配置和长期事实源？
-- 低成本、高信号检查能否及时发现偏差？
-- 新发现是否改变接口、数据、范围或风险判断？
-- 提交、推送和其他外部动作是否保持为独立授权点？
+Stop when the scoped change is integrated, project facts are synchronized, and no known implementation finding requires Clarify, Inspect, Design, or Plan. Output the actual diff, changed facts, early checks, and integration concerns.
 
-Agent 根据项目与任务选择实现顺序。无关清理可以记录为后续候选，避免扩大当前 diff。
-
-## 加深治理的信号
-
-计划偏差、用户工作重叠、迁移执行、生成文件、跨模块连锁变化或不可逆操作，适合记录当前基线、变化理由和恢复方式。
-
-## 可选输出
-
-Implementation Change 由实际 diff、测试、配置和必要文档组成。跨会话任务可额外保存已完成工作、下一步和新发现风险。
+Record a baseline or recovery point only for cross-session, overlapping, migration, or irreversible work. Read [Execution Model](execution-model.md) for ownership and delegation.

@@ -5,7 +5,7 @@
 | Run ID | `{{run_id}}` |
 | Work type | `{{work_type}}` |
 | Governance depth | `{{governance_depth_or_none}}` |
-| Owner | `{{owner}}` |
+| Primary Agent | `{{primary_agent}}` |
 | Status | `{{status}}` |
 
 ## Intent
@@ -19,6 +19,11 @@
 ## Desired outcome
 
 {{desired_outcome}}
+
+## Current and target behavior
+
+- Current: {{current_behavior}}
+- Target: {{target_behavior}}
 
 ## Acceptance criteria
 
@@ -45,12 +50,16 @@
 
 ## Open questions
 
-| Question | Owner | Blocks stage | Status |
+| Question | Owner | Blocks next action | Status |
 |---|---|---|---|
-| {{question}} | {{owner}} | {{stage}} | open |
+| {{question}} | {{owner}} | {{next_action}} | open |
 
-## Decisions
+## Decisions and authority
 
-| Date | Decision | Rationale | Decided by |
-|---|---|---|---|
-| {{date}} | {{decision}} | {{rationale}} | {{decider}} |
+- User-owned decisions: {{user_decision_scope}}
+- Delegated design scope: {{delegated_design_scope}}
+- Separate authorization boundaries: {{authorization_boundaries}}
+
+| Date | Decision | Rationale | Authority | Revisit signal |
+|---|---|---|---|---|
+| {{date}} | {{decision}} | {{rationale}} | {{user_or_delegated_agent}} | {{revisit_signal}} |

@@ -1,25 +1,17 @@
-# Plan 提示卡
+# Plan Card
 
-## 读取信号
+Read when dependent units, multiple modules, migration, collaboration, recovery, or risky order needs coordination.
 
-任务包含多个依赖步骤、跨模块修改、迁移、多人协作、跨会话恢复或高风险执行顺序时读取。
+## Operate
 
-## 提醒
+The Primary Agent owns the integrated plan.
 
-- 哪些变更单元可以独立实施和验证？
-- 顺序受到哪些模块、数据、兼容或迁移依赖影响？
-- 每个单元需要保持哪些行为、接口和用户修改？
-- 哪些检查能够支持用户结果和主要风险结论？
-- 文档、版本、配置和 Release 工作在哪里发生？
-- 哪些外部或不可逆动作需要单独授权和执行前检查？
-- 失败后从哪里恢复，什么条件触发回访 Design 或 Clarify？
+- Define coherent units by outcome or acceptance, owner, files or modules, prerequisites, behavior to preserve, intended change, completion check, and recovery point.
+- Order interface, data, compatibility, migration, verification, documentation, version, and release work by real dependencies.
+- Separate external or irreversible actions behind their authorization and preflight conditions.
+- Give any worker a bounded unit and stable shared contract; keep global order and integration with the Primary Agent.
+- Revisit Clarify, Inspect, or Design when evidence changes direction, ownership, data, interface, scope, or risk.
 
-计划可以保留在会话中，也可以直接使用宿主计划工具。粒度以改善执行和恢复为准。
+Stop when the next executable unit, dependencies, owner, check, and recovery point are clear. Output an internal micro-plan, host plan, or persistent Change Plan proportional to coordination need.
 
-## 加深治理的信号
-
-数据迁移、兼容窗口、多个执行者、长任务或外部发布链路，适合持久化 Change Plan 与 Verification Plan。
-
-## 可选输出
-
-可使用 `assets/change-plan.template.md` 和 `assets/verification-plan.template.json`。确定性执行需要命令数组、工作目录、预期声明和超时。
+Persist for cross-session work, multiple executors, migration, compatibility windows, or formal recovery using `assets/change-plan.template.md`. Read [Execution Model](execution-model.md) for planning and worker contracts.

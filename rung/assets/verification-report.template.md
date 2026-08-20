@@ -3,8 +3,11 @@
 | Field | Value |
 |---|---|
 | Run ID | `{{run_id}}` |
-| Revision | `{{revision}}` |
-| Governance depth / Verification scope | `{{governance_depth}} / {{verification_scope}}` |
+| Primary Agent | `{{primary_agent}}` |
+| Integrated state | `{{revision_or_working_tree_identity}}` |
+| Governance depth | `{{governance_depth}}` |
+| Requested maximum Tier | `{{requested_max_tier}}` |
+| Selected plan checks | `{{selected_check_count}} / {{planned_check_count}}` |
 | Evidence file | `{{evidence_path}}` |
 | Overall result | `{{pass_fail_blocked_or_waived}}` |
 
@@ -16,9 +19,15 @@
 
 ## Executed checks
 
-| Check | Command | Exit code | Duration | Result |
-|---|---|---:|---:|---|
-| {{check_name}} | `{{command}}` | {{exit_code}} | {{duration}} | {{result}} |
+| Check | Tier | Command | Exit code | Duration | Result |
+|---|---:|---|---:|---:|---|
+| {{check_name}} | {{tier}} | `{{command}}` | {{exit_code}} | {{duration}} | {{result}} |
+
+## Skipped checks
+
+| Check | Tier | Reason | Resulting coverage gap |
+|---|---:|---|---|
+| {{skipped_check}} | {{tier}} | {{skip_reason}} | {{coverage_gap_or_none}} |
 
 ## Build and package evidence
 

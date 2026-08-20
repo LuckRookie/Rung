@@ -1,13 +1,3 @@
-# Lite 深度提示
+# Lite Depth
 
-适用于局部、可回退、影响清楚且验证路径直接的变化。
-
-Lite 通常保持在会话内：
-
-- 简要理解用户可观察结果；
-- 查看直接相关代码、项目指令和用户修改；
-- 实施最小连贯变更；
-- 运行局部高信号检查；
-- 用简短结果说明验证和未覆盖范围。
-
-默认不创建 Rung Artifact，也无需向用户声明 Profile。公共接口、持久化数据、安全边界、跨模块协调或发布链路信号出现时，读取相关 Concern Card 或更深提示。
+For local, reversible work with bounded impact and a direct check path. One Primary Agent works in one session: inspect Baseline and Target, make the smallest coherent change, verify the integrated state, and hand off briefly. Add persistence, workers, or deeper guidance only when a material signal appears.

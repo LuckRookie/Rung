@@ -1,3 +1,3 @@
 interface:
   display_name: "Rung"
-  short_description: "按风险加载从用户意图到可验证发布的软件开发治理提醒"
+  short_description: "Progressive governance from intent to verified release"

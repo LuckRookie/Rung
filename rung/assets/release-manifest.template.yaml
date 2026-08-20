@@ -5,7 +5,7 @@ revision: "{{revision}}"
 status: blocked
 artifacts: []
 acceptance: blocked
-verification: "{{verification_report_path}}"
+verification: "{{verification_evidence_json_path}}"
 documentation: blocked
 known_limitations: []
 unverified_risks: []

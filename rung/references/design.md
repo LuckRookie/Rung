@@ -1,25 +1,15 @@
-# Design 提示卡
+# Design Card
 
-## 读取信号
+Read when product behavior, UX, a project skeleton, concept owner, boundary, interface, data, state, dependency, error, compatibility, or recovery choice can shape the change.
 
-模块职责、接口、数据流、状态、依赖、错误语义、兼容或恢复方式需要选择时读取。
+## Operate
 
-## 提醒
+- Build from inspected facts, user decisions, and delegated scope.
+- Place behavior with its owning concept; contain caller knowledge, SDKs, storage formats, shared state, and sequence.
+- Give each module, public surface, dependency, and abstraction current evidence from a real need, variant, unstable boundary, or stable contract.
+- For human-facing surfaces, design task flow, information hierarchy, defaults, feedback, error prevention, recovery, consistency, accessibility, and trust.
+- Prefer the smallest coherent, revisable direction supporting a runnable slice and failure checks.
 
-- 满足用户结果所需的最小连贯行为变化是什么？
-- 变化属于哪个组件，哪些边界保持稳定？
-- 接口、数据、状态和错误如何流动？
-- 现有项目模式是否已经提供合适方向？
-- 新依赖或抽象由当前变化中的什么需求支撑？
-- 兼容、迁移、回退、安全、隐私和性能中哪些与本次任务相关？
-- 哪些验证边界能够区分正确与错误行为？
+Stop when ownership, caller-visible behavior, important data/state/error semantics, and verification boundaries support safe change. Output the solution, trade-offs, and revisit signals.
 
-设计深度随决策影响增加。局部实现选择可以直接体现在代码与测试中。
-
-## 加深治理的信号
-
-公共契约、持久化数据、核心依赖方向、长期架构选择或高成本回退，适合形成持久设计或 ADR。
-
-## 可选输出
-
-需要审阅或恢复时，可使用 `assets/solution-design.template.md`，也可以更新项目现有设计文档。
+Keep local reversible choices in code, tests, and session context. Persist contracts, durable data, core ownership, lasting UX, migration, recovery, or multi-session design in its project owner or `assets/solution-design.template.md`. Read [Execution Model](execution-model.md) for authority and persistence.

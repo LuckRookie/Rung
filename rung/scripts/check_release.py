@@ -125,19 +125,42 @@ def git_revision_exists(project: Path, revision: str) -> bool | None:
     return False if inside.returncode == 0 else None
 
 
-def validate_local_reference(project: Path, value: Any, label: str, problems: list[str]) -> None:
+def validate_local_reference(
+    project: Path, value: Any, label: str, problems: list[str]
+) -> Path | None:
     if not isinstance(value, str) or not value.strip():
         problems.append(f"{label} must be a non-empty string")
-        return
+        return None
     if value.startswith("file:"):
         path = Path(unquote(urlparse(value).path)).resolve()
     elif URI_PATTERN.match(value) and not Path(value).is_absolute():
-        return
+        return None
     else:
         raw_path = Path(value).expanduser()
         path = raw_path.resolve() if raw_path.is_absolute() else (project / raw_path).resolve()
     if not path.exists():
         problems.append(f"{label} not found: {value}")
+        return None
+    return path
+
+
+def validate_verification_evidence(path: Path, problems: list[str]) -> None:
+    if path.suffix.lower() != ".json":
+        problems.append("local verification evidence must be a JSON file")
+        return
+    try:
+        evidence = json.loads(path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        problems.append(f"cannot read verification evidence: {exc}")
+        return
+    except json.JSONDecodeError as exc:
+        problems.append(f"invalid verification evidence JSON: {exc}")
+        return
+    if not isinstance(evidence, dict):
+        problems.append("verification evidence must be a JSON object")
+        return
+    if evidence.get("status") != "pass":
+        problems.append("verification evidence status must be pass")
 
 
 def validate_manifest(data: dict[str, Any], project: Path) -> dict[str, Any]:
@@ -180,7 +203,11 @@ def validate_manifest(data: dict[str, Any], project: Path) -> dict[str, Any]:
             for index, artifact in enumerate(artifacts, 1):
                 validate_local_reference(project, artifact, f"artifact {index}", problems)
 
-        validate_local_reference(project, data.get("verification"), "verification", problems)
+        verification_path = validate_local_reference(
+            project, data.get("verification"), "verification", problems
+        )
+        if verification_path is not None:
+            validate_verification_evidence(verification_path, problems)
         revision = data.get("revision")
         if isinstance(revision, str) and revision.strip():
             exists = git_revision_exists(project, revision)

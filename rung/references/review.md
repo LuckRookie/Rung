@@ -1,24 +1,14 @@
-# Review 提示卡
+# Review Card
 
-## 读取信号
+Read when the integrated diff, structural impact, risk, assumptions, evidence, or delivery state deserves another judgment.
 
-实际 diff 较大、风险较高、计划发生变化、验证覆盖存在疑问或当前版本准备交付时读取。
+## Operate
 
-## 提醒
+- Compare outcome, accepted decisions, design, plan differences, actual diff, evidence, and release state.
+- Check concept ownership, change locality, public surface, dependency knowledge, shared state, data and error semantics, UX, compatibility, and durable-fact synchronization.
+- Confirm tests protect behavior, contracts, invariants, and failures without depending on incidental internals.
+- Fix ordinary findings directly; route material findings to their owning concern.
 
-- 实际修改是否仍然对应用户结果和当前范围？
-- 模块职责、依赖方向、接口与数据兼容是否保持清楚？
-- 错误处理、安全、隐私、性能和资源风险中哪些与本次变化相关？
-- 测试是否验证了用户行为与失败路径，验证报告是否支持其结论？
-- README、接口文档、配置说明和架构事实是否同步？
-- 版本、发布说明、构建和制品是否达到本次交付需要？
+The Primary Agent reviews by default. Use an independent reviewer when public contracts, security/privacy, persistent data, core architecture, broad migration, required gates, high-impact Harness evolution, formal policy, or the user benefits from a second judgment.
 
-从需求、实际 diff 和验证证据重新观察，并主动检查实施时的假设。审查深度与变化风险相称。
-
-## 加深治理的信号
-
-公共接口、安全、数据迁移、核心架构或正式发布，适合使用独立视角、严重度和处理状态记录发现。
-
-## 可选输出
-
-普通任务把发现直接修复或写入完成报告。正式审查可使用 `assets/review-result.template.md`，记录位置、影响、证据和处理状态。
+Stop when findings are resolved, routed, or accepted as explicit residual risk. Output findings, resolutions, remaining risk, and delivery judgment. Persist `assets/review-result.template.md` only for independent or formal review. Read [Execution Model](execution-model.md) for reviewer ownership and [Project Harness](project-harness.md) for shared protection changes.

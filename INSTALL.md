@@ -9,7 +9,7 @@ contract_version: 1
 package:
   name: rung
   repository: https://github.com/LuckRookie/Rung.git
-  ref: main
+  ref: v0.1.0
   skill_path: rung
   entrypoint: rung/SKILL.md
 ```
@@ -20,22 +20,22 @@ package:
 
 [skills](https://github.com/vercel-labs/skills) CLI 能够扫描仓库中的 `SKILL.md`、读取 Skill 名称、选择目标 Agent 与作用域，并安装完整目录。
 
-交互式安装：
+安装稳定版本 v0.1.0：
 
 ```bash
-npx skills add LuckRookie/Rung
+npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 ```
 
 Codex 用户级安装：
 
 ```bash
-npx skills add LuckRookie/Rung --skill rung --agent codex --global --yes
+npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung --agent codex --global --yes
 ```
 
 Codex 项目级安装；在目标项目根目录执行：
 
 ```bash
-npx skills add LuckRookie/Rung --skill rung --agent codex --yes
+npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung --agent codex --yes
 ```
 
 项目级安装目录为 `<project>/.agents/skills/rung`。用户级目录由安装器和宿主版本决定，安装完成时以安装器报告的路径为准。
@@ -48,7 +48,7 @@ Codex 提供 `skill-installer` 时，可以把下面这句话直接发送给 Cod
 
 ```text
 使用 $skill-installer 安装这个 Skill：
-https://github.com/LuckRookie/Rung/tree/main/rung
+https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 ```
 
 原生安装器负责选择其支持的用户级 Skills 目录。安装完成后保留安装器返回的目录，不迁移到另一个约定目录。
@@ -72,7 +72,7 @@ https://github.com/LuckRookie/Rung/tree/main/rung
 2. `npx skills add`；
 3. 手动安装。
 
-手动安装时，将仓库的 `main` 分支下载到临时目录，验证 `rung/SKILL.md` 后，再把整个 `rung/` 目录复制到宿主可发现的 Skills 目录。当前 Codex 的手动安装位置为：
+手动安装时，将仓库的 `v0.1.0` tag 下载到临时目录，验证 `rung/SKILL.md` 后，再把整个 `rung/` 目录复制到宿主可发现的 Skills 目录。当前 Codex 的手动安装位置为：
 
 | 作用域 | 目标目录 |
 |---|---|
@@ -109,7 +109,7 @@ skill: rung
 scope: user | project
 destination: <absolute-path>
 source: https://github.com/LuckRookie/Rung.git
-ref: main
+ref: v0.1.0
 revision: <resolved-commit-if-available>
 method: <native-installer | skills-cli | manual>
 verification: <checks-and-results>
@@ -120,7 +120,7 @@ verification: <checks-and-results>
 将下面的指令发送给能够访问 GitHub 和本地文件系统的 Coding Agent：
 
 ```text
-从 https://github.com/LuckRookie/Rung.git 获取 main 分支，完整读取根目录 INSTALL.md，
+从 https://github.com/LuckRookie/Rung.git 获取 v0.1.0 tag，完整读取根目录 INSTALL.md，
 按照其中的安装契约把 Rung 安装到用户级作用域。
 写入前说明安装方式和目标路径；已有安装不得覆盖；完成后验证并报告来源 revision。
 ```
@@ -130,7 +130,7 @@ verification: <checks-and-results>
 仓库公开后，也可以把原始文档地址直接交给 Agent：
 
 ```text
-https://raw.githubusercontent.com/LuckRookie/Rung/main/INSTALL.md
+https://raw.githubusercontent.com/LuckRookie/Rung/v0.1.0/INSTALL.md
 ```
 
 Skill 会以 Coding Agent 的权限读取文件、执行命令和修改项目。安装前应审阅仓库中的 `rung/SKILL.md` 及其引用资源。

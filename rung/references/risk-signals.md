@@ -1,54 +1,30 @@
-# 工作类型、风险信号与治理深度
+# Work Type, Risk, and Depth
 
-工作类型、风险或验证范围会显著改变当前行动时读取本文件。
+Read when work type, risk, or evidence scope can materially change the next decision.
 
-## 工作类型提示
+## Work cues
 
-| 类型 | 特有关注点 |
+| Type | Distinct focus |
 |---|---|
-| Greenfield | 用户价值、技术边界、最小骨架和首个 Release |
-| Feature | 可观察行为、接口与数据影响、回归范围 |
-| Bugfix | 预期与实际、复现可信度、根因和回归证据 |
-| Refactor | 行为保持边界、特征测试和结构收益 |
-| Migration | 当前与目标状态、兼容窗口、顺序和恢复 |
-| Dependency | API 变化、安全通告、锁文件和构建兼容 |
-| Docs/Config | 文档或配置与实际行为的一致性 |
-| Release-only | revision、证据、制品、版本和发布说明 |
+| Greenfield | first value, minimum runnable slice, known boundaries, first release |
+| Feature | observable behavior, interface/data impact, regression |
+| Bugfix | expected versus actual, reproduction, root cause, regression evidence |
+| Refactor | preserved behavior, characterization, structural gain |
+| Migration | current/target state, compatibility window, order, recovery |
+| Dependency | API change, advisory, lock state, build compatibility |
+| Docs/Config | agreement with actual behavior |
+| Release-only | revision, evidence, artifact, version, notes |
 
-工作类型只用于选择当前有价值的提醒。一个任务可以具有多个相关特征。
+Types are routing hints and may overlap.
 
-## 深度提示
+## Depth hints
 
-- **[Lite](../profiles/lite.md)**：局部、可回退、影响清楚，使用会话内提示与目标检查。
-- **[Standard](../profiles/standard.md)**：多文件、多模块、跨会话或需要协调，选择性增加计划、验证映射和持久信息。
-- **[Strict](../profiles/strict.md)**：公共接口、安全隐私、持久化数据、迁移、核心架构或发布链路变化，增加正式设计、恢复路径和更强证据。
+- **[Lite](../profiles/lite.md):** local, reversible, understood impact; conversational context and targeted checks.
+- **[Standard](../profiles/standard.md):** multiple files/modules, new module, coordination, or recovery; selective plan and broader evidence.
+- **[Strict](../profiles/strict.md):** public contract, security/privacy, persistent data, migration, core architecture, or release chain; explicit design, recovery, and stronger evidence.
 
-Profile 可以作为内部简称。Agent 也可以直接加载某个深度中的单项提醒。
+Apply depth locally. Increase attention for public APIs or schemas; auth, secrets, or sensitive data; new top-level modules, shared state, core dependencies, or direction changes; migration or rollback; build/package/signing changes; major dependency upgrades; uncertain impact; weak compatibility evidence; overlapping user work; or cross-session coordination.
 
-## 增加治理的信号
+Harness maintenance can stay Lite. Shared fixtures, authority, or execution often merit Standard depth. Framework, architecture-rule, required-CI, or release-policy evolution may merit Strict attention at that boundary.
 
-- 公共 API、协议、文件格式或数据库 Schema 变化；
-- 认证、授权、加密、密钥或敏感数据处理变化；
-- 多个核心模块或依赖方向变化；
-- 迁移存在兼容窗口、分阶段执行或回退；
-- 构建、打包、签名或发布流程变化；
-- 关键依赖被替换或跨越主要版本；
-- 影响范围存在重大未知；
-- 现有测试提供的兼容证据有限；
-- 用户修改与计划变更在同一区域重叠；
-- 任务需要跨会话恢复或多人协作。
-
-治理可以局部加深。例如只对数据库迁移部分使用 Strict 提示，周边 UI 修改保持 Lite。
-
-## Verification Tier
-
-Tier 是选择验证范围的可选简称：
-
-| Tier | 证明范围 | 常见检查 |
-|---|---|---|
-| 0 | 明显错误和目标文件 | 格式、语法、smoke check |
-| 1 | 局部行为 | 静态检查、单元或模块测试 |
-| 2 | 跨模块和兼容 | 集成、契约、构建、安全或依赖检查 |
-| 3 | 完整发布准备 | 测试矩阵、端到端、打包和交付检查 |
-
-实际声明决定检查范围。用户请求调整治理深度时，说明对应的检查变化和残余风险即可。
+Governance depth and evidence scope are independent. Evidence may range from Tier 0 target/syntax checks, through Tier 1 local behavior and Tier 2 integration/contract/build checks, to Tier 3 release matrices and packaging. Claims and risk select the scope.

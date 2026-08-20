@@ -1,23 +1,14 @@
-# Clarify 提示卡
+# Clarify Card
 
-## 读取信号
+Read when the user and Agent need to develop a consequential project or change decision together.
 
-用户结果、范围、公共行为、约束或验收方式存在会改变实现方向的歧义时读取。
+## Operate
 
-## 提醒
+- Use Inspect and Design to form feasible directions before asking the user to choose.
+- Present the issue, recommendation, immediate consequence, credible development impact, and reversibility in plain language. Keep technical detail available by reference or on request.
+- Incorporate the user's choice. When the user delegates an in-scope choice, record that scope and let the Primary Agent act as project designer; human-facing design receives UX attention.
+- Ask only when a choice changes product meaning, material scope, accepted risk, durable data, or an authorization boundary.
 
-- 用户或调用方最终会观察到什么变化？
-- 哪些行为和区域属于本次范围，哪些需要保持稳定？
-- 什么实际结果可以说明需求已满足？
-- 哪些未知可以从仓库发现，哪些需要用户做产品决策？
-- 兼容、安全、时间或外部系统约束是否影响方向？
+Stop when consequential choices have an owner and the evolving proposal is coherent enough for the next action. Output accepted decisions, delegated authority, assumptions, and open choices.
 
-只向用户提出会实质改变结果、范围或风险的问题。普通工程细节可以结合项目事实和 Agent 判断处理。
-
-## 加深治理的信号
-
-多个利益相关方、公共契约、合规要求、不可逆数据含义或互相冲突的目标，适合形成更明确的决策记录。
-
-## 可选输出
-
-简单任务在会话中保留结果理解即可。需要审阅、协作或恢复时，可使用 `assets/development-brief.template.md` 或更新项目已有 Requirements。
+Keep ordinary decisions in the session. Persist them in an owning project fact or `assets/development-brief.template.md` when contracts, recovery, multiple executors, or formal review need them. Read [Execution Model](execution-model.md) for authority and persistence.

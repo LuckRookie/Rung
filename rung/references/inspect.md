@@ -1,30 +1,14 @@
-# Inspect 提示卡
+# Inspect Card
 
-## 读取信号
+Read when relevant project facts, rules, code, contracts, commands, dependencies, or user work have not entered the current judgment.
 
-相关代码、项目规则、命令、接口、依赖或用户已有修改尚未进入当前判断时读取。
+## Operate
 
-## 提醒
+- Establish the project root, applicable instructions, revision, working-tree state, user-owned edits, and relevant tool entry points.
+- Inspect the direct owner, callers, dependencies, tests, configuration, requirements, API, schema, and prior design facts needed for the next action.
+- Expand to consumers, migrations, generated artifacts, build, CI, and release controls when public, data, shared, dependency, platform, or multi-module impact appears.
+- Declare the boundary for a system-level audit.
 
-- 哪些根级或目录级 Agent 指令适用于修改区域？
-- 当前分支、revision、工作区和用户修改是什么状态？
-- 哪些入口、模块边界、公共接口、配置和依赖与任务直接相关？
-- 项目已有 Requirements、README、ADR、接口规范或其他事实源在哪里？
-- 格式、静态检查、测试、构建和打包命令由哪些实际配置定义？
-- 哪些区域仍未检查，是否影响当前行动？
+Stop when the next action has a known owner and constraints, user work is protected, likely impact and checks are bounded, and uninspected areas are visible. Output facts with sources, protected changes, candidate commands, impact, and remaining unknowns.
 
-在修改前取得足以避免盲目编辑的相关事实。检查范围随任务扩大，不需要预先遍历整个仓库。
-
-可使用只读索引脚本：
-
-```bash
-python scripts/inspect_project.py --project <project-path> --output <context.json>
-```
-
-## 加深治理的信号
-
-用户修改重叠、公共接口、陌生多模块结构、事实源冲突或验证命令不明确，适合增加 Project Context 或风险提示。
-
-## 可选输出
-
-普通任务直接在后续行动中使用发现结果。跨会话或多人任务可使用 `assets/project-context.template.md`。
+Optional index: `python <rung-skill-root>/scripts/inspect_project.py --project <path> --output <context.json>`. Persist Project Context only for coordination or recovery. Read [Execution Model](execution-model.md) for inspection radius and [Project Harness](project-harness.md) when sources or controls conflict.

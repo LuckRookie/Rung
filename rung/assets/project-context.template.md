@@ -8,6 +8,7 @@
 | Branch | `{{branch}}` |
 | Baseline revision | `{{revision}}` |
 | Working tree | `{{clean_or_dirty}}` |
+| Inspection radius | `{{baseline_target_impact_or_system}}` |
 
 ## Project facts
 
@@ -31,6 +32,13 @@
 |---|---|---|
 | `{{path}}` | {{responsibility}} | {{relationship}} |
 
+## Inspection boundary
+
+- Included surfaces: {{included_surfaces}}
+- Expansion signals observed: {{expansion_signals}}
+- Areas not inspected: {{uninspected_areas}}
+- Condition requiring wider inspection: {{inspection_expansion_condition}}
+
 ## Commands
 
 | Purpose | Command | Source | Last observed result |
@@ -52,5 +60,4 @@
 - Interfaces or data: {{interface_and_data_impact}}
 - Dependencies: {{dependency_impact}}
 - Known risks: {{known_risks}}
-- Areas not inspected: {{uninspected_areas}}
 - Governance depth and verification scope: {{governance_depth_and_verification_scope}}

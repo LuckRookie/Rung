@@ -50,7 +50,7 @@ class SkillStructureTests(unittest.TestCase):
 
     def test_progressive_governance_prompt_budget(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-        self.assertLessEqual(len(skill), 1800)
+        self.assertLessEqual(len(skill.encode("utf-8")), 2800)
         self.assertLessEqual(len(skill.splitlines()), 60)
 
         concern_cards = [
@@ -66,16 +66,120 @@ class SkillStructureTests(unittest.TestCase):
         for name in concern_cards:
             with self.subTest(concern_card=name):
                 content = (SKILL_ROOT / "references" / name).read_text(encoding="utf-8")
-                self.assertLessEqual(len(content), 900)
+                self.assertLessEqual(len(content.encode("utf-8")), 1300)
 
-        for name in ["workflow.md", "risk-signals.md", "artifacts.md"]:
+        for name in [
+            "workflow.md",
+            "risk-signals.md",
+            "artifacts.md",
+        ]:
             with self.subTest(shared_reference=name):
                 content = (SKILL_ROOT / "references" / name).read_text(encoding="utf-8")
-                self.assertLessEqual(len(content), 1400)
+                self.assertLessEqual(len(content.encode("utf-8")), 2200)
+
+        detailed_guides = {
+            "execution-model.md": 11_000,
+            "project-harness.md": 4500,
+            "verification-harness.md": 8000,
+            "harness-evolution.md": 11_000,
+        }
+        for name, budget in detailed_guides.items():
+            with self.subTest(detailed_guide=name):
+                content = (SKILL_ROOT / "references" / name).read_text(encoding="utf-8")
+                self.assertLessEqual(len(content.encode("utf-8")), budget)
 
         for profile in (SKILL_ROOT / "profiles").glob("*.md"):
             with self.subTest(profile=profile.name):
-                self.assertLessEqual(len(profile.read_text(encoding="utf-8")), 300)
+                content = profile.read_text(encoding="utf-8")
+                self.assertLessEqual(len(content.encode("utf-8")), 360)
+
+    def test_agent_facing_skill_text_uses_english(self) -> None:
+        locations = [
+            SKILL_ROOT / "SKILL.md",
+            *sorted((SKILL_ROOT / "agents").glob("*.yaml")),
+            *sorted((SKILL_ROOT / "references").glob("*.md")),
+            *sorted((SKILL_ROOT / "profiles").glob("*.md")),
+            *sorted((SKILL_ROOT / "assets").glob("*")),
+        ]
+        cjk = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
+        violations = [
+            str(path.relative_to(SKILL_ROOT))
+            for path in locations
+            if path.is_file()
+            and path.suffix in {".json", ".md", ".txt", ".yaml", ".yml"}
+            and cjk.search(path.read_text(encoding="utf-8"))
+        ]
+
+        self.assertEqual(violations, [])
+
+    def test_harness_guides_are_progressively_routed(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        project_harness = (
+            SKILL_ROOT / "references" / "project-harness.md"
+        ).read_text(encoding="utf-8")
+        verify = (SKILL_ROOT / "references" / "verify.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("(references/project-harness.md)", skill)
+        self.assertIn("(harness-evolution.md)", project_harness)
+        self.assertIn("(verification-harness.md)", project_harness)
+        self.assertIn("(verification-harness.md)", verify)
+
+    def test_execution_model_routes_integrated_run_ownership(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        workflow = (SKILL_ROOT / "references" / "workflow.md").read_text(
+            encoding="utf-8"
+        )
+        execution = (
+            SKILL_ROOT / "references" / "execution-model.md"
+        ).read_text(encoding="utf-8")
+        cards = {
+            name: (SKILL_ROOT / "references" / f"{name}.md").read_text(
+                encoding="utf-8"
+            )
+            for name in [
+                "clarify",
+                "inspect",
+                "design",
+                "plan",
+                "implement",
+                "verify",
+                "review",
+                "release",
+            ]
+        }
+
+        self.assertIn("(references/execution-model.md)", skill)
+        self.assertIn("(execution-model.md)", workflow)
+        self.assertIn("one logical **Primary Agent**", execution)
+        self.assertIn("one main session", execution)
+        for radius in ["Baseline", "Target", "Impact", "System"]:
+            self.assertIn(radius, execution)
+        self.assertIn("The Primary Agent owns the integrated plan", execution)
+        self.assertIn("Worker success does not establish integrated success", execution)
+        self.assertIn("On resume, re-read applicable instructions", execution)
+        self.assertIn("Verify claims against the integrated revision", execution)
+
+        self.assertIn("delegates an in-scope choice", cards["clarify"])
+        self.assertIn("inspection radius", cards["inspect"])
+        self.assertIn("human-facing surfaces", cards["design"])
+        self.assertIn("owns the integrated plan", cards["plan"])
+        self.assertIn("integrate all worker output", cards["implement"])
+        self.assertIn("integrated revision", cards["verify"])
+        self.assertIn("independent reviewer", cards["review"])
+        self.assertIn("Primary Agent assembles", cards["release"])
+
+    def test_runtime_helper_examples_resolve_from_skill_root(self) -> None:
+        runtime_text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [
+                SKILL_ROOT / "SKILL.md",
+                *sorted((SKILL_ROOT / "references").glob("*.md")),
+            ]
+        )
+
+        self.assertNotIn("python scripts/", runtime_text)
 
     def test_json_assets_and_verification_plan_are_valid(self) -> None:
         paths = [
@@ -208,6 +312,7 @@ class VerificationRunnerTests(unittest.TestCase):
                         "checks": [
                             {
                                 "name": "escape",
+                                "tier": 0,
                                 "command": [sys.executable, "-c", "pass"],
                                 "cwd": "..",
                             }
@@ -223,6 +328,108 @@ class VerificationRunnerTests(unittest.TestCase):
 
             self.assertEqual(result.returncode, 2)
             self.assertIn("escapes project root", result.stdout)
+
+    def test_filters_checks_by_maximum_tier_and_records_skips(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            plan = project / "plan.json"
+            output = project / "evidence.json"
+            plan.write_text(
+                json.dumps(
+                    {
+                        "checks": [
+                            {
+                                "name": f"tier-{tier}",
+                                "claim": f"tier {tier} claim",
+                                "tier": tier,
+                                "command": [sys.executable, "-c", f"print({tier})"],
+                            }
+                            for tier in (0, 2, 3)
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "run_verification.py",
+                "--project",
+                str(project),
+                "--plan",
+                str(plan),
+                "--max-tier",
+                "2",
+                "--output",
+                str(output),
+            )
+
+            self.assertEqual(result.returncode, 0, result.stdout)
+            evidence = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(evidence["requested_max_tier"], 2)
+            self.assertEqual(evidence["planned_check_count"], 3)
+            self.assertEqual(evidence["selected_check_count"], 2)
+            self.assertEqual(
+                [check["name"] for check in evidence["checks"]],
+                ["tier-0", "tier-2"],
+            )
+            self.assertEqual(evidence["skipped_checks"][0]["name"], "tier-3")
+
+    def test_rejects_invalid_or_unselected_tiers(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            plan = project / "plan.json"
+
+            for invalid_tier in (True, "1", 4):
+                with self.subTest(invalid_tier=invalid_tier):
+                    plan.write_text(
+                        json.dumps(
+                            {
+                                "checks": [
+                                    {
+                                        "name": "invalid",
+                                        "tier": invalid_tier,
+                                        "command": [sys.executable, "-c", "pass"],
+                                    }
+                                ]
+                            }
+                        ),
+                        encoding="utf-8",
+                    )
+                    result = run_script(
+                        "run_verification.py",
+                        "--project",
+                        str(project),
+                        "--plan",
+                        str(plan),
+                    )
+                    self.assertEqual(result.returncode, 2)
+                    self.assertIn("tier must be an integer between 0 and 3", result.stdout)
+
+            plan.write_text(
+                json.dumps(
+                    {
+                        "checks": [
+                            {
+                                "name": "release-only",
+                                "tier": 3,
+                                "command": [sys.executable, "-c", "pass"],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = run_script(
+                "run_verification.py",
+                "--project",
+                str(project),
+                "--plan",
+                str(plan),
+                "--max-tier",
+                "2",
+            )
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("no checks at or below tier 2", result.stdout)
 
 
 class ArtifactValidationTests(unittest.TestCase):
@@ -263,6 +470,8 @@ class ArtifactValidationTests(unittest.TestCase):
             "context.md": "complete\n",
             "design.md": "complete\n",
             "plan.md": "complete\n",
+            "harness-change.md": "complete\n",
+            "verification-harness.md": "complete\n",
             "verification-plan.json": '{"checks": []}\n',
             "verification.md": "complete\n",
             "review.md": "complete\n",
@@ -294,7 +503,9 @@ class ReleaseContractTests(unittest.TestCase):
     def test_ready_release_can_use_revision_without_independent_artifact(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             project = Path(temporary_directory)
-            (project / "verification.md").write_text("pass\n", encoding="utf-8")
+            (project / "evidence.json").write_text(
+                '{"status": "pass"}\n', encoding="utf-8"
+            )
             manifest = project / "release.yaml"
             manifest.write_text(
                 textwrap.dedent(
@@ -306,7 +517,7 @@ class ReleaseContractTests(unittest.TestCase):
                     status: ready
                     artifacts: []
                     acceptance: pass
-                    verification: "verification.md"
+                    verification: "evidence.json"
                     documentation: not-applicable
                     known_limitations: []
                     unverified_risks: []
@@ -333,7 +544,9 @@ class ReleaseContractTests(unittest.TestCase):
             project = Path(temporary_directory)
             (project / "dist").mkdir()
             (project / "dist" / "package.txt").write_text("artifact\n", encoding="utf-8")
-            (project / "verification.md").write_text("pass\n", encoding="utf-8")
+            (project / "evidence.json").write_text(
+                '{"status": "pass"}\n', encoding="utf-8"
+            )
             manifest = project / "release.yaml"
             manifest.write_text(
                 textwrap.dedent(
@@ -346,7 +559,7 @@ class ReleaseContractTests(unittest.TestCase):
                     artifacts:
                       - "dist/package.txt"
                     acceptance: pass
-                    verification: "verification.md"
+                    verification: "evidence.json"
                     documentation: complete
                     known_limitations: []
                     unverified_risks: []
@@ -371,7 +584,9 @@ class ReleaseContractTests(unittest.TestCase):
     def test_ready_release_reports_missing_artifact(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             project = Path(temporary_directory)
-            (project / "verification.md").write_text("pass\n", encoding="utf-8")
+            (project / "evidence.json").write_text(
+                '{"status": "pass"}\n', encoding="utf-8"
+            )
             manifest = project / "release.yaml"
             manifest.write_text(
                 textwrap.dedent(
@@ -384,7 +599,7 @@ class ReleaseContractTests(unittest.TestCase):
                     artifacts:
                       - "dist/missing.txt"
                     acceptance: pass
-                    verification: "verification.md"
+                    verification: "evidence.json"
                     documentation: complete
                     known_limitations: []
                     unverified_risks: []
@@ -405,6 +620,45 @@ class ReleaseContractTests(unittest.TestCase):
 
             self.assertEqual(result.returncode, 1)
             self.assertIn("artifact 1 not found", result.stdout)
+
+    def test_ready_release_rejects_non_passing_local_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            (project / "evidence.json").write_text(
+                '{"status": "fail"}\n', encoding="utf-8"
+            )
+            manifest = project / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    schema_version: 1
+                    run_id: "RUN-FAILED-EVIDENCE"
+                    version: "1.0.0"
+                    revision: "working-tree"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "evidence.json"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("verification evidence status must be pass", result.stdout)
 
 
 if __name__ == "__main__":

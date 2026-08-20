@@ -1,13 +1,3 @@
-# Standard 深度提示
+# Standard Depth
 
-适用于多文件、多模块、新模块、中等重构或需要跨会话协调的任务。
-
-根据实际需要增加：
-
-- 简短持久目标、Project Context 或 Change Plan；
-- 接口、数据、依赖和行为保持边界；
-- 验收结果与实现、验证的映射；
-- 模块、集成或构建级检查；
-- 文档和发布影响审查。
-
-只持久化能够改善协调、恢复或审查的信息。高风险信号可以在局部使用 Strict 提示，其余工作继续保持轻量。
+For multiple files or modules, a new module, moderate refactoring, coordination, or recovery. The Primary Agent may use a host plan, durable run state, broader checks, or a bounded worker when it improves execution. Persist decisions and context only when coordination, review, or resumption will consume them.

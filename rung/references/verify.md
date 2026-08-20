@@ -1,33 +1,14 @@
-# Verify 提示卡
+# Verify Card
 
-## 读取信号
+Read before claiming work complete, compatible, buildable, usable, reproducible, or release ready.
 
-需要说明功能完成、缺陷修复、兼容、构建成功、制品可用或 Release 准备度时读取。
+## Operate
 
-## 提醒
+- Map each material claim to a direct observation on the integrated revision or described working-tree state.
+- Start with configured high-signal target checks; expand to static, unit, contract, integration, end-to-end, build, package, or matrix evidence as risk requires.
+- Preserve failure visibility and record command, exit code, scope, revision, artifact, skipped checks, and environment limits.
+- Treat worker checks as candidate evidence until their relevance survives integration.
 
-- 当前每项重要声明需要什么实际观察支持？
-- 哪些目标文件、静态检查、单元或模块测试具有最高信号？
-- 接口、数据或跨模块风险是否需要集成、契约、端到端或构建检查？
-- 失败结果是否仍然可见，重新执行是否覆盖了受影响范围？
-- 命令、退出码、revision、覆盖范围和制品位置是否足以复现结论？
-- 环境、工具或权限限制留下了哪些未覆盖范围？
+Stop when material claims have proportionate evidence and uncovered scope is explicit. Output evidence, gaps, blocked checks, and residual risk. Record small results in the handoff; use `assets/verification-report.template.md` when review or release needs durable evidence.
 
-验证强度由声明和风险决定。选择项目真实工具，先运行高信号检查，再根据证据扩大范围。
-
-需要批量执行显式计划时可使用：
-
-```bash
-python scripts/run_verification.py \
-  --project <project-path> \
-  --plan <verification-plan.json> \
-  --output <evidence.json>
-```
-
-## 加深治理的信号
-
-公共契约、安全、数据、并发、性能、跨平台或正式发布结论，适合增加集成与发布级证据。
-
-## 可选输出
-
-简短任务在完成报告中列出检查即可。正式验证可使用 `assets/verification-report.template.md` 并引用原始 Evidence。
+Read [Verification Harness](verification-harness.md) for a missing evidence layer or new infrastructure. Read [Project Harness](project-harness.md) when checks may be wrong, conflicting, relaxed, or replaced. Batch runner: `python <rung-skill-root>/scripts/run_verification.py --project <path> --plan <plan.json> --max-tier <0-3> --output <evidence.json>`.

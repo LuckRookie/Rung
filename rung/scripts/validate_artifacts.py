@@ -15,6 +15,8 @@ ARTIFACT_FILES = [
     "context.md",
     "design.md",
     "plan.md",
+    "harness-change.md",
+    "verification-harness.md",
     "verification-plan.json",
     "verification.md",
     "review.md",

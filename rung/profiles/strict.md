@@ -1,13 +1,3 @@
-# Strict 深度提示
+# Strict Depth
 
-适用于公共接口、安全隐私、持久化数据、核心架构、迁移或发布链路变化。
-
-根据相关风险增加：
-
-- 正式需求、设计、ADR 或兼容契约；
-- 接口、数据流、错误处理和威胁相关判断；
-- 兼容窗口、迁移顺序、回退条件和数据恢复路径；
-- 集成、端到端、安全、构建或打包证据；
-- 独立审查与正式 Release 交接信息。
-
-治理深度可以限定在高风险部分。用户接受残余风险时记录具体范围、理由和后续处理位置。
+For public contracts, security/privacy, persistent data, core architecture, migration, or release chains. Add durable design and recovery state, compatibility and rollback paths, integrated release evidence, and independent review where relevant. Keep the Primary Agent responsible and concentrate depth on the high-risk surface.

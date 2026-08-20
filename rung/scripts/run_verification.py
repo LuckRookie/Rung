@@ -82,6 +82,10 @@ def validate_check(raw: Any, index: int, project: Path) -> dict[str, Any]:
     if any("{{" in value for value in command):
         raise ValueError(f"Check {index} command contains an unresolved placeholder")
 
+    tier = raw.get("tier")
+    if isinstance(tier, bool) or not isinstance(tier, int) or not 0 <= tier <= 3:
+        raise ValueError(f"Check {index} tier must be an integer between 0 and 3")
+
     timeout = raw.get("timeout_seconds", 300)
     if not isinstance(timeout, int) or not 1 <= timeout <= 86_400:
         raise ValueError(f"Check {index} timeout_seconds must be between 1 and 86400")
@@ -92,7 +96,7 @@ def validate_check(raw: Any, index: int, project: Path) -> dict[str, Any]:
     return {
         "name": name.strip(),
         "claim": raw.get("claim"),
-        "tier": raw.get("tier"),
+        "tier": tier,
         "command": command,
         "cwd": resolve_working_directory(project, cwd),
         "cwd_display": cwd,
@@ -153,6 +157,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--project", default=".", help="Project root")
     parser.add_argument("--plan", required=True, help="Verification plan JSON")
     parser.add_argument("--output", default="-", help="Evidence JSON path, or - for stdout")
+    parser.add_argument(
+        "--max-tier",
+        type=int,
+        default=3,
+        help="Execute checks at or below this verification tier (0-3)",
+    )
     parser.add_argument("--max-output-chars", type=int, default=20_000)
     return parser.parse_args()
 
@@ -166,6 +176,9 @@ def main() -> int:
     if args.max_output_chars < 100:
         print(json.dumps({"status": "error", "message": "--max-output-chars must be at least 100"}))
         return 2
+    if not 0 <= args.max_tier <= 3:
+        print(json.dumps({"status": "error", "message": "--max-tier must be between 0 and 3"}))
+        return 2
 
     try:
         plan_path = Path(args.plan).expanduser().resolve()
@@ -174,12 +187,18 @@ def main() -> int:
             validate_check(raw, index, project)
             for index, raw in enumerate(plan["checks"], 1)
         ]
+        selected_checks = [check for check in checks if check["tier"] <= args.max_tier]
+        skipped_checks = [check for check in checks if check["tier"] > args.max_tier]
+        if not selected_checks:
+            raise ValueError(
+                f"Verification plan has no checks at or below tier {args.max_tier}"
+            )
     except ValueError as exc:
         print(json.dumps({"status": "error", "message": str(exc)}, ensure_ascii=False))
         return 2
 
     started_at = utc_now()
-    results = [execute_check(check, args.max_output_chars) for check in checks]
+    results = [execute_check(check, args.max_output_chars) for check in selected_checks]
     statuses = {result["status"] for result in results}
     overall = "fail" if "fail" in statuses else "blocked" if "blocked" in statuses else "pass"
     evidence = {
@@ -189,6 +208,18 @@ def main() -> int:
         "plan": str(plan_path),
         "planned_revision": plan.get("revision"),
         "observed_revision": git_revision(project),
+        "requested_max_tier": args.max_tier,
+        "planned_check_count": len(checks),
+        "selected_check_count": len(selected_checks),
+        "skipped_checks": [
+            {
+                "name": check["name"],
+                "claim": check["claim"],
+                "tier": check["tier"],
+                "reason": f"tier exceeds requested maximum {args.max_tier}",
+            }
+            for check in skipped_checks
+        ],
         "started_at": started_at,
         "finished_at": utc_now(),
         "status": overall,
