@@ -34,7 +34,7 @@ The active instance initially binds `192.168.8.240:7779`. The helper can prove w
 - For the initial prompt, Candidate Rung should not be implicitly selected.
 - If host-level semantic matching still selects it, only `SKILL.md` may be read; the Scope Gate exits before `inspect.md`, `implement.md`, `verify.md`, another Reference, Profile, Script, or Rung Artifact is loaded.
 - The initial task continues under host instructions and does not receive DevelopmentRun ceremony.
-- The hidden follow-up activates the project-development path because it changes a reusable project-owned generator, tests, and documentation.
+- The hidden follow-up establishes codebase membership because it changes a reusable project-owned generator and artifacts coupled to it.
 - The follow-up may load Inspect, Implement, and Verify when each concern becomes current. It does not preload all three merely because the future work is predictable.
 
 ## Correctness gate

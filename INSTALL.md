@@ -46,7 +46,7 @@ npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung 
 
 用户级安装使 Rung 对该用户的不同项目和普通工作目录可见，适合希望在各项目中自动获得开发治理的用户。项目级安装只在对应项目的 Skill 扫描范围内可见，适合希望按仓库选择治理能力的团队。
 
-Rung 保留隐式调用。宿主先根据 `SKILL.md` 的 name 与 description 判断任务是否属于项目开发；完整 Skill 加载后，Scope Gate 在任何 Reference 前再次区分项目开发、运行状态和混合任务。单独的服务部署、重启、主机管理、监控和事件响应继续由 Host 或运维系统处理。显式 `$rung` 调用始终可用。
+Rung 保留隐式调用。宿主先根据 `SKILL.md` 的 name 与 description 判断主要验收对象是否与软件代码库成立正向关系；完整 Skill 加载后，Scope Gate 在任何 Reference 前再次核对代码项目归属、范围外退出和混合责任。仓库存在、文件位置、工具使用和偶然产生的代码不能单独触发治理。显式 `$rung` 调用始终经过同一 Scope Gate。
 
 ## Codex 原生安装器
 

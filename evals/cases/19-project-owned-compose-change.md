@@ -23,7 +23,7 @@ No follow-up is required.
 ## Acceptable invocation and routing
 
 - Candidate Rung is eligible for implicit selection because the outcome changes project-owned delivery artifacts and their evidence.
-- The Scope Gate chooses project development even though the files use deployment vocabulary.
+- The Scope Gate establishes codebase membership even though the files use deployment vocabulary.
 - Inspect is reasonable while ownership, generated sources, consumers, or configured checks are unknown.
 - Implement and Verify are loaded only when their concerns become current; future phases do not justify reading every card at task start.
 - Development Scope is loaded only if ownership or runtime intent is genuinely ambiguous.

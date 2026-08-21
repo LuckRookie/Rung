@@ -1,21 +1,21 @@
 ---
 name: rung
-description: Govern project-scoped software development to verified release. Use for code, tests, architecture, migrations, dependencies, docs, and build/release artifacts. Skip deployment-only operations, service administration, monitoring, and incidents.
+description: Govern tasks whose primary accepted outcome designs, creates, changes, assesses, verifies, or releases a software codebase or an artifact whose correctness and lifecycle are coupled to it. Repository presence, location, tools, and incidental code do not establish scope.
 ---
 
 # Rung
 
-Add governance only for the next decision; keep work light.
+Govern only the next decision; keep work light.
 
 ## Scope gate
 
-Before references, classify the outcome:
+Before references, establish a positive codebase relationship for the accepted outcome:
 
-- **Project:** design, change, assessment, verification, or release readiness of project behavior/artifacts. Continue.
-- **Runtime only:** machine/service/environment/incident state. Use host instructions; load no Rung reference or artifact.
-- **Mixed:** govern project work to release handoff; separate authorization-gated runtime execution.
+- **Codebase:** the outcome concerns the codebase or an artifact coupled to it in correctness and maintenance. Continue.
+- **Outside:** no relationship. Load no Rung reference or artifact; continue with the Host.
+- **Mixed:** govern the qualifying codebase portion; leave the rest with its owner.
 
-Use outcome/ownership; files/commands are clues. If unclear or mixed, read [Development scope](references/development-scope.md).
+Repository, path/type, tool use, and incidental code are insufficient. Read [Development scope](references/development-scope.md) only if materially ambiguous.
 
 ## Core prompts
 
@@ -25,7 +25,7 @@ Use outcome/ownership; files/commands are clues. If unclear or mixed, read [Deve
 - **Evidence:** Proof for the claim?
 - **Handoff:** Delivery ready?
 
-Keep these internal unless useful to the user.
+Keep these internal unless useful.
 
 ## Operating spine
 

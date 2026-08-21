@@ -4,13 +4,13 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 
 当前稳定版本为 [v0.1.0](https://github.com/LuckRookie/Rung/releases/tag/v0.1.0)。产品定义、系统边界和实现约束以 [Rung.md](Rung.md) 为准。
 
-`main` 分支当前形成 v0.1.1 候选开发内容；稳定安装坐标继续锁定 `v0.1.0` tag。
+`main` 分支当前形成 v0.1.2 候选开发内容；稳定安装坐标继续锁定 `v0.1.0` tag。
 
 ## 核心能力
 
 | 能力 | 结果 |
 |---|---|
-| 开发范围路由 | 根据用户 Outcome 与长期 Owner 区分项目开发、运行状态和混合任务 |
+| 代码项目范围路由 | 根据主要验收对象与长期维护关系判断代码项目工作、范围外工作和混合任务 |
 | 薄层导航 | 默认只提醒 Outcome、Context、Approach、Evidence 和 Handoff |
 | 执行责任 | 每次 DevelopmentRun 由一个 Primary Agent 持有全局 Plan、集成结果与 Release Handoff |
 | 按需治理 | 当前信号决定加载哪个开发关注面和治理深度 |
@@ -28,12 +28,12 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 ```text
 User Intent
    ↓
-Development Scope Gate
-   ├─ 运行状态 → Host / 运维路径
-   └─ 项目开发 → 按当前信号加载一张提示卡 → Verified Release Handoff
+Codebase Scope Gate
+   ├─ 未建立代码项目关系 → Host / 对应工作流
+   └─ 代码项目或与其耦合的内容 → 按当前信号加载一张提示卡 → Verified Release Handoff
 ```
 
-Rung 根据用户最终要形成的项目行为、结构、制品、证据或 Release 判断进入 DevelopmentRun。单独的服务部署、重启、主机管理、监控和事件响应由 Coding Agent Host 或运维系统处理；混合任务把项目制品推进到 Release Handoff，再由独立运行路径负责环境身份、授权、执行和恢复。Compose、Helm、Terraform、迁移或其他配置的文件类型不会单独决定范围。
+Rung 只在主要验收对象属于软件代码库，或者某项内容的正确性与维护周期持续耦合于该代码库时进入 DevelopmentRun。仓库存在、文件位置、文件类型、工具使用和偶然产生的代码都不能单独建立这种关系。范围外工作由 Host 或其对应工作流继续处理；混合任务只把满足条件的代码项目部分推进到 Release Handoff。
 
 Rung 覆盖八个可组合关注面：
 
@@ -63,7 +63,7 @@ Project Model 可以留在 Session 中；跨 Session、多人协作、正式审�
 
 ```text
 rung/
-├── SKILL.md                 # 开发范围门、薄提示与信号路由
+├── SKILL.md                 # 代码项目范围门、薄提示与信号路由
 ├── agents/openai.yaml       # Codex UI 元数据
 ├── references/              # Execution Model、Development Scope、关注面、Project Model、Engineering Structure、Architecture Assessment 与其他按需 Domain Guides
 ├── profiles/                # 可选治理深度提示
@@ -109,7 +109,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 $rung 为现有项目实现导出功能，并准备一个经过验证的可发布版本。
 ```
 
-Rung 默认保持轻量，先判断开发范围，再根据当前任务信号加载相关提示。运行状态请求继续走 Host 路径；项目开发结果与任务规模相称，说明实现结果、实际验证、残余风险和 Release 交接状态。
+Rung 默认保持轻量，先确认当前验收对象与代码项目的关系，再根据任务信号加载相关提示。未建立关系时立即退出；进入 DevelopmentRun 后以与任务规模相称的方式说明实现结果、实际验证、残余风险和 Release 交接状态。
 
 ## 可选确定性工具
 
@@ -167,7 +167,7 @@ Codex 环境中还应使用 `skill-creator` 提供的 `quick_validate.py` 检查
 Rung.md                    # 产品与架构事实源
 INSTALL.md                 # 人与 Coding Agent 共用的安装契约
 rung/                      # 可安装 Skill 包
-evals/                     # 路由、项目画像、工程结构、架构评估、Harness 与上下文成本的行为评测场景
+evals/                     # 代码项目范围、项目画像、工程结构、架构评估、Harness 与上下文成本的行为评测场景
 tests/                     # 确定性脚本测试
 .github/workflows/ci.yml   # 持续集成
 AGENTS.md                  # 本仓库的 Agent 开发约定

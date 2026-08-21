@@ -1,13 +1,13 @@
 # Rung 产品需求与系统设计
 
-> 版本：v0.1.1-draft
+> 版本：v0.1.2-draft
 > 状态：Development
 > 稳定基线：v0.1.0（2026-08-20）
 > 文档职责：Rung 的产品形态、系统边界、治理模型与实现原则的唯一事实源
 
 ## 1. 执行摘要
 
-Rung 是运行在 Coding Agent Host 之上的软件开发渐进式治理 Skill。它覆盖从项目开发意图到可验证 Release 的完整开发范围，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载对应提醒、模板和确定性工具。
+Rung 是运行在 Coding Agent Host 之上的软件开发渐进式治理 Skill。它覆盖从代码项目开发意图到可验证 Release 的完整开发范围，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载对应提醒、模板和确定性工具。
 
 Rung 的默认形态是一层很薄的提示：
 
@@ -25,7 +25,7 @@ Rung 的产品承诺是：
 
 > 以尽可能低的上下文和流程成本，帮助 Coding Agent 把一次软件变更推进到有证据支持的可发布状态。
 
-一次 DevelopmentRun 从 Project Development Intent 开始，在当前任务达到 `release ready` 或经授权完成 `published` 时结束。实际环境中的部署执行、服务管理、运行监控、事件响应和长期项目管理由 Coding Agent Host 或下游系统接续。
+一次 DevelopmentRun 从 Code Project Development Intent 开始，在当前任务达到 `release ready` 或经授权完成 `published` 时结束。范围外工作由 Coding Agent Host 或对应下游系统接续。
 
 ## 2. 背景与机会
 
@@ -82,7 +82,7 @@ Rung 的第一产品形态是单一 Skill，由六类资源组成：
 
 Rung 提供十二项核心能力：
 
-1. **开发范围路由**：根据用户 Outcome 和长期 Owner 区分项目开发、运行状态与混合任务；
+1. **代码项目范围路由**：根据主要验收对象和长期维护关系判断代码项目工作、范围外工作与混合任务；
 2. **完整开发覆盖**：Intent 到 Release 的关注面均有可用提示；
 3. **执行责任模型**：每次 DevelopmentRun 由一个逻辑 Primary Agent 持有集成结果，并按需扩展会话、Worker 与独立 Review；
 4. **信号驱动治理**：风险或不确定性出现时增加治理深度；
@@ -112,8 +112,9 @@ Rung 的核心提示与语言、框架解耦。仓库事实和项目工具决定
 Rung 的实际价值通过行为判断：
 
 - 普通任务的默认上下文开销很小；
-- 只改变机器、服务或环境运行状态的任务保持在 Host 或运维路径，Rung 偶发误触时在加载 Reference 前结束路由；
-- 同时包含项目制品与运行执行的请求保持两条责任清楚的工作路径；
+- Rung 只在主要验收对象与软件代码库或代码库耦合内容成立正向关系后进入 DevelopmentRun；
+- 仓库存在、文件位置、文件类型、工具使用和偶然产生的代码不会单独建立治理范围；
+- 范围外工作在 Rung 偶发误触时于加载 Reference 前结束路由；混合任务中的各项结果保持清楚的 Owner、证据和授权；
 - Agent 不因 Rung 自动创建低价值文档或工作区；
 - 关键风险出现时，相关提醒能够及时进入决策；
 - 稀疏或冲突的项目表达能够形成通俗、可修正且明确未知项的 Project Model；
@@ -141,29 +142,23 @@ Rung 的实际价值通过行为判断：
 
 ### 4.1 开始边界：User Intent
 
-Rung 从用户表达中识别项目开发意图。可以进入 DevelopmentRun 的意图包括：
+Rung 从用户表达中识别主要验收对象。DevelopmentRun 只在 Agent 能够建立以下正向关系时开始：当前结果需要设计、创建、修改、评估、验证或发布一个软件代码库，或者需要修改一项与该代码库持续耦合的内容。
 
-- 创建项目；
-- 实现功能；
-- 修复缺陷；
-- 执行重构；
-- 完成接口、数据、依赖或架构迁移；
-- 更新配置或文档；
-- 准备版本发布。
+代码库耦合内容的正确性由代码行为、契约或 Release 状态决定，并由代码项目负责为其消费者持续同步。责任和维护周期建立这种关系；物理位置不能建立这种关系。尚未创建仓库的 Greenfield 代码项目同样可以满足进入条件。
 
-Rung 通过 Outcome 提醒帮助 Agent 理解期望结果，并在关键产品方向仍不明确时提示用户决策。
+Rung 通过 Outcome 提醒帮助 Agent 理解期望结果，并在关键产品方向仍不明确时提示用户决策。找不到正向关系时，Scope Gate 在加载其他 Rung 内容前退出。
 
-### 4.2 开发与运行责任
+### 4.2 代码项目范围与责任
 
-Rung 在读取 Concern Card 前根据用户期望结果和长期 Owner 判断当前请求：
+Rung 在读取 Concern Card 前根据当前验收结果和长期 Owner 判断请求：
 
-- **项目开发**覆盖预期或已有项目行为、结构和制品的设计、创建、修改、评估、验证与 Release 准备；
-- **运行状态**由 Coding Agent Host 或相应运维系统负责，覆盖当前机器、服务、部署环境、外部资源和事件的观察与变更；
-- **混合任务**把项目部分推进到 Release Handoff，把环境变更、凭据、流量、线上数据、运行恢复和执行证据保留在独立的运行路径。
+- **代码项目工作**把满足进入条件的结果推进到 Release Handoff；
+- **范围外工作**不加载 Rung Reference 或 Artifact，由 Coding Agent Host 或结果对应的工作流继续负责；
+- **混合任务**只让满足进入条件的部分进入 DevelopmentRun，其余结果保留各自的 Owner、证据方法、授权和恢复路径。
 
-文件类型、仓库位置、配置语法和命令名称提供判断线索。最终分类由用户验收结果、项目 Owner、持久制品和实际环境共同确定。版本化 Compose、Helm、Terraform 或迁移定义可以是项目制品；应用已有定义、重启服务或改变当前环境属于运行执行。
+仓库、Worktree、Manifest、受版本控制的文件、路径、文件类型、命令、工具、技术术语、工作量和偶然产生的代码都不能单独建立范围。对事实来源、计划、审查、正确性或证据的一般需要同样不能建立代码项目关系。
 
-运行排障发现项目缺陷，或者项目开发最终缩小为环境修正时，Primary Agent 根据新证据重新判断范围。范围门控制 Rung 的上下文与责任，不阻断用户请求，也不改变 Host 的权限与安全策略。
+新证据改变主要验收对象时，Primary Agent 重新判断范围。范围外工作发现需要处理的代码库问题后，可以在该问题进入用户请求时开始 DevelopmentRun；正向关系消失时结束 Rung 路由。范围门控制 Rung 的上下文与责任，不阻断用户请求，也不改变 Host 的权限与安全策略。
 
 ### 4.3 结束边界：Release
 
@@ -191,9 +186,9 @@ Rung 可以开发和验证 Dockerfile、CI 配置、Helm Chart、Terraform、迁
 
 ### 5.1 默认薄层
 
-Rung 被调用后先执行一个很短的开发范围判断。项目开发进入五个基础提示，运行状态任务交回 Host 路径，混合任务只让项目部分进入 DevelopmentRun。范围清楚时不加载额外文档；范围不清或两条责任相互影响时按需读取 Development Scope Guide。
+Rung 被调用后先执行一个很短的代码项目范围判断。正向关系成立时进入五个基础提示，关系未建立时立即退出，混合任务只让满足条件的部分进入 DevelopmentRun。范围清楚时不加载额外文档；关系存在实质歧义或多个 Owner 相互影响时按需读取 Development Scope Guide。
 
-项目开发默认只保留五个简短提示：
+代码项目工作默认只保留五个简短提示：
 
 | 提示 | 关注问题 |
 |---|---|
@@ -210,9 +205,9 @@ Agent 可以在内部使用这些提示。用户侧只呈现有助于协作、�
 ```text
 User Intent
    ↓
-Development Scope Gate
-   ├─ 运行状态 → Host / 运维路径
-   └─ 项目开发或混合任务中的项目部分
+Codebase Scope Gate
+   ├─ 未建立代码项目关系 → Host / 对应工作流
+   └─ 代码项目或混合任务中的满足条件部分
                  ↓
             正常开发
                  │
@@ -377,10 +372,10 @@ Test System 是 Verification Harness 的子集，Verification Harness 是 Projec
 Rung 将 Skill 包的信息容量与一次任务的实际上下文开销分别管理。复杂领域可以保留充分细节，加载路径保持轻量：
 
 - `SKILL.md` 只包含产品目的、Scope Gate、五个基础提示和一级信号路由；
-- Scope Gate 在任何 Reference 之前运行；范围清楚的项目任务直接进入开发路由，运行状态任务不创建 Rung Artifact，也不读取 Concern Card；
+- Scope Gate 在任何 Reference 之前运行；正向关系清楚的代码项目任务直接进入开发路由，未建立关系的任务不创建 Rung Artifact，也不读取 Concern Card；
 - Concern Card 保持短小，负责当前关注面的关键问题和下一级路由；
 - Domain Guide 可以详细描述复杂判断、失败模式、迁移和证据，只在精确领域信号出现时加载；
-- 项目开发与运行执行的边界不清或两者混合时加载 Development Scope；
+- 代码项目关系存在实质歧义或多个 Owner 混合时加载 Development Scope；
 - 项目含义、语义中心、Feature fit、主动演进或语义漂移存在实质信号时，由 Clarify、Inspect、Design 或 Review 加载 Project Model；
 - Design、Implement 或 Review 出现实质结构信号时加载 Engineering Structure；普通局部修改继续沿用当前 Concern Card；
 - 用户明确请求已有系统的架构、模块化、结构债务、依赖形态或框架适配审查时加载 Architecture Assessment，并同时使用共享的 Engineering Structure 判断；
@@ -435,8 +430,8 @@ rung/
 Skill metadata
       ↓
 SKILL.md Scope Gate
-      ├─ 运行状态 → Host / 运维路径
-      └─ 项目开发 → 薄提示与信号路由
+      ├─ 未建立代码项目关系 → Host / 对应工作流
+      └─ 代码项目关系成立 → 薄提示与信号路由
                          ↓
               当前信号对应的一张 Reference
                          ↓
@@ -667,9 +662,9 @@ Harness 的长期实现归目标项目所有。Rung 在证据缺口、基础设�
 
 当前变更达到可交付状态时向代码托管、包仓库或下游交付系统提供的代码状态、制品、说明和风险信息。
 
-### 8.17 Development Scope Gate
+### 8.17 Codebase Scope Gate
 
-在任何 Reference 之前根据用户 Outcome 和长期 Owner 判断项目开发、运行状态或混合责任的轻量入口。它让项目行为、结构、制品、证据与 Release 判断进入 DevelopmentRun，把当前机器、服务、环境和事件状态交给 Host 或下游运行系统，并在混合任务中维持两条责任路径。
+在任何 Reference 之前，根据主要验收对象和长期维护关系确认当前工作是否属于软件代码库或与其耦合内容的轻量入口。正向关系成立时进入 DevelopmentRun，未建立关系时退出 Rung，混合任务只治理满足条件的部分。
 
 ## 9. 八个开发关注面
 
@@ -859,7 +854,7 @@ flowchart TB
     U["用户<br/>意图 · 约束 · 决定 · 委托 · 授权"] --> SG
 
     subgraph RG["Rung：渐进式治理层"]
-        SG["Development Scope Gate<br/>项目开发 · 运行状态 · 混合任务"] -- "项目或混合任务中的项目部分" --> R["Core Prompt<br/>Outcome · Context · Approach · Evidence · Handoff"]
+        SG["Codebase Scope Gate<br/>代码项目 · 范围外 · 混合任务"] -- "代码项目或满足条件部分" --> R["Core Prompt<br/>Outcome · Context · Approach · Evidence · Handoff"]
         R --> S["信号路由"]
         S --> EM["Execution Model<br/>责任 · 检查半径 · 持久化 · 恢复"]
         S --> CC["Concern Cards<br/>Clarify · Inspect · Design · Plan<br/>Implement · Verify · Review · Release"]
@@ -918,11 +913,11 @@ flowchart TB
     U -. "单独授权外部写操作" .-> X["Commit · Push · Tag · Remote Release · Publish"]
     PA -. "在授权与 Host 权限内执行" .-> X
     X --> RH
-    RH --> D["Host / 下游运行系统<br/>部署 · 服务管理 · 流量 · 监控 · 运营"]
-    SG -. "只改变运行状态" .-> D
+    RH --> D["Host / 下游交付系统<br/>Release 接续"]
+    SG -. "未建立代码项目关系" .-> Z["Host / 对应工作流<br/>范围外结果"]
 ```
 
-实线表示执行结果和项目事实的流动，虚线表示治理、可选角色、责任交接或授权。Scope Gate 先确定项目开发责任；运行状态任务进入 Host 或下游系统，混合任务的项目部分形成 DevelopmentRun。Rung 为 Primary Agent 提供渐进提示与执行契约；Host 提供实际能力；目标项目承载长期事实、实现和 Harness；Primary Agent 始终收回 Worker 与 Reviewer 结果，并在集成状态上完成验证和交接。
+实线表示执行结果和项目事实的流动，虚线表示治理、可选角色、责任交接或授权。Scope Gate 先确认主要验收对象与代码项目的正向关系；未建立关系的任务进入 Host 或对应工作流，混合任务中满足条件的部分形成 DevelopmentRun。Rung 为 Primary Agent 提供渐进提示与执行契约；Host 提供实际能力；目标项目承载长期事实、实现和 Harness；Primary Agent 始终收回 Worker 与 Reviewer 结果，并在集成状态上完成验证和交接。
 
 ### 13.2 用户
 
@@ -934,7 +929,7 @@ flowchart TB
 
 ### 13.3 Rung
 
-- 在读取 Reference 前判断项目开发、运行状态或混合责任，并将运行执行交接给 Host 或下游系统；
+- 在读取 Reference 前确认代码项目正向关系；未建立关系时退出，混合任务只治理满足条件的部分；
 - 提供五个基础提示和一个可恢复的 DevelopmentRun 执行契约；
 - 识别治理信号并路由相关 Concern Card、Execution Model、Depth Hint、Domain Guide、Asset 或 Script；
 - 指导相称检查半径、Design 留档位置、Plan 所有权、Worker Task Packet 和跨 Session 恢复；
@@ -976,7 +971,7 @@ flowchart TB
 
 ## 14. 工作类型
 
-Scope Gate 先判断当前 Outcome 是否形成项目开发责任，再选择工作类型。只改变当前服务、机器或环境状态的请求进入 Host 或运维路径，不因接触配置文件而归入 Docs/Config。
+Scope Gate 先确认当前 Outcome 与代码项目的正向关系，再选择工作类型。工作类型不能反向替代成员判断；仓库和文件表面只在关系成立后帮助路由。
 
 | 类型 | 值得关注的特有信号 |
 |---|---|
@@ -986,7 +981,7 @@ Scope Gate 先判断当前 Outcome 是否形成项目开发责任，再选择工
 | Refactor | 行为保持边界、特征测试、结构收益 |
 | Migration | 当前与目标状态、兼容窗口、顺序、恢复 |
 | Dependency | API 变化、安全通告、锁文件、构建兼容 |
-| Project Docs/Config | 项目拥有的文档或配置与实际行为的一致性 |
+| Coupled Artifact | 内容的正确性和维护周期与代码行为、契约或 Release 保持一致 |
 | Release-only | revision、证据、制品、版本和发布说明 |
 
 工作类型用于选择少量特有提醒，不改变渐进式治理模型。
@@ -1111,15 +1106,11 @@ Hidden follow-up 检验画像的预测价值：新能力是否进入清楚 Owner
 
 对应委派与集成场景记录在 `evals/cases/08-worker-assisted-integration.md`。
 
-### 17.11 开发范围与运行交接
+### 17.11 代码项目范围与责任交接
 
-行为评测分别使用三个只改变提示目标的场景检验入口精度：
+行为评测通过多组关系相邻、表面信号相似的场景检验入口精度。场景覆盖正向成员、关系缺失、混合 Owner 和证据变化后的重新判断；具体任务只保存在 `evals/cases/`，不进入运行时 Scope Gate。评测检查隐式选择、误触后的早期退出、Reference 加载和各结果的 Owner，不以关键词命中代替关系判断。
 
-- `18-operations-only-service-change.md` 复现现有 Nextcloud 实例改绑端口并重启，期望宿主不隐式调用 Rung；偶发调用也应在 Scope Gate 后停止，不读取 Concern Card 或创建 Rung Artifact；
-- `19-project-owned-compose-change.md` 修改项目拥有的 Compose 默认配置、文档和验证，期望进入 Rung 并只按当前信号逐步加载 Reference；
-- `20-mixed-artifact-and-deployment.md` 修改 Helm Chart 后部署测试环境，期望项目制品走 DevelopmentRun，环境身份、授权、执行和运行恢复保持独立。
-
-运行任务暴露项目缺陷时，后续项目修复可以重新进入 Rung。现有 Architecture Assessment、Release-only、Harness 和 Greenfield 场景继续控制 Scope Gate 的误排除风险。
+现有 Architecture Assessment、Release-only、Harness 和 Greenfield 场景继续控制 Scope Gate 的误排除风险。
 
 场景验收同时观察：提示加载是否相关、默认上下文是否轻量、模型是否保留合理选择、完成结论是否具有相称证据。
 
@@ -1127,7 +1118,7 @@ Hidden follow-up 检验画像的预测价值：新能力是否进入清楚 Owner
 
 Rung 后续实现保持以下设计事实：
 
-1. User Intent 先通过 Scope Gate，DevelopmentRun 从 Project Development Intent 延伸到 Release Handoff；
+1. User Intent 先通过 Scope Gate，DevelopmentRun 从 Code Project Development Intent 延伸到 Release Handoff；
 2. 默认运行形态是薄提示层；
 3. 治理内容由实际信号渐进加载；
 4. 八个关注面支持组合、跳过和回访；
@@ -1162,10 +1153,10 @@ Rung 后续实现保持以下设计事实：
 33. Feature fit 根据当前的人、结果、语义中心、质量优先级和可信演进判断，用户授权的产品方向变化会触发画像修正与兼容设计；
 34. Project Model 只在实质语义信号出现时加载，只在协调、恢复、Review 或未来决策具有消费者时持久化；
 35. 持久化的 Project Model 进入项目拥有的事实源并参与 Project Harness，同一项目含义保持一个维护位置；
-36. Skill description 以项目开发为自动发现中心，并明确运行任务边界；
-37. Scope Gate 在任何 Reference 之前运行，范围由用户 Outcome 与长期 Owner 决定；
-38. 运行状态任务继续由 Host 或下游系统处理，不读取 Rung Reference 或创建 Rung Artifact；
-39. 混合任务分别维护项目开发与运行执行的责任、授权、证据和恢复信息；
+36. Skill description 只用主要验收对象与代码项目的正向关系定义自动发现范围；
+37. Scope Gate 在任何 Reference 之前运行，正向关系由用户 Outcome、长期 Owner、正确性来源与维护周期共同建立；
+38. 仓库存在、文件位置、工具使用和偶然产生的代码不能单独建立范围；未建立关系的任务不读取 Rung Reference 或创建 Rung Artifact；
+39. 混合任务只让满足条件的部分进入 DevelopmentRun，各结果分别维护 Owner、授权、证据和恢复信息；
 40. 默认一次只加载当前判断所需的一张 Reference，未来阶段不构成预加载信号。
 
 ## 19. 长期愿景
@@ -1173,9 +1164,9 @@ Rung 后续实现保持以下设计事实：
 ```text
 Human Intent
       ↓
-Development Scope Gate
-   ├─ Runtime State → Host / Operations
-   └─ Project Development + Project Reality
+Codebase Scope Gate
+   ├─ Relationship absent → Host / Owning Workflow
+   └─ Code Project Intent + Project Reality
                          ↓
                 Project Model（按需）
                          ↓

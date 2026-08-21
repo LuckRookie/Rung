@@ -6,7 +6,7 @@
 - `INSTALL.md` is the source of truth for package coordinates, installation scope, conflict handling, and installation verification.
 - `rung/SKILL.md` is the user-facing Skill entrypoint. Keep it concise and route conditional detail to references.
 - `rung/references/execution-model.md` is the source of truth for Primary Agent ownership, inspection radius, design persistence, plan and implementation ownership, Worker and Reviewer roles, cross-session recovery, and integrated responsibility.
-- `rung/references/development-scope.md` defines the outcome-based boundary among project development, runtime-only operation, and mixed work.
+- `rung/references/development-scope.md` defines positive membership for codebase work, early exit when that relationship is absent, and mixed ownership.
 - `rung/references/` contains concern cards and governance reminders loaded only when their signals are present.
 - `rung/references/project-harness.md` defines the Project Harness scope, Test System relationship, problem signals, and routing.
 - `rung/references/harness-evolution.md` is the detailed guide for independently evidenced repair, coverage change, migration, rollback, and cleanup of an existing Harness.
@@ -17,16 +17,17 @@
 - `rung/profiles/` contains optional depth hints for Lite, Standard, and Strict governance.
 - `rung/assets/` contains optional templates selected when persistence improves coordination, recovery, recurring decisions, review, or handoff; `project-model.template.md` is the fallback when no project-owned identity fact exists.
 - `rung/scripts/` contains deterministic, dependency-free helpers.
-- `evals/` contains host-neutral behavioral scenarios for routing, Project Model decisions, engineering structure, architecture assessment, evidence, and context-cost evaluation.
+- `evals/` contains host-neutral behavioral scenarios for codebase-scope routing, Project Model decisions, engineering structure, architecture assessment, evidence, and context-cost evaluation.
 
 ## Documentation style
 
 - Define products through capabilities, behavior, inputs, outputs, and responsibility handoffs.
 - Use direct statements. Category-exclusion inventories and comparison slogans do not belong in product descriptions.
 - Keep each fact in one maintained location and link to it from other documents.
-- Preserve the User Intent → Scope Gate → Project Development Intent-to-Release boundary established in `Rung.md`.
-- Run the development Scope Gate before loading any Reference. Project outcome and durable ownership determine scope; file types, configuration syntax, and command names are supporting signals.
-- Keep runtime-only service, machine, environment, monitoring, and incident work on the Host or operations path. For mixed work, govern the project portion through Release Handoff and keep runtime execution independently authorized.
+- Preserve the User Intent → Scope Gate → Codebase Development Intent-to-Release boundary established in `Rung.md`.
+- Run the Scope Gate before loading any Reference. Continue only after the primary accepted outcome is positively related to a software codebase or an artifact whose correctness and lifecycle are coupled to it.
+- Treat repository presence, path, file type, tool use, and incidental code as insufficient scope evidence. Runtime guidance defines Rung's positive set without inventorying the open-ended space outside it.
+- Keep work outside the positive set on the Host or its owning workflow. For mixed work, govern only the qualifying codebase portion through Release Handoff and preserve independent ownership and authorization for the rest.
 - Preserve progressive governance: thin by default, signal-driven, composable, and proportional to risk.
 - New prompt content must justify its context cost by changing a meaningful Agent decision.
 - Concern cards provide questions and evidence hints; they do not impose a mandatory stage sequence or default Artifact set.

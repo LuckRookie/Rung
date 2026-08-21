@@ -26,7 +26,7 @@
 
 | 维度 | 观察内容 |
 |---|---|
-| Invocation precision | 项目开发请求是否进入 Rung，运行状态请求是否保持在 Host 路径 |
+| Invocation precision | 主要验收对象与代码项目存在正向关系时是否进入 Rung，关系缺失时是否保持在 Host 或对应工作流 |
 | Scope recovery | 宿主偶发误触时，Scope Gate 是否在读取 Reference 或创建 Artifact 前结束 Rung 路由 |
 | Operational separation | 混合任务是否分别维护项目制品与环境执行的责任、授权、证据和恢复信息 |
 | Routing relevance | 相关信号是否加载了有用提醒；普通任务是否保持安静 |
@@ -81,7 +81,7 @@ rung_revision: <revision-or-none>
 invocation:
   selected: <true-or-false>
   mode: implicit | explicit | none
-  scope: project | runtime-only | mixed | uncertain
+  scope: codebase | outside | mixed | uncertain
   exited_before_references: <true-or-false-or-not-applicable>
 loaded_references: []
 execution:

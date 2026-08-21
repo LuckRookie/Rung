@@ -23,7 +23,7 @@ No follow-up is required.
 ## Acceptable invocation and routing
 
 - Candidate Rung selects the mixed path.
-- Chart design, implementation, tests, package identity, review, and Release Handoff remain project-development responsibilities.
+- Chart design, implementation, tests, package identity, review, and Release Handoff remain codebase responsibilities.
 - Environment identity, current digest, deployment authority, rollout observation, stopping condition, and rollback target remain operational responsibilities.
 - The user's explicit staging deployment request supplies task intent; host permissions and the adapter still control execution.
 - Runtime evidence names the exact chart digest. A successful rollout supplements project evidence but does not replace chart tests or broaden the DevelopmentRun.

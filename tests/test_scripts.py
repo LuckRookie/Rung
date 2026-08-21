@@ -34,25 +34,36 @@ class SkillStructureTests(unittest.TestCase):
         self.assertRegex(frontmatter, r"(?m)^description:\s*\S.+$")
         self.assertNotIn("TODO", frontmatter)
 
-    def test_discovery_scope_and_runtime_gate_are_consistent(self) -> None:
+    def test_discovery_scope_and_codebase_gate_are_consistent(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         frontmatter_end = skill.find("\n---\n", 4)
         frontmatter = skill[4:frontmatter_end].lower()
         scope_start = skill.index("## Scope gate")
         routing_start = skill.index("## Signal routing")
         scope = skill[scope_start:routing_start]
+        development_scope = (
+            SKILL_ROOT / "references" / "development-scope.md"
+        ).read_text(encoding="utf-8")
         metadata = (SKILL_ROOT / "agents" / "openai.yaml").read_text(
             encoding="utf-8"
         )
 
-        self.assertIn("project-scoped software development", frontmatter)
-        self.assertIn("deployment-only operations", frontmatter)
-        self.assertNotIn("configuration changes", frontmatter)
+        self.assertIn("primary accepted outcome", frontmatter)
+        self.assertIn("software codebase", frontmatter)
+        self.assertIn("do not establish scope", frontmatter)
         self.assertLess(scope_start, routing_start)
         self.assertIn("(references/development-scope.md)", scope)
-        self.assertIn("Runtime only", scope)
-        self.assertIn("load no Rung reference or artifact", scope)
+        self.assertIn("positive codebase relationship", scope)
+        self.assertIn("Outside", scope)
+        self.assertIn("load no rung reference or artifact", scope.lower())
         self.assertIn("Mixed", scope)
+        self.assertIn("are insufficient", scope)
+        self.assertIn("positive membership", development_scope)
+        self.assertIn(
+            "does not need a taxonomy of work outside its scope",
+            development_scope,
+        )
+        self.assertNotIn("## Boundary examples", development_scope)
         self.assertIn("do not preload future phases", skill)
         self.assertRegex(
             metadata,
