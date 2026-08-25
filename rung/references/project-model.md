@@ -61,6 +61,8 @@ Select only fields that affect the current or recurring decision. A Project Mode
 
 Concrete exemplars and boundary probes often communicate meaning better than a long category definition. Use examples such as "a new fruit variety," "a fruit basket," and "vegetables as a core catalogue category" to expose whether a capability reinforces the current center, extends an edge, or changes the product identity.
 
+When a useful Project Model still leaves several materially different behavior paths plausible for the next consequential decision, read [Design Exploration](design-exploration.md). The model supplies identity, semantic center, priorities, and fit; exploration uses representative scenarios to discover responsibilities, state, failure meaning, and trade-offs before Design selects contracts and structure.
+
 When interpretations differ, present at most a few meaningful candidates in plain language. Explain their immediate user-visible consequence, credible development impact, and reversibility. Ask only about differences that change product meaning, material scope, accepted risk, durable data, or authority. When the user delegates an in-scope choice, select from evidence as project designer and give human-facing consequences full UX attention.
 
 ## Judge feature fit

@@ -1,6 +1,6 @@
 # Rung
 
-Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从用户意图覆盖到可验证 Release，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载相关提醒、模板和确定性工具。
+Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从活跃的代码项目开发意图覆盖到可验证 Release，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载相关提醒、模板和确定性工具。
 
 当前稳定版本为 [v0.1.0](https://github.com/LuckRookie/Rung/releases/tag/v0.1.0)。产品定义、系统边界和实现约束以 [Rung.md](Rung.md) 为准。
 
@@ -10,14 +10,15 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 
 | 能力 | 结果 |
 |---|---|
-| 代码项目范围路由 | 根据主要验收对象与长期维护关系判断代码项目工作、范围外工作和混合任务 |
+| 开发意图路由 | 同时核对代码库关系与活跃开发 Claim，让持久修改、具体开发决策和 Release 证明进入治理，让止于当前事实理解的结果尽早退出 |
 | 薄层导航 | 默认只提醒 Outcome、Context、Approach、Evidence 和 Handoff |
 | 执行责任 | 每次 DevelopmentRun 由一个 Primary Agent 持有全局 Plan、集成结果与 Release Handoff |
 | 按需治理 | 当前信号决定加载哪个开发关注面和治理深度 |
 | 项目适配 | 仓库事实、现有规则、工具链和用户修改进入当前判断 |
 | 项目画像 | 项目含义、语义中心、能力归属或演进方向存在实质不确定性时，将用户意图与项目现实合成为可修正的 Project Model |
+| 设计探索 | 重要设计仍存在多条后果明显不同的合理路径时，以最少代表性场景发现隐藏职责、状态、失败语义和真实权衡，再交给 Design 收敛 |
 | 工程结构治理 | Design、Implement 和 Review 出现实质结构信号时，按需检查归属、局部性、信息隐藏、依赖知识、状态语义和抽象依据 |
-| 架构评估 | 显式审查已有架构、模块化、结构债务或框架适配时，以变化场景、仓库证据、因果机制和反证识别主要结构矛盾 |
+| 架构评估 | 已有系统审查需要形成改造、兼容或 Release 决策时，以变化场景、仓库证据、因果机制和反证识别主要结构矛盾 |
 | Project Harness 演进 | 复用可靠的已有约束，并在事实源、测试、规则、构建、CI 或 Gate 自身出现问题时进行独立诊断和渐进迁移 |
 | 分层验证系统 | 在证据缺口或 Harness 增长时治理测试、Fixture、文档检查、CI、构建、打包和端到端入口 |
 | 相称证据 | 完成、兼容和可发布结论关联与风险相称的实际结果 |
@@ -28,12 +29,12 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 ```text
 User Intent
    ↓
-Codebase Scope Gate
-   ├─ 未建立代码项目关系 → Host / 对应工作流
-   └─ 代码项目或与其耦合的内容 → 按当前信号加载一张提示卡 → Verified Release Handoff
+Development Scope Gate
+   ├─ 理解型结果或未建立代码库关系 → Host / 对应工作流
+   └─ 活跃开发或混合任务中的开发部分 → 按当前信号加载一张提示卡 → Verified Release Handoff
 ```
 
-Rung 只在主要验收对象属于软件代码库，或者某项内容的正确性与维护周期持续耦合于该代码库时进入 DevelopmentRun。仓库存在、文件位置、文件类型、工具使用和偶然产生的代码都不能单独建立这种关系。范围外工作由 Host 或其对应工作流继续处理；混合任务只把满足条件的代码项目部分推进到 Release Handoff。
+Rung 进入 DevelopmentRun 需要两个条件同时成立：主要验收对象与软件代码库或持续耦合内容存在责任关系；当前结果还要形成持久项目修改、指导具体修改的决定，或者支持当前变更与 Release 的证据 Claim。主要验收结果止于理解代码库当前事实时，Rung 在加载 Reference 前退出。仓库存在、文件位置、文件类型、工具使用和偶然产生的代码也不能单独建立开发意图。混合任务只把活跃开发部分推进到 Release Handoff。
 
 Rung 覆盖八个可组合关注面：
 
@@ -49,13 +50,15 @@ Agent 可以合并、跳过和回访这些关注面。普通任务不创建 Rung
 
 当稀疏用户表达支持多个产品解释、已有项目事实描绘出冲突身份、新能力接近语义边界、用户准备主动扩展产品方向，或一个仓库包含多个产品中心时，Clarify 与 Inspect 可以按需建立 Project Model。它区分用户确认、仓库证据、Agent 推断、来源冲突和未知信息，并把人、核心情境、结果、语义中心、决策优先级、边界样例和可信演进提供给 Design 与 Review。普通明确任务不生成画像文件。
 
+Project Model 已经给出方向后，重要设计仍可能存在多条会改变 Owner、契约、状态、UX、风险或实现方向的合理路径。此时 Clarify、Project Model 或 Design 可以按需加载 Design Exploration：选择能够区分方向的最小代表性场景，沿成功、失败、恢复和生命周期发现隐藏职责与状态，只保留后果真实不同的候选方向，再把接受方向、权衡和 Revisit signal 交给 Design。清楚的局部修改不加载这份 Guide，探索结果默认留在 Session。
+
 Primary Agent 编写全局 Plan，也默认执行修改。Worker 接收互不重叠的有界 Task Packet，返回的局部结果由 Primary Agent 复查和集成；最终 Verification 针对组合后的实际代码状态。Multi-Agent 能力取决于 Host，单 Agent Host 可以完整运行 Rung。
 
 Lite / Standard / Strict 控制治理、协调和持久化深度；Verification Tier 0–3 控制证据覆盖范围。两条轴独立选择。完整的责任与覆盖流程见 [Rung.md 的责任流程图](Rung.md#131-责任流程图)。
 
-Rung 按实际加载量控制上下文：Scope Gate 在任何 Reference 前运行，`SKILL.md` 和 Concern Cards 保持短小，复杂领域使用按信号加载的详细 Domain Guides。默认一次只加载当前判断需要的一张 Reference，未来阶段不触发预加载。当前 Harness 关系为 `Test System ⊂ Verification Harness ⊂ Project Harness`；局部测试维护沿用正常开发路径，共享判断机制、覆盖、可靠性、成本或 Gate 变化进入 Harness Evolution。
+Rung 按实际加载量控制上下文：Development Scope Gate 在任何 Reference 前运行，`SKILL.md` 和 Concern Cards 保持短小，复杂领域使用按信号加载的详细 Domain Guides。默认一次只加载当前判断需要的一张 Reference，未来阶段不触发预加载。当前 Harness 关系为 `Test System ⊂ Verification Harness ⊂ Project Harness`；局部测试维护沿用正常开发路径，共享判断机制、覆盖、可靠性、成本或 Gate 变化进入 Harness Evolution。
 
-工程结构同样按两层加载：日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；用户明确请求已有系统架构、模块化、结构债务、依赖形态或框架适配审查时，再读取 Architecture Assessment。重要 Finding 需要连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
+工程结构同样按两层加载：日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；已有系统审查需要形成改造、兼容或 Release 决策时，再读取 Architecture Assessment。重要 Finding 需要连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
 
 Project Model 可以留在 Session 中；跨 Session、多人协作、正式审查或多个后续决策会复用时，可以进入项目已有 Product Definition、README、Requirement、Domain Glossary、Architecture Overview，或临时 `.rung/runs/<run-id>/project-model.md`。可选模板只在持久化具有消费者时使用。
 
@@ -63,9 +66,9 @@ Project Model 可以留在 Session 中；跨 Session、多人协作、正式审�
 
 ```text
 rung/
-├── SKILL.md                 # 代码项目范围门、薄提示与信号路由
+├── SKILL.md                 # 活跃开发范围门、薄提示与信号路由
 ├── agents/openai.yaml       # Codex UI 元数据
-├── references/              # Execution Model、Development Scope、关注面、Project Model、Engineering Structure、Architecture Assessment 与其他按需 Domain Guides
+├── references/              # Execution Model、Development Scope、关注面、Project Model、Design Exploration、Engineering Structure、Architecture Assessment 与其他按需 Domain Guides
 ├── profiles/                # 可选治理深度提示
 ├── assets/                  # 可选开发制品模板
 └── scripts/                 # 确定性检查助手
@@ -87,7 +90,7 @@ Codex 用户级安装：
 npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung --agent codex --global --yes
 ```
 
-安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。用户级安装会让 Rung 对该用户的不同项目与工作目录可见；项目级安装把发现范围限制在当前项目。Rung 默认保留隐式调用，并通过精确 description 与 Scope Gate 控制任务相关性。
+安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。用户级安装会让 Rung 对该用户的不同项目与工作目录可见；项目级安装把发现范围限制在当前项目。Rung 默认保留隐式调用，description 只吸引活跃开发结果，Development Scope Gate 负责误触后的二次核对。
 
 Codex 提供 `$skill-installer` 时，也可以直接发送：
 
@@ -109,7 +112,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 $rung 为现有项目实现导出功能，并准备一个经过验证的可发布版本。
 ```
 
-Rung 默认保持轻量，先确认当前验收对象与代码项目的关系，再根据任务信号加载相关提示。未建立关系时立即退出；进入 DevelopmentRun 后以与任务规模相称的方式说明实现结果、实际验证、残余风险和 Release 交接状态。
+Rung 默认保持轻量，先确认当前验收对象同时具备代码库关系和活跃开发 Claim，再根据任务信号加载相关提示。理解型结果或范围外结果立即退出；进入 DevelopmentRun 后以与任务规模相称的方式说明实现结果、实际验证、残余风险和 Release 交接状态。
 
 ## 可选确定性工具
 
@@ -167,7 +170,7 @@ Codex 环境中还应使用 `skill-creator` 提供的 `quick_validate.py` 检查
 Rung.md                    # 产品与架构事实源
 INSTALL.md                 # 人与 Coding Agent 共用的安装契约
 rung/                      # 可安装 Skill 包
-evals/                     # 代码项目范围、项目画像、工程结构、架构评估、Harness 与上下文成本的行为评测场景
+evals/                     # 开发意图、设计探索、项目画像、工程结构、架构评估、Harness 与上下文成本的行为评测场景
 tests/                     # 确定性脚本测试
 .github/workflows/ci.yml   # 持续集成
 AGENTS.md                  # 本仓库的 Agent 开发约定

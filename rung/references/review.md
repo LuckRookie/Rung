@@ -9,7 +9,7 @@ Read when the integrated diff, structure, risk, evidence, or delivery deserves j
 - Confirm tests protect behavior, contracts, invariants, and failures without incidental internals.
 - Fix ordinary findings directly when authorized; route material findings to their owning concern.
 
-Read [Project Model](project-model.md) for model fit or semantic drift, [Engineering Structure](engineering-structure.md) for material structure, and [Architecture Assessment](architecture-assessment.md) for explicit system assessment.
+Read [Project Model](project-model.md) for model fit or semantic drift, [Engineering Structure](engineering-structure.md) for material structure, and [Architecture Assessment](architecture-assessment.md) for system change assessment.
 
 Primary Agent reviews; consider an independent reviewer for public contracts, security/privacy, persistent data, core architecture, migration, required gates, high-impact Harness evolution, policy, or user request.
 

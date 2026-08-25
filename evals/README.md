@@ -16,7 +16,7 @@
 
 1. 将场景起始仓库复制到独立临时目录。
 2. 只把场景中的 `Initial prompt` 交给被测 Agent；隐藏后续任务和评审预期。
-3. 保存 Agent 可见的 Skill 候选、Rung 是否被隐式或显式调用、读取的 References、工具调用、最终回复、工作区 diff、提交状态和实际检查结果。
+3. 保存 Agent 可见的 Skill 候选、Rung 是否被隐式或显式调用、代码库关系与活跃开发 Claim 的 Scope Gate 结果、读取的 References、工具调用、最终回复、工作区 diff、提交状态和实际检查结果。
 4. 初始任务完成后，再发送 `Hidden follow-up`。使用同一个工作区和对话，除非场景明确测试跨会话恢复。
 5. 先执行场景的正确性检查。未满足用户行为时记录失败，结构评分不能抵消正确性失败。
 6. 对通过正确性检查的结果进行盲化成对评审。评审者不查看实验组名称和 Agent 的架构自述。
@@ -26,8 +26,8 @@
 
 | 维度 | 观察内容 |
 |---|---|
-| Invocation precision | 主要验收对象与代码项目存在正向关系时是否进入 Rung，关系缺失时是否保持在 Host 或对应工作流 |
-| Scope recovery | 宿主偶发误触时，Scope Gate 是否在读取 Reference 或创建 Artifact 前结束 Rung 路由 |
+| Invocation precision | 持久项目修改、指导具体修改的决定或当前 Release Claim 是否进入 Rung；只有代码库关系且结果止于当前事实理解时是否保持在 Host |
+| Scope recovery | 宿主偶发误触时，理解型或范围外结果是否在读取 Reference 或创建 Artifact 前结束 Rung 路由 |
 | Operational separation | 混合任务是否分别维护项目制品与环境执行的责任、授权、证据和恢复信息 |
 | Routing relevance | 相关信号是否加载了有用提醒；普通任务是否保持安静 |
 | Execution ownership | 是否始终有一个 Primary Agent 持有全局 Plan、集成结果、Finding 处理与 Handoff |
@@ -38,6 +38,10 @@
 | Fit judgment | 新能力是否被有依据地判断为核心归属、相邻扩展或产品身份变化 |
 | Model utility | 画像是否真实改善 Owner、边界、命名、依赖、UX、验证或后续变化局部性 |
 | Model economy | 画像是否只在语义信号出现时建立，并进入确有消费者的承载位置 |
+| Exploration precision | Design Exploration 是否只在活跃重要决定仍存在多条实质不同路径时加载；清楚局部变化是否沿普通路径继续 |
+| Scenario discrimination | 代表性场景是否以最少数量揭示会改变方向的行为、状态、失败、恢复或生命周期差异 |
+| Responsibility discovery | 探索是否在模块设计前发现真实 Owner、契约、状态、失败语义、恢复责任和证据需要 |
+| Convergence quality | 候选方向是否具有不同工程后果，是否在足够证据出现后停止，并控制过早收敛与无界发散 |
 | Delegation quality | Worker 是否具有有界上下文、明确所有权、稳定契约和可检查 Handoff |
 | Recovery fidelity | 接续 Session 是否校准指令、revision、用户工作、已完成单元、Evidence 与下一动作 |
 | Integrated verification | 完成声明是否针对组合后的实际状态，Worker 局部结果是否只作为候选 Evidence |
@@ -66,6 +70,10 @@ Project Model 场景检查 Agent 能否把稀疏用户表达和项目现实合�
 
 画像中的陈述分别记录为用户确认、仓库证据、推断、冲突或未知。现有代码和文档只提供证据，不自动成为产品意图。Hidden follow-up 检查画像能否预测实际 Owner、边界、UX 与变化传播；用户明确扩展产品方向时，能够修正画像也是成功行为。
 
+Design Exploration 场景使用一个高不确定性设计和一个方向清楚的局部变化进行对照。评测记录 Premature convergence、遗漏职责与状态、失败与恢复语义、无依据抽象、用户问题负担、候选方向的实质差异、停止时点、Hidden follow-up 修改局部性和上下文成本。方案数、场景数、文档篇幅与图表数量不产生分数。
+
+开发意图场景分别观察 metadata 选择和 Skill 已加载后的 Scope Gate。运行时只保留抽象的双条件成员定义；代码库事实理解的具体表面变化放在独立 Case 中，防止候选提示通过记忆排除词取得虚假精度。
+
 ## 结果记录
 
 每次运行至少保存：
@@ -81,7 +89,9 @@ rung_revision: <revision-or-none>
 invocation:
   selected: <true-or-false>
   mode: implicit | explicit | none
-  scope: codebase | outside | mixed | uncertain
+  scope: development | understanding-only | outside | mixed | uncertain
+  codebase_relationship: present | absent | mixed | uncertain
+  development_claim: active | inactive | mixed | uncertain
   exited_before_references: <true-or-false-or-not-applicable>
 loaded_references: []
 execution:
@@ -104,6 +114,16 @@ project_model:
   conflicts: []
   unknowns: []
   fit_decisions: []
+  persistence: <none-or-location>
+design_exploration:
+  decision: <none-or-current-decision>
+  scenarios: []
+  discovered_responsibilities: []
+  discovered_states: []
+  failure_semantics: []
+  candidate_directions: []
+  owned_unknowns: []
+  revisit_signals: []
   persistence: <none-or-location>
 review:
   assessment_boundary: []

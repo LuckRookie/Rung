@@ -34,7 +34,7 @@ class SkillStructureTests(unittest.TestCase):
         self.assertRegex(frontmatter, r"(?m)^description:\s*\S.+$")
         self.assertNotIn("TODO", frontmatter)
 
-    def test_discovery_scope_and_codebase_gate_are_consistent(self) -> None:
+    def test_discovery_scope_and_development_gate_are_consistent(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         frontmatter_end = skill.find("\n---\n", 4)
         frontmatter = skill[4:frontmatter_end].lower()
@@ -48,17 +48,25 @@ class SkillStructureTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("primary accepted outcome", frontmatter)
-        self.assertIn("software codebase", frontmatter)
-        self.assertIn("do not establish scope", frontmatter)
+        self.assertIn("active software development", frontmatter)
+        self.assertIn("durable codebase change", frontmatter)
+        self.assertIn("codebase relationship alone", frontmatter)
         self.assertLess(scope_start, routing_start)
         self.assertIn("(references/development-scope.md)", scope)
-        self.assertIn("positive codebase relationship", scope)
+        self.assertIn("codebase relationship", scope)
+        self.assertIn("active development claim", scope)
+        self.assertIn("Understanding only", scope)
         self.assertIn("Outside", scope)
         self.assertIn("load no rung reference or artifact", scope.lower())
         self.assertIn("Mixed", scope)
-        self.assertIn("are insufficient", scope)
+        self.assertIn("alone is insufficient", scope)
         self.assertIn("positive membership", development_scope)
+        self.assertIn("both predicates", development_scope)
+        self.assertIn("active development claim", development_scope)
+        self.assertIn(
+            "ends with understanding current codebase facts",
+            development_scope,
+        )
         self.assertIn(
             "does not need a taxonomy of work outside its scope",
             development_scope,
@@ -130,6 +138,7 @@ class SkillStructureTests(unittest.TestCase):
             "engineering-structure.md": 9_000,
             "architecture-assessment.md": 11_000,
             "project-model.md": 11_000,
+            "design-exploration.md": 7_000,
         }
         for name, budget in detailed_guides.items():
             with self.subTest(detailed_guide=name):
@@ -224,6 +233,32 @@ class SkillStructureTests(unittest.TestCase):
             self.assertIn(target, project_model)
         self.assertIn("assets/project-model.template.md", artifacts)
         self.assertTrue((SKILL_ROOT / "assets" / "project-model.template.md").is_file())
+
+    def test_design_exploration_is_progressively_routed(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        references = SKILL_ROOT / "references"
+        clarify = (references / "clarify.md").read_text(encoding="utf-8")
+        design = (references / "design.md").read_text(encoding="utf-8")
+        project_model = (references / "project-model.md").read_text(encoding="utf-8")
+        exploration = (references / "design-exploration.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("(references/design-exploration.md)", skill)
+        self.assertIn("(design-exploration.md)", clarify)
+        self.assertIn("(design-exploration.md)", design)
+        self.assertIn("(design-exploration.md)", project_model)
+        self.assertIn("several materially different", exploration)
+        self.assertIn("representative scenarios", exploration)
+        self.assertIn("There is no fixed number of alternatives", exploration)
+        self.assertIn("Keep the exploration in the session by default", exploration)
+        for target in [
+            "(clarify.md)",
+            "(design.md)",
+            "(engineering-structure.md)",
+            "(architecture-assessment.md)",
+        ]:
+            self.assertIn(target, exploration)
 
     def test_execution_model_routes_integrated_run_ownership(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")

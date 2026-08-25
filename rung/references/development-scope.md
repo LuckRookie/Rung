@@ -1,20 +1,23 @@
 # Development Scope
 
-Read only when the relationship between the accepted outcome and a software codebase is materially unclear, or when one request combines qualifying and non-qualifying work. Clear cases use the short gate in `SKILL.md`.
+Read only when the accepted outcome's codebase relationship, development claim, or ownership is materially unclear, or when one request combines qualifying and non-qualifying work. Clear cases use the short gate in `SKILL.md`.
 
 ## Establish positive membership
 
-Continue Rung only after establishing that the primary accepted outcome designs, creates, changes, assesses, verifies, or prepares the release of a software codebase, or changes an artifact coupled to that codebase.
+Continue Rung only when both predicates hold:
+
+1. **Codebase relationship:** the accepted outcome concerns a software codebase or an artifact coupled to it in correctness and maintenance.
+2. **Active development claim:** the accepted outcome creates a durable project change, decides or directs a concrete change, or establishes evidence for a current change or release.
 
 An artifact is coupled when codebase behavior, contracts, or release state determine its correctness, and the code project owns keeping it synchronized for its consumers. Coupling follows responsibility and lifecycle. Physical co-location does not establish it. Greenfield codebase work can qualify before a repository exists.
 
-Use the current acceptance claim and durable owner. The relationship must be active in the requested work; a possible future code change does not qualify the present task.
+A design, review, diagnosis, or assessment qualifies when its accepted result is a decision or evidence claim that guides, accepts, rejects, prioritizes, or de-risks current codebase development. A result that ends with understanding current codebase facts has no active development claim. Possible future development does not qualify the present task.
 
-## Exit without classifying the outside world
+## Exit before deeper governance
 
-When positive membership is not established, exit Rung before loading another Reference, Profile, Script, or Artifact. Continue the user's task under host instructions or the workflow that owns its outcome. Rung does not need a taxonomy of work outside its scope.
+When either predicate is absent, exit Rung before loading another Reference, Profile, Script, or Artifact. Continue the user's task under host instructions or the workflow that owns its outcome. Rung does not need a taxonomy of work outside its scope.
 
-The following signals are insufficient on their own:
+Codebase relationship alone is insufficient. The following signals are also insufficient on their own:
 
 - a repository, worktree, manifest, tracked file, or project-shaped directory;
 - a path, file type, command, tool, technical vocabulary, or amount of work;
@@ -23,27 +26,27 @@ The following signals are insufficient on their own:
 
 ## Resolve material ambiguity
 
-Determine the smallest qualifying portion before asking the user. Useful questions are:
+Determine the smallest qualifying portion before asking the user:
 
-1. What exact result will be accepted, and does that acceptance concern the codebase itself?
-2. Which owner must maintain the result after this task?
-3. Must the result stay synchronized with codebase behavior, contracts, or release state?
-4. Does any produced code become a maintained codebase surface or remain instrumental to another outcome?
+1. What exact result will be accepted?
+2. Does that result change a maintained project surface, decide a current codebase change, or prove a current change or release?
+3. Which owner must maintain or act on it?
+4. Must an artifact remain synchronized with codebase behavior, contracts, or release state?
 
-Ask one plain-language question only when the unresolved relationship would materially change the work. A useful form is: “Will this result be maintained and delivered as part of this code project?”
+Ask one plain-language question only when the unresolved answer changes the work materially. Useful forms are “Will this result guide a code change you are making now?” and “Will this result be maintained and delivered as part of this code project?”
 
 ## Mixed ownership
 
-When one request contains both qualifying codebase work and other outcomes, keep their claims and owners separate even if one Agent performs both:
+When one request contains both active development and other outcomes, keep their claims and owners separate even if one Agent performs both:
 
-- Rung governs codebase facts, decisions, changes, integrated verification, review, and Release Handoff.
-- Each remaining outcome stays with its owning workflow, evidence method, authorization, and recovery path.
+- Rung governs codebase facts needed for the active claim, decisions, changes, integrated verification, review, and Release Handoff.
+- Each remaining outcome keeps its owning workflow, evidence method, authorization, and recovery path.
 - Shared observations support a codebase claim only when their relevant state and artifact identity are known. They do not broaden the DevelopmentRun by association.
-- External execution remains subject to its own authority and does not inherit authorization from the codebase change.
+- External execution remains subject to its own authority and does not inherit authorization from codebase change.
 
 ## Reclassify from evidence
 
-Re-evaluate when the accepted outcome changes. Work outside Rung can expose an active codebase defect; enter only when resolving or assessing that codebase becomes part of the request. Codebase work can also end with no qualifying change; exit when the positive relationship disappears. Load References only after membership is current.
+Re-evaluate when the accepted outcome changes. Understanding can expose a development claim; enter Rung only when a concrete change, decision, or delivery claim becomes active. Development work can also reduce to understanding or another outcome; exit when either predicate disappears. Load References only after membership is current.
 
 Explicit `$rung` invocation still passes through this gate. Briefly explain an out-of-scope result, load no further Rung material, and continue helping under host instructions.
 

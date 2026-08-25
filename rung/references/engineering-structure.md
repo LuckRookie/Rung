@@ -2,7 +2,7 @@
 
 Read when a change or review can alter concept ownership, module boundaries, public surface, dependency knowledge, shared state, data or error semantics, an external-detail boundary, or an abstraction with more than local effect. Keep a local edit on the ordinary path when its owner and impact are already clear.
 
-For an explicit review of an existing architecture, modularity, structural debt, or framework fit, also read [Architecture Assessment](architecture-assessment.md).
+For a decision-ready review of an existing architecture, modularity, structural debt, or framework fit, also read [Architecture Assessment](architecture-assessment.md).
 
 If project identity, semantic center, or feature fit is unclear, read [Project Model](project-model.md) before assigning durable owners or boundaries.
 
