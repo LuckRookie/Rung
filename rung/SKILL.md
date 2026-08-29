@@ -5,8 +5,6 @@ description: Govern active software development whose outcome is a durable codeb
 
 # Rung
 
-Govern the next development decision; keep work light.
-
 ## Scope gate
 
 Before references, require a **codebase relationship** and an **active development claim**: the outcome concerns a maintained codebase or coupled artifact and changes it durably, directs a concrete change, or proves a current change or release.
@@ -30,7 +28,7 @@ Keep these internal unless useful.
 
 ## Operating spine
 
-One Primary Agent owns facts, decisions, integration, evidence, review, and handoff; one session by default. For radius, persistence, recovery, or delegation, read [Execution model](references/execution-model.md).
+One Primary Agent owns the run and handoff; one session by default. For radius, persistence, recovery, or delegation, read [Execution model](references/execution-model.md).
 
 ## Signal routing
 
@@ -45,7 +43,7 @@ Pass the gate. Use one current reference by default; do not preload future phase
 - Diff, structure, risk, delivery: [Review](references/review.md)
 - Revision, artifact, publication: [Release](references/release.md)
 
-Unresolved consequential paths: [Design Exploration](references/design-exploration.md). Structure: [Engineering Structure](references/engineering-structure.md). Architecture decision: [Architecture Assessment](references/architecture-assessment.md). Harness: [Project Harness](references/project-harness.md).
+Unresolved paths: [Design Exploration](references/design-exploration.md). Quality: [Software Quality](references/software-quality.md). Debt: [Technical Debt](references/technical-debt.md). Structure: [Engineering Structure](references/engineering-structure.md). Architecture: [Architecture Assessment](references/architecture-assessment.md). Harness: [Project Harness](references/project-harness.md).
 
 Interaction: [Workflow](references/workflow.md). Depth: [Risk signals](references/risk-signals.md). State: [Artifacts](references/artifacts.md).
 

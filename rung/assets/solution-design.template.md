@@ -58,6 +58,17 @@
 
 {{quality_risks_and_controls}}
 
+## Software quality goals and trade-offs
+
+Include only goals that constrain this design.
+
+| Quality scenario or current goal | Design response | Cost or trade-off | Planned evidence |
+|---|---|---|---|
+| {{stimulus_environment_and_response}} | {{design_mechanism}} | {{transferred_cost_or_risk}} | {{evidence}} |
+
+- Touched-owner understandability and changeability: {{touched_owner_quality}}
+- Operability and resource behavior before Release: {{operability_and_resources}}
+
 ## Human-facing design
 
 - People and primary tasks: {{people_and_tasks}}
@@ -71,6 +82,14 @@
 | Risk or behavior | Verification level | Evidence source |
 |---|---|---|
 | {{risk_or_behavior}} | {{unit_module_integration_e2e}} | {{planned_evidence}} |
+
+## Technical debt decisions
+
+Include a row only for a known future obligation being incurred or carried.
+
+| Debt-bearing boundary | Borrowed value | Trigger, exposure and interest | Strategy and propagation limit | Owner, revisit and cleanup |
+|---|---|---|---|---|
+| {{boundary}} | {{borrowed_value}} | {{trigger_exposure_and_interest}} | {{strategy_and_limit}} | {{owner_revisit_and_cleanup}} |
 
 ## Alternatives and decisions
 

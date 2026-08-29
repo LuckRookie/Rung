@@ -139,6 +139,8 @@ class SkillStructureTests(unittest.TestCase):
             "architecture-assessment.md": 11_000,
             "project-model.md": 11_000,
             "design-exploration.md": 7_000,
+            "software-quality.md": 9_000,
+            "technical-debt.md": 12_500,
         }
         for name, budget in detailed_guides.items():
             with self.subTest(detailed_guide=name):
@@ -259,6 +261,75 @@ class SkillStructureTests(unittest.TestCase):
             "(architecture-assessment.md)",
         ]:
             self.assertIn(target, exploration)
+
+    def test_quality_and_debt_are_distinct_and_progressively_routed(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        references = SKILL_ROOT / "references"
+        cards = {
+            name: (references / f"{name}.md").read_text(encoding="utf-8")
+            for name in ["design", "implement", "review"]
+        }
+        software_quality = (references / "software-quality.md").read_text(
+            encoding="utf-8"
+        )
+        technical_debt = (references / "technical-debt.md").read_text(
+            encoding="utf-8"
+        )
+        engineering = (references / "engineering-structure.md").read_text(
+            encoding="utf-8"
+        )
+        architecture = (references / "architecture-assessment.md").read_text(
+            encoding="utf-8"
+        )
+        project_model = (references / "project-model.md").read_text(
+            encoding="utf-8"
+        )
+        project_harness = (references / "project-harness.md").read_text(
+            encoding="utf-8"
+        )
+        artifacts = (references / "artifacts.md").read_text(encoding="utf-8")
+
+        self.assertIn("(references/software-quality.md)", skill)
+        self.assertIn("(references/technical-debt.md)", skill)
+        for card in cards.values():
+            self.assertIn("(software-quality.md)", card)
+            self.assertIn("(technical-debt.md)", card)
+        for target in [engineering, architecture, project_model, project_harness]:
+            self.assertIn("(technical-debt.md)", target)
+        self.assertIn("(software-quality.md)", engineering)
+
+        for quality in [
+            "Correctness",
+            "Understandability",
+            "Changeability",
+            "Verifiability",
+            "Operability",
+            "Consistency",
+            "Predictability",
+        ]:
+            self.assertIn(quality, software_quality)
+        self.assertIn("touched ownership boundary", software_quality)
+        self.assertIn("repository-wide quality audit", software_quality)
+
+        for confidence in ["Debt signal", "Debt hypothesis", "Qualified debt item"]:
+            self.assertIn(confidence, technical_debt)
+        for mechanism in [
+            "current debt-bearing construct",
+            "credible change, maintenance event, or time trigger",
+            "change-driven",
+            "time-driven",
+            "spread-driven",
+            "Propagation",
+            "Option loss",
+        ]:
+            self.assertIn(mechanism, technical_debt)
+        self.assertIn("defect", technical_debt)
+        self.assertIn("vulnerability", technical_debt)
+        self.assertIn("issue tracker", technical_debt)
+        self.assertIn("assets/technical-debt-item.template.md", artifacts)
+        self.assertTrue(
+            (SKILL_ROOT / "assets" / "technical-debt-item.template.md").is_file()
+        )
 
     def test_execution_model_routes_integrated_run_ownership(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -605,6 +676,7 @@ class ArtifactValidationTests(unittest.TestCase):
             "project-model.md": "complete\n",
             "design.md": "complete\n",
             "plan.md": "complete\n",
+            "debt.md": "complete\n",
             "harness-change.md": "complete\n",
             "verification-harness.md": "complete\n",
             "verification-plan.json": '{"checks": []}\n',

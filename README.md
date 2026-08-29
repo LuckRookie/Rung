@@ -19,6 +19,8 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 | 设计探索 | 重要设计仍存在多条后果明显不同的合理路径时，以最少代表性场景发现隐藏职责、状态、失败语义和真实权衡，再交给 Design 收敛 |
 | 工程结构治理 | Design、Implement 和 Review 出现实质结构信号时，按需检查归属、局部性、信息隐藏、依赖知识、状态语义和抽象依据 |
 | 架构评估 | 已有系统审查需要形成改造、兼容或 Release 决策时，以变化场景、仓库证据、因果机制和反证识别主要结构矛盾 |
+| 软件质量 | 当前修改与 Review 按需判断正确性、可理解性、可修改性、可验证性、可运行性、一致性和可预测性，并让触及 Owner 保持连贯 |
+| 技术债治理 | 以当前承载状态、可信 Trigger 与未来负担机制限定有效债务，管理 Interest、Exposure、Propagation、Principal、策略与 Revisit |
 | Project Harness 演进 | 复用可靠的已有约束，并在事实源、测试、规则、构建、CI 或 Gate 自身出现问题时进行独立诊断和渐进迁移 |
 | 分层验证系统 | 在证据缺口或 Harness 增长时治理测试、Fixture、文档检查、CI、构建、打包和端到端入口 |
 | 相称证据 | 完成、兼容和可发布结论关联与风险相称的实际结果 |
@@ -60,6 +62,10 @@ Rung 按实际加载量控制上下文：Development Scope Gate 在任何 Refere
 
 工程结构同样按两层加载：日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；已有系统审查需要形成改造、兼容或 Release 决策时，再读取 Architecture Assessment。重要 Finding 需要连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
 
+[Software Quality](rung/references/software-quality.md) 与 [Technical Debt](rung/references/technical-debt.md) 是两个独立判断维度。前者关注软件当前对使用者、维护者、环境和已接受方向的适用性；后者关注当前工程状态在可信变化、维护事件或时间节点下产生的可避免未来负担。普通任务只整理 touched ownership boundary，详细质量 Guide 由实质权衡或 Finding 触发；代码异味、TODO、年龄和工具分数只产生 Debt Signal，当前 Construct、可信 Trigger 或 Exposure、Interest 或 Propagation 机制和管理决定共同限定 Qualified Debt Item。
+
+技术债覆盖 Code、Architecture、Data and Compatibility、Dependency and Platform、Verification and Harness、Build and Release、Documentation and Fact Sources。显式系统审查寻找驱动项目 Chaos 的少数 Debt Mechanism；日常开发只处理当前变化实际激活、引入、携带或偿还的义务。持久债务优先进入项目已有 Issue、Roadmap、Architecture、Dependency、Migration 或 Harness Owner；缺少合适形态且存在未来消费者时，才使用可选 Technical Debt Item 模板。
+
 Project Model 可以留在 Session 中；跨 Session、多人协作、正式审查或多个后续决策会复用时，可以进入项目已有 Product Definition、README、Requirement、Domain Glossary、Architecture Overview，或临时 `.rung/runs/<run-id>/project-model.md`。可选模板只在持久化具有消费者时使用。
 
 ## Skill 包
@@ -68,7 +74,7 @@ Project Model 可以留在 Session 中；跨 Session、多人协作、正式审�
 rung/
 ├── SKILL.md                 # 活跃开发范围门、薄提示与信号路由
 ├── agents/openai.yaml       # Codex UI 元数据
-├── references/              # Execution Model、Development Scope、关注面、Project Model、Design Exploration、Engineering Structure、Architecture Assessment 与其他按需 Domain Guides
+├── references/              # Execution Model、关注面、Project Model、Design Exploration、Software Quality、Technical Debt、Engineering Structure、Architecture Assessment 与其他按需 Guides
 ├── profiles/                # 可选治理深度提示
 ├── assets/                  # 可选开发制品模板
 └── scripts/                 # 确定性检查助手
@@ -151,6 +157,8 @@ python rung/scripts/check_release.py \
 
 Artifact 检查默认验证运行目录中实际存在的 Rung 制品；需要特定集合时可以重复使用 `--require` 精确声明。
 
+Qualified Debt Item 通常写入项目已有管理系统。项目缺少可用形态且后续 Owner 需要持久状态时，可以从 [Technical Debt Item 模板](rung/assets/technical-debt-item.template.md)选择必要字段，并在可选运行目录中保存为 `debt.md`。
+
 Release Manifest 标记为 `ready` 或 `published` 时，本地 `verification` 引用使用顶层 `status` 为 `pass` 的 JSON Evidence；外部 CI 或制品系统可以提供 URI。
 
 所有脚本只使用 Python 标准库，并输出机器可读 JSON。
@@ -170,7 +178,7 @@ Codex 环境中还应使用 `skill-creator` 提供的 `quick_validate.py` 检查
 Rung.md                    # 产品与架构事实源
 INSTALL.md                 # 人与 Coding Agent 共用的安装契约
 rung/                      # 可安装 Skill 包
-evals/                     # 开发意图、设计探索、项目画像、工程结构、架构评估、Harness 与上下文成本的行为评测场景
+evals/                     # 开发意图、设计探索、项目画像、软件质量、技术债、工程结构、架构评估、Harness 与上下文成本评测
 tests/                     # 确定性脚本测试
 .github/workflows/ci.yml   # 持续集成
 AGENTS.md                  # 本仓库的 Agent 开发约定

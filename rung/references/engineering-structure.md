@@ -6,6 +6,8 @@ For a decision-ready review of an existing architecture, modularity, structural 
 
 If project identity, semantic center, or feature fit is unclear, read [Project Model](project-model.md) before assigning durable owners or boundaries.
 
+Read [Software Quality](software-quality.md) when the active concern is current touched-code fitness without a material structural mechanism. Read [Technical Debt](technical-debt.md) when a structure must be judged as a future obligation with a trigger, interest, or repayment decision.
+
 ## Governing outcome
 
 Keep the knowledge and change required for a coherent behavior bounded and explainable. Judge structure by the current product, repository, credible variation, and important quality goals. Source code and executable configuration are the implemented design; diagrams and prose are useful claims to verify against them.

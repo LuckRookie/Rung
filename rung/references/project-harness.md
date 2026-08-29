@@ -51,6 +51,8 @@ Set membership and governance escalation are separate decisions.
 
 A local test edit remains part of the Test System. Load the higher-level evolution guide when the edit changes how future code is judged, accepted, isolated, or delivered; affects shared infrastructure or consumers; changes coverage, reliability, cost, or diagnostics; or removes existing protection.
 
+Read [Technical Debt](technical-debt.md) when a Harness condition or temporary control is being qualified or carried as a future obligation. Continue to Verification Harness or Harness Evolution for the actual evidence or governance change.
+
 ## Authority and ownership
 
 Before changing a disputed rule, identify its owner, consumers, revision, and authority basis. Useful anchors include current user intent, accepted requirements, public API or schema, released compatibility behavior, real callers, project governance documents, and independently observed behavior. Current implementation output alone does not establish an expected result.

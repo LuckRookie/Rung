@@ -7,12 +7,12 @@ Read while editing when scope, ownership, integration, user work, or fact synchr
 - The Primary Agent implements by default; workers receive bounded, non-overlapping ownership only when delegation helps.
 - Tie each material edit to the outcome, design, or engineering need.
 - Preserve user-owned edits and applicable project instructions.
-- Keep directly enabling refactoring coherent and verifiable; leave unrelated cleanup outside the change.
+- Leave the touched owner coherent in placement, names, flow, errors, resources, and facts. Keep enabling cleanup verifiable; route unrelated cleanup as a finding.
 - Synchronize tests, configuration, generated sources, and durable fact owners.
-- Run low-cost checks where they expose drift early, then integrate all worker output before final verification.
+- Run useful low-cost checks, then integrate all worker output before final verification.
 
-If the diff changes structural ownership, boundaries, public surface, dependencies, shared state, data model, or abstractions, read [Engineering Structure](engineering-structure.md) and revisit Design if direction changes.
+Read [Software Quality](software-quality.md) for material touched-area quality, [Engineering Structure](engineering-structure.md) for nonlocal structure, and [Technical Debt](technical-debt.md) when work incurs, carries, or repays a future obligation. Revisit Design when direction changes.
 
-Stop when the change is integrated, facts are synchronized, and no finding requires Clarify, Inspect, Design, or Plan. Output the diff, changed facts, early checks, and integration concerns.
+Stop when the change and facts are integrated and material findings are routed. Output the diff, changed facts, early checks, and integration concerns.
 
-Record a baseline or recovery point only for cross-session, overlapping, migration, or irreversible work. Read [Execution Model](execution-model.md) for ownership and delegation.
+Use [Execution Model](execution-model.md) for recovery or delegation.

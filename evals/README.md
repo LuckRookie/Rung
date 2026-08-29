@@ -54,6 +54,17 @@
 | Causal diagnosis | Finding 是否从代码症状追到造成成本或风险的结构机制 |
 | Finding precision | 结论是否由仓库事实支持，是否控制无依据架构问题和模式驱动误判 |
 | Intervention value | 建议是否以相称风险降低原机制，并提供可验证的未来变化收益 |
+| Touched-area quality | 修改是否让 touched ownership boundary 在当前正确性、职责、命名、流、错误、资源、测试与事实源上保持连贯，同时控制无关 Cleanup |
+| Understandability | 维护者能否在有界上下文中恢复目的、Owner、控制与数据流、状态、副作用和失败含义 |
+| Current changeability | 可信后续变化是否进入清楚 Owner，并减少无关知识、文件和模块传播 |
+| Operability | Release 前相关失败、Timeout、Retry、Cancellation、Concurrency、Recovery、Cleanup、诊断和资源行为是否清楚且可验证 |
+| Consistency and predictability | 同类行为、代码、测试、配置、错误与事实是否遵循项目有依据的共同方式 |
+| Debt qualification | 当前承载状态、可信 Trigger 或 Exposure、未来负担机制与管理决定是否形成完整因果链 |
+| Debt pressure | Interest、Exposure、Propagation、Option Loss 与 Principal 是否以证据支持的粒度进入判断 |
+| Debt strategy | Repay、Reduce、Contain、Carry、Replace 或 Retire 是否匹配当前压力、偿还风险、Borrowed Value 与机会成本 |
+| Debt-system prioritization | 系统审查是否识别驱动项目 Chaos 的主要交互机制，并控制容易计数但低影响的清理项 |
+| False debt finding | 年龄、异味、TODO、复杂度和工具分数是否在缺少可信未来负担时保持为 Signal 或 Hypothesis |
+| Retirement evidence | 偿还后当前 Claim、激活 Scenario、传播停止、旧路径清理和负担转移是否得到验证 |
 | Test design | 测试是否保护行为、契约、不变量和失败路径 |
 | Harness economy | 验证入口是否复用项目能力，Fixture 与环境是否有归属，隔离、清理、诊断、成本和淘汰条件是否清楚 |
 | Harness evolution | 是否识别权威事实、产品与 Harness 问题，使用独立锚点，记录 Coverage Delta、生效、回退和旧路径清理 |
@@ -65,6 +76,12 @@
 显式架构评估不按 Finding 数量得分。评测使用带有已知主因、干扰性代码异味和有意设计约束的 Fixture，分别观察主因命中、症状误判、反证处理和过度改造。Finding 至少关联驱动或变化场景、仓库证据、结构机制、实际成本或风险、修改方向和验证方式；缺少其中一项时记录相应不确定性。
 
 具有 Hidden follow-up 的架构场景同时检查建议的反事实价值：后续合理变化是否进入更清楚的 Owner、减少无关传播并保留原有行为。无问题或非常规但有依据的 Fixture 用于测量 False architecture finding 和 Harmful redesign，防止候选提示通过增加评论数量虚增覆盖。
+
+Software Quality 场景根据当前用户、维护者、环境、Project Model 和接受方向判断适用性。评测先检查 Correctness，再观察 touched owner 的 Understandability、Changeability、Verifiability、Operability、Consistency 与 Predictability；条件质量属性只在场景证据使其相关时进入。全仓库扫描、统一分数、额外文件与广泛 Cleanup 不产生收益分数。
+
+Technical Debt 场景将当前质量与未来负担分别记录。Qualified Debt Item 需要 Current Construct、可信 Trigger 或 Exposure、Interest、Propagation、Risk、Coordination 或 Option Loss 机制，以及 Carry、Contain、Reduce、Repay、Replace 或 Retire 决定。Defect、Vulnerability、Risk、Feature Gap 和 Necessary Complexity 保留各自分类；债务标签不能提高清理项分数或降低当前问题严重度。
+
+显式 Debt System 场景记录债务间传播、共同根因、交付能力消耗、Owner 缺失和过期清理条件。评审比较主要机制命中、False debt finding、干预杠杆、当前行为保护与 Hidden follow-up 的 Interest 变化，不设置统一债务分数、数量目标或零债务标准。
 
 Project Model 场景检查 Agent 能否把稀疏用户表达和项目现实合成为可修正的语义模型。评分关注模型是否帮助判断一个能力自然属于当前中心、构成相邻扩展，或需要用户确认产品身份变化；篇幅、术语数量和图表数量不产生分数。
 
@@ -125,6 +142,22 @@ design_exploration:
   owned_unknowns: []
   revisit_signals: []
   persistence: <none-or-location>
+software_quality:
+  active_goals: []
+  touched_boundary: []
+  current_findings: []
+  tradeoffs: []
+  operability: []
+  evidence: []
+technical_debt:
+  signals: []
+  hypotheses: []
+  qualified_items: []
+  dominant_mechanisms: []
+  strategies: []
+  persistence: []
+  retirement_evidence: []
+  false_findings: []
 review:
   assessment_boundary: []
   primary_tensions: []

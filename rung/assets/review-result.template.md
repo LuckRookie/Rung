@@ -31,13 +31,16 @@
 - Shared state, implicit behavior and abstraction evidence: {{state_and_abstraction_review}}
 - Interface and data compatibility: {{compatibility_review}}
 
-## Quality review
+## Software quality review
 
-- Human-facing UX: {{ux_review}}
-- Error handling and security: {{error_and_security_review}}
-- Test design and coverage: {{test_review}}
-- Documentation consistency: {{documentation_review}}
-- Release preparation: {{release_review}}
+- Active quality goals and evidence: {{quality_goals_and_evidence}}
+- Current correctness and failure semantics: {{correctness_and_errors}}
+- Touched-owner understandability and changeability: {{understandability_and_changeability}}
+- Verifiability and test design: {{verifiability_and_tests}}
+- Operability and resource behavior: {{operability_and_resources}}
+- Project consistency and predictability: {{consistency_and_predictability}}
+- Relevant UX, security, privacy, performance, and compatibility: {{conditional_qualities}}
+- Documentation and Release preparation: {{facts_and_release_review}}
 
 ## Integration responsibility
 
@@ -47,6 +50,8 @@
 
 ## Debt and follow-up
 
-| Item | Destination | Priority | Owner |
-|---|---|---|---|
-| {{follow_up}} | {{issue_or_next_run}} | {{priority}} | {{owner}} |
+| Debt item and status | Construct, trigger and exposure | Interest or propagation | Strategy | Owner and revisit |
+|---|---|---|---|---|
+| {{debt_item}} | {{construct_trigger_and_exposure}} | {{interest_or_propagation}} | {{strategy}} | {{owner_and_revisit}} |
+
+- Non-debt follow-up and destination: {{other_follow_up}}

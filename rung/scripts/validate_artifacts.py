@@ -16,6 +16,7 @@ ARTIFACT_FILES = [
     "project-model.md",
     "design.md",
     "plan.md",
+    "debt.md",
     "harness-change.md",
     "verification-harness.md",
     "verification-plan.json",

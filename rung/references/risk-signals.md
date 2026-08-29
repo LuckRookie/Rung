@@ -10,12 +10,13 @@ Read when work type, risk, or evidence scope can materially change the next deci
 | Feature | observable behavior, interface/data impact, regression |
 | Bugfix | expected versus actual, reproduction, root cause, regression evidence |
 | Refactor | preserved behavior, characterization, structural gain |
+| Debt | current construct, credible trigger, interest, owner, strategy |
 | Migration | current/target state, compatibility window, order, recovery |
 | Dependency | API change, advisory, lock state, build compatibility |
 | Docs/Config | agreement with actual behavior |
 | Release-only | revision, evidence, artifact, version, notes |
 
-Types are routing hints and may overlap.
+Types may overlap.
 
 For uncertain project meaning, feature fit, or intended evolution, read [Project Model](project-model.md).
 
@@ -29,4 +30,4 @@ Apply depth locally. Increase attention for public APIs or schemas; auth, secret
 
 Harness maintenance can stay Lite. Shared fixtures, authority, or execution often merit Standard depth. Framework, architecture-rule, required-CI, or release-policy evolution may merit Strict attention at that boundary.
 
-Governance depth and evidence scope are independent. Evidence may range from Tier 0 target/syntax checks, through Tier 1 local behavior and Tier 2 integration/contract/build checks, to Tier 3 release matrices and packaging. Claims and risk select the scope.
+Governance depth and evidence scope are independent. Claims and risk select Tier 0 target/syntax, Tier 1 local behavior, Tier 2 boundary/build, or Tier 3 release evidence.

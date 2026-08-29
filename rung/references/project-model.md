@@ -102,6 +102,8 @@ The model supplies direction to [Design](design.md) and [Engineering Structure](
 
 Review the model when implementation evidence contradicts it, a hidden follow-up lands poorly, users or product direction change, previously adjacent behavior becomes central, or a new semantic center emerges. Revision under new evidence is a successful outcome when the model's prior status and accepted change remain visible.
 
+When accepted learning or context change leaves the implementation expressing a superseded model and credible evolution makes that mismatch costly, read [Technical Debt](technical-debt.md).
+
 ## Persist only for a consumer
 
 Keep a local, reversible model in the conversation or design reasoning. Use an existing README, product definition, requirements document, domain glossary, architecture overview, or other owning project fact when the accepted model will guide future work. For cross-session recovery, multiple executors, formal review, or temporary comparison, `.rung/runs/<run-id>/project-model.md` may use `assets/project-model.template.md`.

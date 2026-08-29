@@ -11,13 +11,13 @@ Read when future work, recovery, review, or release needs durable information.
 | Lasting requirement, contract, architecture, data, UX, build, test, or release fact | owning project document, config, or code |
 | Cross-session, multi-executor, comparison, or recovery state | existing issue or `.rung/runs/<run-id>/` |
 
-Create an Artifact when it improves resumption, coordination, review, migration, evidence, or handoff. Keep one fact in one maintained location. Promote stable decisions into their project owner; retain or clean run state by project convention and an explicit condition.
+Create an Artifact when it improves resumption, coordination, review, migration, evidence, or handoff. Keep each fact with one owner. Promote stable decisions to their owner; retain or clean run state by project convention and an explicit condition.
 
 ## Run state
 
 For recovery, retain outcome, decisions and delegated scope, root and baseline, protected user work, authoritative facts, design, completed units, next action, evidence, gaps, and risks. On resume, compare saved and current Git state.
 
-`.rung/` is optional. Create useful files such as `brief.md`, `context.md`, `project-model.md`, `design.md`, `plan.md`, `harness-change.md`, `verification-harness.md`, `verification-plan.json`, `verification.md`, `review.md`, `evidence.json`, or `release.yaml`. Reuse project artifacts by path and revision.
+`.rung/` is optional. Run files may include `brief.md`, `context.md`, `project-model.md`, `design.md`, `plan.md`, `debt.md`, Harness or verification state, `review.md`, `evidence.json`, and `release.yaml`. Reuse project artifacts by path and revision.
 
 ## Templates
 
@@ -25,6 +25,7 @@ For recovery, retain outcome, decisions and delegated scope, root and baseline, 
 - inspected facts: `assets/project-context.template.md`
 - shared project identity and fit: `assets/project-model.template.md`
 - durable design: `assets/solution-design.template.md`
+- qualified debt without a project issue shape: `assets/technical-debt-item.template.md`
 - coordinated execution: `assets/change-plan.template.md`
 - existing Harness evolution: `assets/harness-change.template.md`
 - verification infrastructure: `assets/verification-harness.template.md`

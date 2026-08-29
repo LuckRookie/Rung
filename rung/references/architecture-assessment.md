@@ -1,8 +1,10 @@
 # Architecture Assessment
 
-Read when a development decision requires assessment of an existing project's architecture, organization, modularity, structural debt, dependency shape, framework fit, or proposed improvement. Also read [Engineering Structure](engineering-structure.md) for the shared design lenses.
+Read for a decision-ready assessment of existing architecture, organization, modularity, dependencies, framework fit, or structural improvement. Also read [Engineering Structure](engineering-structure.md) for shared lenses.
 
-Use an accepted [Project Model](project-model.md) when available; recover one when product identity, semantic center, or feature fit can change the assessment.
+Use an accepted [Project Model](project-model.md); recover one when identity or fit can change the assessment.
+
+For structural debt, read [Technical Debt](technical-debt.md) after scenario and mechanism evidence establishes future burden.
 
 An assessment request authorizes inspection and recommendations. Edit the project only when the user also requests change or delegates that next action.
 
