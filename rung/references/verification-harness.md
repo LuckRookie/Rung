@@ -66,6 +66,10 @@ For a new component, make these facts discoverable where relevant:
 
 Small local checks can express these facts directly in code and naming. Use a persistent artifact only when coordination, recovery, or formal review needs it.
 
+## Design the harness boundary
+
+Choose the nearest layer that can distinguish the claim: unit for local invariants, component for owned behavior, contract for a public boundary, integration for real dependency interaction, and end-to-end for user-visible composition. For every new check, state its claim, owner, known-good and known-bad signal, isolation and cleanup, failure location, cost, and removal condition. Keep a higher layer only when it adds evidence the lower layer cannot provide.
+
 ## Signal quality
 
 A green result is useful when the check can also expose a relevant failure. When practical and proportionate, observe a known-bad example, fault injection, mutation, or evaluation copy fail for the intended reason. Avoid deriving both the expected result and the implementation from the same disputed source.

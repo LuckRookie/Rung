@@ -1,10 +1,10 @@
 # Development Scope
 
-Read only when the accepted outcome's codebase relationship, development claim, or ownership is materially unclear, or when one request combines qualifying and non-qualifying work. Clear cases use the short gate in `SKILL.md`.
+Read for an unresolved scope decision after minimal host inspection. Clear cases use `SKILL.md`; uncertain activation stays on the host path until facts justify governance.
 
 ## Establish positive membership
 
-Continue Rung only when both predicates hold:
+Development membership requires both predicates; activation is a separate decision:
 
 1. **Codebase relationship:** the accepted outcome concerns a software codebase or an artifact coupled to it in correctness and maintenance.
 2. **Active development claim:** the accepted outcome creates a durable project change, decides or directs a concrete change, or establishes evidence for a current change or release.
@@ -23,6 +23,18 @@ Codebase relationship alone is insufficient. The following signals are also insu
 - a path, file type, command, tool, technical vocabulary, or amount of work;
 - incidental code used to obtain another accepted outcome;
 - general needs for sources, planning, review, correctness, or evidence.
+
+## Activate proportionally
+
+For implicit invocation, require a consequential decision about ownership, contracts, persistent state, failure semantics, compatibility, migration, verification authority, or delivery readiness. New maintained software can qualify when these decisions are still open. A small security fix or schema change can qualify; repository size, file count, a public caller, and ordinary tests do not establish materiality alone.
+
+When behavior, owner, impact, and checks are clear, and the change is local and reversible, bypass Rung and finish under host instructions. This is still development. Repairing an implementation to honor a known contract differs from choosing or changing the contract. A request to run tests or hand off a patch alone does not request governance.
+
+An explicit instruction to use Rung or perform development governance (such as architecture assessment, design trade-offs, or release readiness) can activate small in-scope work. Mentioning the skill, quoting a command, or finding its installed files does not constitute that instruction. Explicit invocation waives materiality only; it never supplies a missing development claim or codebase relationship.
+
+Materiality that remains unknown is a reason for minimal host inspection, not speculative Guide loading or a question about whether to use Rung. Reassess if evidence exposes a consequential boundary; return to the host path when the need disappears. Activation applies to the current change, not every future task in the same repository.
+
+After entry, use Lite for a bounded decision or explicit small task, Standard for interacting owners or design choices, and Strict at high-impact contract, security, data, migration, or delivery boundaries. Depth does not prescribe a document, reviewer, test tier, or stage count.
 
 ## Resolve material ambiguity
 
@@ -48,6 +60,6 @@ When one request contains both active development and other outcomes, keep their
 
 Re-evaluate when the accepted outcome changes. Understanding can expose a development claim; enter Rung only when a concrete change, decision, or delivery claim becomes active. Development work can also reduce to understanding or another outcome; exit when either predicate disappears. Load References only after membership is current.
 
-Explicit `$rung` invocation still passes through this gate. Briefly explain an out-of-scope result, load no further Rung material, and continue helping under host instructions.
+Explicit `$rung` invocation still passes through membership. On bypass, continue helping without a governance report. Read deeper guidance only when its current signal holds.
 
 The gate controls Rung context and responsibility. It does not block the user's task or replace host permissions, safety rules, or another workflow.

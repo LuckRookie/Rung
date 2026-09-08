@@ -65,6 +65,18 @@ During Implement, keep the relevant outcomes:
 
 Current quality can require a behavior fix, local refactor, structural decision, new evidence, or a project rule. Keep these owners distinct even when one diff contains several.
 
+## Quality probes
+
+Record scenario, observation, mechanism, and response for a material claim:
+
+- correctness: expected behavior plus an invalid or failure case;
+- understandability: a bounded walkthrough recovering owner, flow, state, effects, and failure meaning;
+- changeability: a follow-up change and its required files or knowledge;
+- verifiability: independent known-good and known-bad observations at the owning boundary;
+- operability: timeout, retry, cancellation, cleanup, or diagnostics when activated.
+
+Promote only after false positives, owner, cost, and revision are known.
+
 ## Operability before Release
 
 Rung ends at Release handoff, while code-level operability can be required for readiness. Inspect only relevant behavior:

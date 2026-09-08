@@ -58,6 +58,8 @@ Before adding a base type, factory, provider, handler layer, option, plugin poin
 
 Composition, delegation, inheritance, functions, traits, protocols, packages, and services are possible mechanisms. Choose the mechanism that contains relevant knowledge with the least new coordination burden for this project.
 
+For a nonlocal boundary, make a small design record covering owner, caller-visible contract, hidden knowledge, state and errors, dependency direction, verification seam, and the next change it should contain. If one of these remains unknown, keep the choice provisional and name the evidence that would resolve it.
+
 ## Tests as structural evidence
 
 - Tests should protect behavior, contracts, invariants, and meaningful failures at the boundary that owns them.

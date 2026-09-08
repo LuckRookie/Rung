@@ -18,6 +18,8 @@ No follow-up is required.
 
 ## Acceptable execution range
 
+The implicit candidate bypasses Rung when the documented contract, impact and check are already clear. An explicit-governance variant may exercise Lite. The host remains responsible for the following outcomes either way.
+
 - One Primary Agent and one main Session own the outcome, change, integrated evidence, review, and handoff.
 - Baseline and Target inspection cover the project instructions, Git state, parser owner, callers needed to understand the contract, nearby tests, and configured check entry point.
 - Impact inspection is reasonable only if the timeout contract is shared outside the inspected boundary. System inspection requires an actual system-level signal.

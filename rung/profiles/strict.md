@@ -1,3 +1,3 @@
 # Strict Depth
 
-For public contracts, security/privacy, persistent data, core architecture, migration, or release chains. Add durable design and recovery state, compatibility and rollback paths, integrated release evidence, and independent review where relevant. Keep the Primary Agent responsible and concentrate depth on the high-risk surface.
+For consequential contract, security/privacy, persistent-data, migration, or release decisions. Add evidence and recovery planning at the affected boundary. Independent review is optional under host policy. Documents and broad test tiers follow actual risk, not this label.

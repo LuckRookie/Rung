@@ -1,0 +1,249 @@
+{
+  "schema_version": 2,
+  "package": {
+    "name": "rung",
+    "stable_ref": "v0.1.0",
+    "candidate_version": "0.1.2"
+  },
+  "entrypoint": "SKILL.md",
+  "scope_gate": {
+    "required_predicates": [
+      "codebase_relationship",
+      "active_development_claim"
+    ],
+    "development_outcomes": [
+      "durable_codebase_change",
+      "decision_directing_change",
+      "evidence_for_current_change_or_release"
+    ],
+    "understanding_only_exits_before_references": true
+  },
+  "concerns": [
+    {
+      "id": "clarify",
+      "entry": "references/clarify.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "direction",
+        "identity",
+        "authority"
+      ]
+    },
+    {
+      "id": "inspect",
+      "entry": "references/inspect.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "missing facts",
+        "user work",
+        "project reality"
+      ]
+    },
+    {
+      "id": "design",
+      "entry": "references/design.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "behavior",
+        "UX",
+        "ownership",
+        "data",
+        "errors"
+      ]
+    },
+    {
+      "id": "plan",
+      "entry": "references/plan.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "migration",
+        "collaboration",
+        "recovery"
+      ]
+    },
+    {
+      "id": "implement",
+      "entry": "references/implement.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "editing",
+        "overlap",
+        "integration"
+      ]
+    },
+    {
+      "id": "verify",
+      "entry": "references/verify.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "behavior",
+        "compatibility",
+        "release proof"
+      ]
+    },
+    {
+      "id": "review",
+      "entry": "references/review.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "diff",
+        "structure",
+        "risk",
+        "delivery"
+      ]
+    },
+    {
+      "id": "release",
+      "entry": "references/release.md",
+      "kind": "card",
+      "max_bytes": 1300,
+      "signals": [
+        "revision",
+        "artifact",
+        "publication"
+      ]
+    },
+    {
+      "id": "design-exploration",
+      "entry": "references/design-exploration.md",
+      "kind": "guide",
+      "max_bytes": 7000,
+      "signals": [
+        "several materially different behavior paths"
+      ]
+    },
+    {
+      "id": "project-model",
+      "entry": "references/project-model.md",
+      "kind": "guide",
+      "max_bytes": 11000,
+      "signals": [
+        "semantic center",
+        "feature fit",
+        "product identity"
+      ]
+    },
+    {
+      "id": "engineering-structure",
+      "entry": "references/engineering-structure.md",
+      "kind": "guide",
+      "max_bytes": 9000,
+      "signals": [
+        "ownership",
+        "public surface",
+        "dependency knowledge"
+      ]
+    },
+    {
+      "id": "architecture-assessment",
+      "entry": "references/architecture-assessment.md",
+      "kind": "guide",
+      "max_bytes": 11000,
+      "signals": [
+        "existing architecture decision"
+      ]
+    },
+    {
+      "id": "architecture-design",
+      "entry": "references/architecture-design.md",
+      "kind": "guide",
+      "max_bytes": 8000,
+      "signals": [
+        "new subsystem or cross-module boundary"
+      ]
+    },
+    {
+      "id": "software-quality",
+      "entry": "references/software-quality.md",
+      "kind": "guide",
+      "max_bytes": 9000,
+      "signals": [
+        "current touched-area quality"
+      ]
+    },
+    {
+      "id": "technical-debt",
+      "entry": "references/technical-debt.md",
+      "kind": "guide",
+      "max_bytes": 12500,
+      "signals": [
+        "credible future engineering burden"
+      ]
+    },
+    {
+      "id": "project-harness",
+      "entry": "references/project-harness.md",
+      "kind": "guide",
+      "max_bytes": 4500,
+      "signals": [
+        "project controls conflict or change"
+      ]
+    },
+    {
+      "id": "verification-harness",
+      "entry": "references/verification-harness.md",
+      "kind": "guide",
+      "max_bytes": 8000,
+      "signals": [
+        "missing evidence layer"
+      ]
+    },
+    {
+      "id": "harness-evolution",
+      "entry": "references/harness-evolution.md",
+      "kind": "guide",
+      "max_bytes": 11000,
+      "signals": [
+        "shared verification or release control changes"
+      ]
+    }
+  ],
+  "lifecycle": [
+    {
+      "id": "clarify",
+      "concern": "clarify"
+    },
+    {
+      "id": "inspect",
+      "concern": "inspect"
+    },
+    {
+      "id": "design",
+      "concern": "design"
+    },
+    {
+      "id": "plan",
+      "concern": "plan"
+    },
+    {
+      "id": "implement",
+      "concern": "implement"
+    },
+    {
+      "id": "verify",
+      "concern": "verify"
+    },
+    {
+      "id": "review",
+      "concern": "review"
+    },
+    {
+      "id": "release",
+      "concern": "release"
+    }
+  ],
+  "activation": {
+    "implicit_requires_materiality": true,
+    "explicit_overrides_materiality_only": true,
+    "routine_activation": "bypass",
+    "uncertain_activation": "defer"
+  },
+  "entrypoint_max_bytes": 2400
+}

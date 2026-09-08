@@ -19,8 +19,8 @@ No follow-up is required.
 
 ## Acceptable invocation and routing
 
-- Candidate Rung is eligible because the accepted result is a durable, verified codebase change.
-- Inspect, Implement, Verify, or Review may load only when their concern is current.
+- The task is in development scope but implicit Candidate Rung bypasses governance: behavior, owner, impact and checks are already clear.
+- An explicit-governance variant may use zero or one current card; it does not require exploration.
 - Design Exploration should not load: behavior, owner, state mapping, compatibility boundary, and verification path are already sufficient for the next decision.
 
 ## Correctness gate

@@ -6,7 +6,7 @@
 - `INSTALL.md` is the source of truth for package coordinates, installation scope, conflict handling, and installation verification.
 - `rung/SKILL.md` is the user-facing Skill entrypoint. Keep it concise and route conditional detail to references.
 - `rung/references/execution-model.md` is the source of truth for Primary Agent ownership, inspection radius, design persistence, plan and implementation ownership, Worker and Reviewer roles, cross-session recovery, and integrated responsibility.
-- `rung/references/development-scope.md` defines the two-part membership test for codebase relationship and active development claim, early exit for understanding-only or unrelated outcomes, and mixed ownership.
+- `rung/references/development-scope.md` defines the two-part membership test for codebase relationship and active development claim, early exit, mixed ownership, and the separate materiality/explicit-invocation activation policy.
 - `rung/references/` contains concern cards and governance reminders loaded only when their signals are present.
 - `rung/references/project-harness.md` defines the Project Harness scope, Test System relationship, problem signals, and routing.
 - `rung/references/harness-evolution.md` is the detailed guide for independently evidenced repair, coverage change, migration, rollback, and cleanup of an existing Harness.
@@ -19,7 +19,8 @@
 - `rung/references/technical-debt.md` defines qualified future engineering obligations, debt economics and systems, management strategies, safe repayment, and consumer-driven persistence.
 - `rung/profiles/` contains optional depth hints for Lite, Standard, and Strict governance.
 - `rung/assets/` contains optional templates selected when persistence improves coordination, recovery, recurring decisions, review, or handoff; `project-model.template.md` is the fallback for shared identity facts and `technical-debt-item.template.md` for qualified debt without a project-owned issue shape.
-- `rung/scripts/` contains deterministic, dependency-free helpers.
+- `rung/contracts/rung-contract.json` is the machine-readable owner for the Scope Gate, activation policy, reachable Concern routes, context budgets, and package channel facts.
+- `rung/scripts/` contains deterministic, dependency-free helpers, including the structured Scope Gate evaluator.
 - `evals/` contains host-neutral behavioral scenarios for development-intent routing, Design Exploration, Project Model decisions, software quality, technical debt, engineering structure, architecture assessment, evidence, and context-cost evaluation.
 
 ## Documentation style
@@ -28,7 +29,7 @@
 - Use direct statements. Category-exclusion inventories and comparison slogans do not belong in product descriptions.
 - Keep each fact in one maintained location and link to it from other documents.
 - Preserve the User Intent → Development Scope Gate → Active Codebase Development Intent-to-Release boundary established in `Rung.md`.
-- Run the Scope Gate before loading any Reference. Continue only when the accepted outcome has both a codebase relationship and an active development claim: a durable project change, a concrete decision directing change, or evidence for a current change or release.
+- Before References, check codebase relationship and active development claim, then activation. Implicit use requires material engineering decisions; explicit governance requests waive materiality only. Routine local reversible work with direct checks bypasses Rung. Unknown activation uses minimal host inspection, not speculative governance or a classification question.
 - Treat a codebase relationship, repository presence, path, file type, tool use, and incidental code as insufficient scope evidence on their own. An outcome that ends with understanding current codebase facts exits before another Rung resource loads. Runtime guidance defines the positive set without inventorying the open-ended space outside it.
 - Keep work outside the positive set on the Host or its owning workflow. For mixed work, govern only the qualifying codebase portion through Release Handoff and preserve independent ownership and authorization for the rest.
 - Preserve progressive governance: thin by default, signal-driven, composable, and proportional to risk.
@@ -39,7 +40,7 @@
 - Give Workers bounded context and explicit, non-overlapping ownership. The Primary Agent owns global planning, integration, finding resolution, and Release Handoff.
 - Verify completion against the integrated revision or explicitly identified working-tree state. Worker checks are candidate evidence until integration preserves their relevance.
 - Keep the entrypoint and Concern Cards short. Put complex domain reasoning in precisely routed Domain Guides; measure context cost by what a task actually loads.
-- Default to one Reference for the current decision. Future phases do not justify preloading; combine References only when concerns interact in the current judgment.
+- Default to zero or one Reference for the current decision; reuse loaded guidance. Future phases do not justify preloading; combine References only when concerns interact in the current judgment.
 - Treat Software Quality as current fitness and Technical Debt as avoidable future burden under credible evolution. Either axis can be high while the other remains low.
 - Keep ordinary implementation and review focused on the touched ownership boundary. A repository-wide quality audit or debt-system review requires a material current signal or an explicit request.
 - Qualify debt through a present construct, credible trigger or exposure, and an interest, propagation, risk, coordination, or option-loss mechanism. Smells, TODOs, age, size, and tool scores remain investigation signals.
@@ -73,6 +74,8 @@ Run after changing scripts, templates, or Skill routing:
 ```bash
 python -B -m unittest discover -s tests -v
 ruff check --no-cache .
+python rung/scripts/validate_contract.py --skill-root rung
+python rung/scripts/evaluate_scope.py --input <scope-classification.json>
 ```
 
 Run the host `skill-creator` quick validator after changing `SKILL.md` or `agents/openai.yaml`.

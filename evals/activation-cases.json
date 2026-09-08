@@ -1,0 +1,268 @@
+[
+  {
+    "id": "local-fix",
+    "prompt": "Fix the local cart total floor using the existing focused test.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "large-repo-tiny-edit",
+    "prompt": "Correct a private variable spelling in this large monorepo.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "known-public-contract",
+    "prompt": "Empty optional timeout should use the documented default; fix the parser and test.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "one-line-security",
+    "prompt": "Tenant admins must never read another tenant records; fix this authorization boundary.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "schema-migration",
+    "prompt": "Change persisted account identifiers while old clients remain supported.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "new-maintained-service",
+    "prompt": "Build a maintained import service with resumable jobs; design state and recovery.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "tiny-maintained-tool",
+    "prompt": "Add the specified pure conversion function to this tiny maintained tool; test command and owner are known.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "temporary-script",
+    "prompt": "Use a throwaway script to calculate this number; the number is the deliverable.",
+    "judgments": {
+      "codebase_relationship": "absent",
+      "development_claim": "absent",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "outside",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "architecture-decision",
+    "prompt": "Assess this service architecture and recommend the next refactor.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "explicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "understanding",
+    "prompt": "Explain the existing call path; I only need to understand current behavior.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "absent",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "understanding-only",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "explicit-small",
+    "prompt": "Use $rung to fix this local arithmetic bug.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "explicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "explicit-understanding",
+    "prompt": "Use $rung to explain this current function only.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "absent",
+      "materiality": "present",
+      "invocation_mode": "explicit"
+    },
+    "expected": {
+      "scope": "understanding-only",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "incidental-name",
+    "prompt": "Fix a typo in this Rung documentation sentence.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "release-readiness",
+    "prompt": "Determine whether the current package is ready for release using artifact and compatibility evidence.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "operations-only",
+    "prompt": "Use $rung to restart the running service, with no repository changes.",
+    "judgments": {
+      "codebase_relationship": "absent",
+      "development_claim": "absent",
+      "materiality": "present",
+      "invocation_mode": "explicit"
+    },
+    "expected": {
+      "scope": "outside",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "mixed",
+    "prompt": "Migrate the repository deployment schema and separately inspect live service status.",
+    "judgments": {
+      "codebase_relationship": "mixed",
+      "development_claim": "mixed",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "mixed",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "mixed-without-change",
+    "prompt": "Explain two current repos and unrelated background facts.",
+    "judgments": {
+      "codebase_relationship": "mixed",
+      "development_claim": "absent",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "understanding-only",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "unknown-impact",
+    "prompt": "Fix this failure; callers and state impact have not yet been inspected.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "uncertain",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "defer"
+    }
+  },
+  {
+    "id": "unknown-relationship",
+    "prompt": "Use $rung on this output; its codebase ownership has not yet been established.",
+    "judgments": {
+      "codebase_relationship": "uncertain",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "explicit"
+    },
+    "expected": {
+      "scope": "uncertain",
+      "activation": "defer"
+    }
+  }
+]

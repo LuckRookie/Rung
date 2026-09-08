@@ -1,52 +1,41 @@
 ---
 name: rung
-description: Govern active software development whose outcome is a durable codebase change, a decision directing one, or readiness to release one. A codebase relationship alone does not activate this skill.
+description: "Guide consequential changes to maintained software: architecture, contracts, state, migration, and release readiness. Auto-use for material engineering decisions; routine local edits with direct checks stay on the host path."
 ---
 
 # Rung
 
 ## Scope gate
 
-Before references, require a **codebase relationship** and an **active development claim**: the outcome concerns a maintained codebase or coupled artifact and changes it durably, directs a concrete change, or proves a current change or release.
+Before references, require a codebase relationship and an active development claim: a durable change, a decision directing one, or current change/release evidence. Understanding-only or unrelated outcomes exit. Govern only the qualifying portion of mixed work.
 
-- **Development:** both hold; continue.
-- **Understanding only:** codebase facts are the endpoint; load no Rung reference or artifact.
-- **Outside:** no relationship; load no Rung reference or artifact.
-- **Mixed:** govern the active development portion only.
+Then check activation:
 
-Relationship, repository, path/type, tool, or incidental code alone is insufficient. For material claim or ownership ambiguity, read [Development scope](references/development-scope.md).
+- **Implicit:** enter for material ownership, contract, state, failure, migration, verification, or delivery decisions. Clear, local, reversible work with a direct check stays on the host path. Size or ordinary testing alone is insufficient.
+- **Explicit:** requested Rung/development governance can enter for small in-scope work; a mention alone does not qualify.
+- **Uncertain:** continue minimal host inspection; recheck when facts change. Do not ask merely to classify or load governance speculatively.
 
-## Core prompts
+On bypass, load no Rung reference or artifact; continue the task. Scope decisions: [Development scope](references/development-scope.md).
 
-- **Outcome:** Desired observation?
-- **Context:** Relevant facts, constraints, and user changes?
-- **Approach:** Smallest coherent direction?
-- **Evidence:** Proof for the claim?
-- **Handoff:** Delivery ready?
+## Default work
 
-Keep these internal unless useful.
-
-## Operating spine
-
-One Primary Agent owns the run and handoff; one session by default. For radius, persistence, recovery, or delegation, read [Execution model](references/execution-model.md).
+One Primary Agent owns the integrated result. Internally connect outcome, facts/user work, invariants, owner, failures, and evidence. Implement a coherent slice; verify and review the actual state. Probe a credible next change when it informs a boundary. No required worksheet or stage sequence.
 
 ## Signal routing
 
-Pass the gate. Use one current reference by default; do not preload future phases. Combine only interacting concerns.
+Load zero or one reference for the current decision; do not preload future phases. Follow deeper links only as needed; reuse loaded guidance.
 
-- Direction, identity, authority: [Clarify](references/clarify.md)
-- Missing facts/user work: [Inspect](references/inspect.md)
-- Behavior, UX, ownership, data, errors: [Design](references/design.md)
-- Migration, collaboration, recovery: [Plan](references/plan.md)
-- Editing, overlap, integration: [Implement](references/implement.md)
-- Behavior, compatibility, release proof: [Verify](references/verify.md)
-- Diff, structure, risk, delivery: [Review](references/review.md)
-- Revision, artifact, publication: [Release](references/release.md)
+- Intent/authority: [Clarify](references/clarify.md)
+- Missing facts: [Inspect](references/inspect.md)
+- Behavior/boundaries: [Design](references/design.md)
+- Dependencies/recovery: [Plan](references/plan.md)
+- Editing/integration: [Implement](references/implement.md)
+- Proof: [Verify](references/verify.md)
+- Diff/architecture judgment: [Review](references/review.md)
+- Release claim: [Release](references/release.md)
 
-Unresolved paths: [Design Exploration](references/design-exploration.md). Quality: [Software Quality](references/software-quality.md). Debt: [Technical Debt](references/technical-debt.md). Structure: [Engineering Structure](references/engineering-structure.md). Architecture: [Architecture Assessment](references/architecture-assessment.md). Harness: [Project Harness](references/project-harness.md).
-
-Interaction: [Workflow](references/workflow.md). Depth: [Risk signals](references/risk-signals.md). State: [Artifacts](references/artifacts.md).
+Interacting concerns: [Workflow](references/workflow.md).
 
 ## Handoff
 
-Preserve facts/user work. No default `.rung/` workspace. External writes need authorization. Report result, evidence, risk, and release state.
+Report result, evidence, gaps and delivery state. Preserve user work. Persist only for a future consumer. Scripts are optional; no startup command. External actions follow user authority and host policy.

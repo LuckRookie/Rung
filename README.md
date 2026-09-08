@@ -1,8 +1,8 @@
 # Rung
 
-Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从活跃的代码项目开发意图覆盖到可验证 Release，并在任务出现不确定性、风险、协作、验证声明或发布准备信号时，按需加载相关提醒、模板和确定性工具。
+Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它为持续软件开发中的实质工程决定提供从设计到交付的按需指导；简单、局部、可逆且已有直接检查的修改沿用 Host 普通编码路径。
 
-当前稳定版本为 [v0.1.0](https://github.com/LuckRookie/Rung/releases/tag/v0.1.0)。产品定义、系统边界和实现约束以 [Rung.md](Rung.md) 为准。
+当前稳定版本为 [v0.1.0](https://github.com/LuckRookie/Rung/releases/tag/v0.1.0)；`main` 上的候选开发线版本为 `0.1.2`。稳定引用和候选版本由 [`rung/contracts/rung-contract.json`](rung/contracts/rung-contract.json) 维护。产品定义、系统边界和实现约束以 [Rung.md](Rung.md) 为准。
 
 `main` 分支当前形成 v0.1.2 候选开发内容；稳定安装坐标继续锁定 `v0.1.0` tag。
 
@@ -10,7 +10,7 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 
 | 能力 | 结果 |
 |---|---|
-| 开发意图路由 | 同时核对代码库关系与活跃开发 Claim，让持久修改、具体开发决策和 Release 证明进入治理，让止于当前事实理解的结果尽早退出 |
+| 开发意图路由 | 分别判断开发范围与治理启用；隐式调用需要实质工程决定，显式调用可用于范围内的小任务 |
 | 薄层导航 | 默认只提醒 Outcome、Context、Approach、Evidence 和 Handoff |
 | 执行责任 | 每次 DevelopmentRun 由一个 Primary Agent 持有全局 Plan、集成结果与 Release Handoff |
 | 按需治理 | 当前信号决定加载哪个开发关注面和治理深度 |
@@ -19,6 +19,8 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它从�
 | 设计探索 | 重要设计仍存在多条后果明显不同的合理路径时，以最少代表性场景发现隐藏职责、状态、失败语义和真实权衡，再交给 Design 收敛 |
 | 工程结构治理 | Design、Implement 和 Review 出现实质结构信号时，按需检查归属、局部性、信息隐藏、依赖知识、状态语义和抽象依据 |
 | 架构评估 | 已有系统审查需要形成改造、兼容或 Release 决策时，以变化场景、仓库证据、因果机制和反证识别主要结构矛盾 |
+| 架构设计 | 新子系统、公共契约或跨模块边界需要方向时，以变化场景、职责契约、状态、依赖和验证接缝收敛最小边界 |
+| 默认编码指导 | 在会话内联系目标、不变量、Owner、失败与证据；后续变化只在影响边界时检查 |
 | 软件质量 | 当前修改与 Review 按需判断正确性、可理解性、可修改性、可验证性、可运行性、一致性和可预测性，并让触及 Owner 保持连贯 |
 | 技术债治理 | 以当前承载状态、可信 Trigger 与未来负担机制限定有效债务，管理 Interest、Exposure、Propagation、Principal、策略与 Revisit |
 | Project Harness 演进 | 复用可靠的已有约束，并在事实源、测试、规则、构建、CI 或 Gate 自身出现问题时进行独立诊断和渐进迁移 |
@@ -33,10 +35,12 @@ User Intent
    ↓
 Development Scope Gate
    ├─ 理解型结果或未建立代码库关系 → Host / 对应工作流
-   └─ 活跃开发或混合任务中的开发部分 → 按当前信号加载一张提示卡 → Verified Release Handoff
+   └─ 满足开发范围及启用条件的部分 → 按当前信号加载零到一张提示卡 → Verified Release Handoff
 ```
 
-Rung 进入 DevelopmentRun 需要两个条件同时成立：主要验收对象与软件代码库或持续耦合内容存在责任关系；当前结果还要形成持久项目修改、指导具体修改的决定，或者支持当前变更与 Release 的证据 Claim。主要验收结果止于理解代码库当前事实时，Rung 在加载 Reference 前退出。仓库存在、文件位置、文件类型、工具使用和偶然产生的代码也不能单独建立开发意图。混合任务只把活跃开发部分推进到 Release Handoff。
+Rung 先确认代码库关系与活跃开发 Claim，再决定是否启用。自动调用需要实质的职责、契约、状态、失败、兼容、迁移、验证或交付决定。行为、Owner、影响与检查已知的局部可逆修改直接由 Host 完成；文件数、项目规模和常规测试不单独触发。显式 `$rung` 或开发治理请求可用于小任务，仍须满足开发范围。边界的权威定义见 [Rung.md §4.1](Rung.md#41-开始边界user-intent)。
+
+未知情况先进行最小 Host 检查，发现实质影响后再进入。已安装或提到 Skill 不表示启用。每个新任务重新判断，实际需要哪个关注面才读取哪张卡。
 
 Rung 覆盖八个可组合关注面：
 
@@ -62,6 +66,8 @@ Rung 按实际加载量控制上下文：Development Scope Gate 在任何 Refere
 
 工程结构同样按两层加载：日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；已有系统审查需要形成改造、兼容或 Release 决策时，再读取 Architecture Assessment。重要 Finding 需要连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
 
+默认编码指导直接写在入口中，完整架构、质量、债务和 Harness 指南由相应阶段卡按信号进入。没有默认质量 Guide、固定四步、必填 Change Contract 或自动 Python 启动命令。是否真正降低上下文占用，要观察宿主实际选中、读取与重复读取的内容。
+
 [Software Quality](rung/references/software-quality.md) 与 [Technical Debt](rung/references/technical-debt.md) 是两个独立判断维度。前者关注软件当前对使用者、维护者、环境和已接受方向的适用性；后者关注当前工程状态在可信变化、维护事件或时间节点下产生的可避免未来负担。普通任务只整理 touched ownership boundary，详细质量 Guide 由实质权衡或 Finding 触发；代码异味、TODO、年龄和工具分数只产生 Debt Signal，当前 Construct、可信 Trigger 或 Exposure、Interest 或 Propagation 机制和管理决定共同限定 Qualified Debt Item。
 
 技术债覆盖 Code、Architecture、Data and Compatibility、Dependency and Platform、Verification and Harness、Build and Release、Documentation and Fact Sources。显式系统审查寻找驱动项目 Chaos 的少数 Debt Mechanism；日常开发只处理当前变化实际激活、引入、携带或偿还的义务。持久债务优先进入项目已有 Issue、Roadmap、Architecture、Dependency、Migration 或 Harness Owner；缺少合适形态且存在未来消费者时，才使用可选 Technical Debt Item 模板。
@@ -74,7 +80,7 @@ Project Model 可以留在 Session 中；跨 Session、多人协作、正式审�
 rung/
 ├── SKILL.md                 # 活跃开发范围门、薄提示与信号路由
 ├── agents/openai.yaml       # Codex UI 元数据
-├── references/              # Execution Model、关注面、Project Model、Design Exploration、Software Quality、Technical Debt、Engineering Structure、Architecture Assessment 与其他按需 Guides
+├── references/              # 阶段卡与按需领域指南
 ├── profiles/                # 可选治理深度提示
 ├── assets/                  # 可选开发制品模板
 └── scripts/                 # 确定性检查助手
@@ -96,7 +102,7 @@ Codex 用户级安装：
 npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung --agent codex --global --yes
 ```
 
-安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。用户级安装会让 Rung 对该用户的不同项目与工作目录可见；项目级安装把发现范围限制在当前项目。Rung 默认保留隐式调用，description 只吸引活跃开发结果，Development Scope Gate 负责误触后的二次核对。
+安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。用户级安装会让 Rung 对该用户的不同项目与工作目录可见；项目级安装把发现范围限制在当前项目。Rung 默认保留隐式调用，description 聚焦实质软件开发决定，Development Scope Gate 负责误触后的二次核对。
 
 Codex 提供 `$skill-installer` 时，也可以直接发送：
 
@@ -118,7 +124,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 $rung 为现有项目实现导出功能，并准备一个经过验证的可发布版本。
 ```
 
-Rung 默认保持轻量，先确认当前验收对象同时具备代码库关系和活跃开发 Claim，再根据任务信号加载相关提示。理解型结果或范围外结果立即退出；进入 DevelopmentRun 后以与任务规模相称的方式说明实现结果、实际验证、残余风险和 Release 交接状态。
+Rung 默认保持轻量，先确认当前验收对象同时具备代码库关系和活跃开发 Claim，再检查启用条件。简单隐式修改、理解型与范围外结果沿用 Host；进入 DevelopmentRun 后以与任务规模相称的方式说明实现结果、实际验证、残余风险和 Release 交接状态。
 
 ## 可选确定性工具
 
@@ -163,11 +169,31 @@ Release Manifest 标记为 `ready` 或 `published` 时，本地 `verification` �
 
 所有脚本只使用 Python 标准库，并输出机器可读 JSON。
 
+核心契约检查：
+
+```bash
+python rung/scripts/validate_contract.py --skill-root rung
+```
+
+该检查验证范围与启用契约、间接路由可达性、可组合关注面覆盖、上下文预算和包版本事实。它把运行时入口中的关键承诺固定为可验证的契约，但不替代真实 Agent 行为评测。
+
+Scope Gate 的结构化评估：
+
+```bash
+python rung/scripts/evaluate_scope.py --input scope-classification.json
+```
+
+输入由 Host 提供判断：`codebase_relationship`、`development_claim` 取 `present | absent | mixed | uncertain`；`materiality` 取 `present | absent | uncertain`；`invocation_mode` 取 `implicit | explicit`。Mixed 表示存在可识别的活跃开发部分；未知不应填写 Mixed。
+
+输出协议为 v2，分别报告 `scope` 和 `activation: enter | bypass | defer`。旧的两个字段输入仍能读取，缺失的实质性默认 `uncertain`，缺失调用方式默认 `implicit`，不会静默启用。`exited_before_references` 是退出建议，实际读取必须由 Host Trace 验证；`status: pass` 仅表示输入有效。工具不替 Agent 判断自然语言，不在每次启动时运行。
+
 ## 开发验证
 
 ```bash
 python -B -m unittest discover -s tests -v
 ruff check --no-cache .
+python rung/scripts/validate_contract.py --skill-root rung
+python rung/scripts/evaluate_scope.py --input <scope-classification.json>
 ```
 
 Codex 环境中还应使用 `skill-creator` 提供的 `quick_validate.py` 检查 Skill 元数据和结构。
@@ -178,6 +204,7 @@ Codex 环境中还应使用 `skill-creator` 提供的 `quick_validate.py` 检查
 Rung.md                    # 产品与架构事实源
 INSTALL.md                 # 人与 Coding Agent 共用的安装契约
 rung/                      # 可安装 Skill 包
+rung/contracts/            # Scope Gate、路由、预算和版本的机器可读契约
 evals/                     # 开发意图、设计探索、项目画像、软件质量、技术债、工程结构、架构评估、Harness 与上下文成本评测
 tests/                     # 确定性脚本测试
 .github/workflows/ci.yml   # 持续集成
@@ -198,7 +225,7 @@ AGENTS.md                  # 本仓库的 Agent 开发约定
 - Lite、Standard、Strict 可选深度提示；
 - 可选 DevelopmentRun Artifact 模板；
 - 项目检查、验证执行、Artifact 与 Release 检查脚本；
-- 无信号、小型 Bugfix、跨模块归属、连续变化、Harness 增长、已有 Harness 演进、单 Session 执行、跨 Session 恢复和 Worker 集成的行为评测协议；
+- 无信号、小型 Bugfix、跨模块归属、连续变化、Harness 增长、已有 Harness 演进、单 Session 执行、跨 Session 恢复、Worker 集成和全生命周期指导的行为评测协议；
 - 脚本行为测试。
 
 下一轮通过无额外治理信号的 Bugfix、跨模块 Feature、连续 Greenfield 变化、跨 Session 恢复和 Worker-assisted integration 场景，对比基线、当前 Rung 与候选提示，校准触发准确性、执行责任、工程收益、实现多样性和上下文成本。

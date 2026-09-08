@@ -12,6 +12,14 @@
 
 每组运行多次，记录随机性相关设置。Control 和 Candidate 必须记录精确 Git revision，避免用可移动分支名称代表版本。
 
+## 范围与启用
+
+开发 Scope 和治理 Activation 分别评测。候选的隐式调用只因实质工程决定进入；显式调用可用于小任务，但仍须具备开发范围。`activation-cases.json` 提供提示、人工标注的宿主判断和预期结果。确定性测试只证明给定判断的分类逻辑，不能证明模型能从提示正确判断。
+
+对真实 Agent，先只展示提示和可发现 metadata，隐藏判断与预期。分别记录是否选中 Skill、是否读取入口、实际 Reference Trace 与 `enter | bypass | defer`；明确区分未选中、误触后退出和主动治理。未知情形继续最小 Host 检查，事实改变后重新判断。隐式简单任务的目标是零 Reference、零治理 Artifact；显式小任务可使用 Lite。项目大小、公共调用者、普通测试和交接要求都不单独触发。
+
+历史场景的开发范围判断不等于自动启用；以当前 Scope + Activation 定义更新预期，不改变 fixture 的正确性要求。
+
 ## 执行协议
 
 1. 将场景起始仓库复制到独立临时目录。
@@ -81,6 +89,10 @@ Software Quality 场景根据当前用户、维护者、环境、Project Model �
 
 Technical Debt 场景将当前质量与未来负担分别记录。Qualified Debt Item 需要 Current Construct、可信 Trigger 或 Exposure、Interest、Propagation、Risk、Coordination 或 Option Loss 机制，以及 Carry、Contain、Reduce、Repay、Replace 或 Retire 决定。Defect、Vulnerability、Risk、Feature Gap 和 Necessary Complexity 保留各自分类；债务标签不能提高清理项分数或降低当前问题严重度。
 
+`35-lifecycle-guidance-smoke.md` 检查当前变化所需的生命周期决定是否有责任与证据；关注面允许组合、跳过和回访，无八步执行或文案匹配要求。
+
+`36-autonomous-quality-loop.md` 检查简短默认指导是否改善错误语义、验证与隐藏后续变化，不要求 Change Contract、质量 Guide 或内部思考自述。`37-activation-and-context-economy.md` 专门测量隐式/显式触发、误触退出与上下文成本。
+
 显式 Debt System 场景记录债务间传播、共同根因、交付能力消耗、Owner 缺失和过期清理条件。评审比较主要机制命中、False debt finding、干预杠杆、当前行为保护与 Hidden follow-up 的 Interest 变化，不设置统一债务分数、数量目标或零债务标准。
 
 Project Model 场景检查 Agent 能否把稀疏用户表达和项目现实合成为可修正的语义模型。评分关注模型是否帮助判断一个能力自然属于当前中心、构成相邻扩展，或需要用户确认产品身份变化；篇幅、术语数量和图表数量不产生分数。
@@ -105,10 +117,13 @@ fixture_revision: <revision-or-content-hash>
 rung_revision: <revision-or-none>
 invocation:
   selected: <true-or-false>
+  entrypoint_read: <true-or-false>
   mode: implicit | explicit | none
   scope: development | understanding-only | outside | mixed | uncertain
+  activation: enter | bypass | defer
+  materiality: present | absent | uncertain
   codebase_relationship: present | absent | mixed | uncertain
-  development_claim: active | inactive | mixed | uncertain
+  development_claim: present | absent | mixed | uncertain
   exited_before_references: <true-or-false-or-not-applicable>
 loaded_references: []
 execution:
@@ -121,7 +136,7 @@ execution:
   integrated_state: <revision-or-working-tree-identity>
 correctness: pass | fail | blocked
 checks: []
-context_cost: {}
+context_cost: {} # separate metadata, entrypoint, unique and repeated reference bytes
 diff_summary: {}
 project_model:
   boundary: []

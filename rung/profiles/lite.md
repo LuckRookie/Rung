@@ -1,3 +1,3 @@
 # Lite Depth
 
-For local, reversible work with bounded impact and a direct check path. One Primary Agent works in one session: inspect Baseline and Target, make the smallest coherent change, verify the integrated state, and hand off briefly. Add persistence, workers, or deeper guidance only when a material signal appears.
+For explicit small work or a bounded material decision. Inspect the owner, make the coherent change, run direct checks, and hand off briefly. Keep state in the session. Ordinary local edits bypass implicit Rung; artifacts, workers, and deeper guides need a separate current signal.

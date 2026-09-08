@@ -2,6 +2,8 @@
 
 Read when work type, risk, or evidence scope can materially change the next decision.
 
+After activation, choose depth by consequences, not project size.
+
 ## Work cues
 
 | Type | Distinct focus |
@@ -16,17 +18,15 @@ Read when work type, risk, or evidence scope can materially change the next deci
 | Docs/Config | agreement with actual behavior |
 | Release-only | revision, evidence, artifact, version, notes |
 
-Types may overlap.
-
 For uncertain project meaning, feature fit, or intended evolution, read [Project Model](project-model.md).
 
 ## Depth hints
 
-- **[Lite](../profiles/lite.md):** local, reversible, understood impact; conversational context and targeted checks.
-- **[Standard](../profiles/standard.md):** multiple files/modules, new module, coordination, or recovery; selective plan and broader evidence.
+- **[Lite](../profiles/lite.md):** explicit small work or a bounded material decision; targeted checks.
+- **[Standard](../profiles/standard.md):** interacting owners, unresolved choices, or recovery; selective plan and broader evidence.
 - **[Strict](../profiles/strict.md):** public contract, security/privacy, persistent data, migration, core architecture, or release chain; explicit design, recovery, and stronger evidence.
 
-Apply depth locally. Increase attention for public APIs or schemas; auth, secrets, or sensitive data; new top-level modules, shared state, core dependencies, or direction changes; migration or rollback; build/package/signing changes; major dependency upgrades; uncertain impact; weak compatibility evidence; overlapping user work; or cross-session coordination.
+Apply depth locally for public APIs or schemas; auth, secrets, or sensitive data; new top-level modules, shared state, core dependencies, or direction changes; migration or rollback; build/package/signing changes; major dependency upgrades; uncertain impact; weak compatibility evidence; overlapping user work; or cross-session coordination.
 
 Harness maintenance can stay Lite. Shared fixtures, authority, or execution often merit Standard depth. Framework, architecture-rule, required-CI, or release-policy evolution may merit Strict attention at that boundary.
 

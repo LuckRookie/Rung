@@ -18,10 +18,10 @@ No follow-up is required.
 
 ## Acceptable routing range
 
-- Core prompts are sufficient.
-- Inspect is reasonable only when the target or command is not already evident.
-- Design, Plan, persistent Artifacts, and formal Architecture Impact should remain unloaded unless the fixture reveals an unexpected structural fact.
-- Verify may be loaded to support the completion claim.
+- Implicit Candidate Rung remains unselected: this is development with no material governance decision.
+- If the host loads the entrypoint, bypass before any Reference or Artifact and complete the fix normally.
+- A separate explicit `$rung` variant may use Lite and zero or one current card. Do not conflate this with implicit discovery.
+- Reassess only if inspection exposes a consequential boundary absent from the supplied fixture.
 
 ## Correctness gate
 

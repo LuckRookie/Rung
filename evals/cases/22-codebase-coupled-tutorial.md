@@ -18,7 +18,7 @@ No follow-up is required.
 
 ## Acceptable invocation and routing
 
-- Candidate Rung is eligible for implicit selection because the accepted artifact is owned by the code project and must remain synchronized with its behavior and release.
+- The artifact belongs to development scope. If synchronization and its check are fully specified, implicit Candidate Rung bypasses governance; activate only for a material contract or release-evidence decision discovered in the fixture.
 - The Scope Gate establishes codebase membership without requiring a source-code edit.
 - Inspect may load while the current interface, documentation owner, executable examples, or project check is unknown.
 - Implement and Verify load only when their concerns become current. Development Scope is unnecessary once coupling is established.

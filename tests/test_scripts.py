@@ -34,57 +34,13 @@ class SkillStructureTests(unittest.TestCase):
         self.assertRegex(frontmatter, r"(?m)^description:\s*\S.+$")
         self.assertNotIn("TODO", frontmatter)
 
-    def test_discovery_scope_and_development_gate_are_consistent(self) -> None:
-        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-        frontmatter_end = skill.find("\n---\n", 4)
-        frontmatter = skill[4:frontmatter_end].lower()
-        scope_start = skill.index("## Scope gate")
-        routing_start = skill.index("## Signal routing")
-        scope = skill[scope_start:routing_start]
-        development_scope = (
-            SKILL_ROOT / "references" / "development-scope.md"
-        ).read_text(encoding="utf-8")
-        metadata = (SKILL_ROOT / "agents" / "openai.yaml").read_text(
-            encoding="utf-8"
-        )
-
-        self.assertIn("active software development", frontmatter)
-        self.assertIn("durable codebase change", frontmatter)
-        self.assertIn("codebase relationship alone", frontmatter)
-        self.assertLess(scope_start, routing_start)
-        self.assertIn("(references/development-scope.md)", scope)
-        self.assertIn("codebase relationship", scope)
-        self.assertIn("active development claim", scope)
-        self.assertIn("Understanding only", scope)
-        self.assertIn("Outside", scope)
-        self.assertIn("load no rung reference or artifact", scope.lower())
-        self.assertIn("Mixed", scope)
-        self.assertIn("alone is insufficient", scope)
-        self.assertIn("positive membership", development_scope)
-        self.assertIn("both predicates", development_scope)
-        self.assertIn("active development claim", development_scope)
-        self.assertIn(
-            "ends with understanding current codebase facts",
-            development_scope,
-        )
-        self.assertIn(
-            "does not need a taxonomy of work outside its scope",
-            development_scope,
-        )
-        self.assertNotIn("## Boundary examples", development_scope)
-        self.assertIn("do not preload future phases", skill)
-        self.assertRegex(
-            metadata,
-            r"(?m)^\s{2}allow_implicit_invocation:\s*true$",
-        )
-
-        short_description = re.search(
-            r'(?m)^\s{2}short_description:\s*"([^"]+)"$', metadata
-        )
-        self.assertIsNotNone(short_description)
-        assert short_description is not None
-        self.assertGreaterEqual(len(short_description.group(1)), 25)
-        self.assertLessEqual(len(short_description.group(1)), 64)
+    def test_metadata_keeps_implicit_invocation_available(self) -> None:
+        metadata = (SKILL_ROOT / "agents" / "openai.yaml").read_text(encoding="utf-8")
+        self.assertRegex(metadata, r"(?m)^\s{2}allow_implicit_invocation:\s*true$")
+        description = re.search(r'(?m)^\s{2}short_description:\s*"([^"]+)"$', metadata)
+        self.assertIsNotNone(description)
+        assert description is not None
+        self.assertTrue(25 <= len(description.group(1)) <= 64)
 
     def test_internal_markdown_links_resolve(self) -> None:
         missing: list[str] = []
@@ -102,7 +58,7 @@ class SkillStructureTests(unittest.TestCase):
 
     def test_progressive_governance_prompt_budget(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-        self.assertLessEqual(len(skill.encode("utf-8")), 2800)
+        self.assertLessEqual(len(skill.encode("utf-8")), 2400)
         self.assertLessEqual(len(skill.splitlines()), 60)
 
         concern_cards = [
@@ -137,6 +93,7 @@ class SkillStructureTests(unittest.TestCase):
             "harness-evolution.md": 11_000,
             "engineering-structure.md": 9_000,
             "architecture-assessment.md": 11_000,
+            "architecture-design.md": 8000,
             "project-model.md": 11_000,
             "design-exploration.md": 7_000,
             "software-quality.md": 9_000,
@@ -159,6 +116,7 @@ class SkillStructureTests(unittest.TestCase):
             *sorted((SKILL_ROOT / "references").glob("*.md")),
             *sorted((SKILL_ROOT / "profiles").glob("*.md")),
             *sorted((SKILL_ROOT / "assets").glob("*")),
+            *sorted((SKILL_ROOT / "contracts").glob("*.json")),
         ]
         cjk = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
         violations = [
@@ -172,7 +130,6 @@ class SkillStructureTests(unittest.TestCase):
         self.assertEqual(violations, [])
 
     def test_harness_guides_are_progressively_routed(self) -> None:
-        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         project_harness = (
             SKILL_ROOT / "references" / "project-harness.md"
         ).read_text(encoding="utf-8")
@@ -180,13 +137,16 @@ class SkillStructureTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("(references/project-harness.md)", skill)
         self.assertIn("(harness-evolution.md)", project_harness)
         self.assertIn("(verification-harness.md)", project_harness)
         self.assertIn("(verification-harness.md)", verify)
+        harness = (SKILL_ROOT / "references" / "verification-harness.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("Design the harness boundary", harness)
+        self.assertIn("known-good and known-bad", harness)
 
     def test_engineering_structure_guides_are_progressively_routed(self) -> None:
-        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         references = SKILL_ROOT / "references"
         cards = {
             name: (references / f"{name}.md").read_text(encoding="utf-8")
@@ -196,12 +156,15 @@ class SkillStructureTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("(references/engineering-structure.md)", skill)
-        self.assertIn("(references/architecture-assessment.md)", skill)
         for card in cards.values():
             self.assertIn("(engineering-structure.md)", card)
         self.assertIn("(architecture-assessment.md)", cards["review"])
         self.assertIn("(engineering-structure.md)", assessment)
+        architecture_design = (references / "architecture-design.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("(architecture-assessment.md)", architecture_design)
+        self.assertIn("(architecture-design.md)", cards["design"])
 
     def test_project_model_is_progressively_routed(self) -> None:
         references = SKILL_ROOT / "references"
@@ -237,7 +200,6 @@ class SkillStructureTests(unittest.TestCase):
         self.assertTrue((SKILL_ROOT / "assets" / "project-model.template.md").is_file())
 
     def test_design_exploration_is_progressively_routed(self) -> None:
-        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         references = SKILL_ROOT / "references"
         clarify = (references / "clarify.md").read_text(encoding="utf-8")
         design = (references / "design.md").read_text(encoding="utf-8")
@@ -246,7 +208,6 @@ class SkillStructureTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("(references/design-exploration.md)", skill)
         self.assertIn("(design-exploration.md)", clarify)
         self.assertIn("(design-exploration.md)", design)
         self.assertIn("(design-exploration.md)", project_model)
@@ -263,7 +224,6 @@ class SkillStructureTests(unittest.TestCase):
             self.assertIn(target, exploration)
 
     def test_quality_and_debt_are_distinct_and_progressively_routed(self) -> None:
-        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         references = SKILL_ROOT / "references"
         cards = {
             name: (references / f"{name}.md").read_text(encoding="utf-8")
@@ -289,8 +249,6 @@ class SkillStructureTests(unittest.TestCase):
         )
         artifacts = (references / "artifacts.md").read_text(encoding="utf-8")
 
-        self.assertIn("(references/software-quality.md)", skill)
-        self.assertIn("(references/technical-debt.md)", skill)
         for card in cards.values():
             self.assertIn("(software-quality.md)", card)
             self.assertIn("(technical-debt.md)", card)
@@ -310,6 +268,8 @@ class SkillStructureTests(unittest.TestCase):
             self.assertIn(quality, software_quality)
         self.assertIn("touched ownership boundary", software_quality)
         self.assertIn("repository-wide quality audit", software_quality)
+        self.assertIn("Quality probes", software_quality)
+        self.assertIn("known-good and known-bad", software_quality)
 
         for confidence in ["Debt signal", "Debt hypothesis", "Qualified debt item"]:
             self.assertIn(confidence, technical_debt)
@@ -332,7 +292,6 @@ class SkillStructureTests(unittest.TestCase):
         )
 
     def test_execution_model_routes_integrated_run_ownership(self) -> None:
-        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         workflow = (SKILL_ROOT / "references" / "workflow.md").read_text(
             encoding="utf-8"
         )
@@ -355,7 +314,6 @@ class SkillStructureTests(unittest.TestCase):
             ]
         }
 
-        self.assertIn("(references/execution-model.md)", skill)
         self.assertIn("(execution-model.md)", workflow)
         self.assertIn("one logical **Primary Agent**", execution)
         self.assertIn("one main session", execution)
@@ -395,6 +353,146 @@ class SkillStructureTests(unittest.TestCase):
             with self.subTest(path=path):
                 parsed = json.loads(path.read_text(encoding="utf-8"))
                 self.assertEqual(parsed["schema_version"], 1)
+
+    def test_machine_readable_core_contract_is_valid(self) -> None:
+        result = run_script("validate_contract.py", "--skill-root", str(SKILL_ROOT))
+
+        self.assertEqual(result.returncode, 0, result.stdout)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["status"], "pass")
+        self.assertEqual(report["problems"], [])
+
+    def test_core_contract_covers_the_full_development_lifecycle(self) -> None:
+        contract = json.loads(
+            (SKILL_ROOT / "contracts" / "rung-contract.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            sorted(stage["id"] for stage in contract["lifecycle"]),
+            sorted([
+                "clarify", "inspect", "design", "plan", "implement", "verify", "review", "release"
+            ]),
+        )
+
+    def test_core_contract_rejects_missing_route_entry(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            skill_root = Path(temporary_directory)
+            (skill_root / "contracts").mkdir()
+            (skill_root / "references").mkdir()
+            (skill_root / "SKILL.md").write_text("# Skill\n", encoding="utf-8")
+            contract = {
+                "schema_version": 1,
+                "package": {
+                    "name": "rung",
+                    "stable_ref": "v0.1.0",
+                    "candidate_version": "0.1.2",
+                },
+                "entrypoint": "SKILL.md",
+                "scope_gate": {
+                    "required_predicates": [
+                        "codebase_relationship",
+                        "active_development_claim",
+                    ],
+                    "development_outcomes": ["durable_codebase_change"],
+                    "understanding_only_exits_before_references": True,
+                },
+                "concerns": [
+                    {
+                        "id": "clarify",
+                        "entry": "references/missing.md",
+                        "kind": "card",
+                        "max_bytes": 1300,
+                        "signals": ["direction"],
+                    }
+                ],
+            }
+            contract_path = skill_root / "contracts" / "rung-contract.json"
+            contract_path.write_text(json.dumps(contract), encoding="utf-8")
+
+            result = run_script(
+                "validate_contract.py",
+                "--skill-root",
+                str(skill_root),
+                "--contract",
+                str(contract_path),
+            )
+
+            self.assertEqual(result.returncode, 1)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["status"], "fail")
+            self.assertTrue(any("not found" in item for item in report["problems"]))
+
+    def test_scope_gate_evaluator_exits_for_understanding_only_work(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            scope_input = Path(temporary_directory) / "scope.json"
+            scope_input.write_text(
+                json.dumps(
+                    {
+                        "codebase_relationship": "present",
+                        "development_claim": "absent",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_script("evaluate_scope.py", "--input", str(scope_input))
+
+            self.assertEqual(result.returncode, 0, result.stdout)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["scope"], "understanding-only")
+            self.assertTrue(report["exited_before_references"])
+
+    def test_scope_gate_evaluator_accepts_active_development(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            scope_input = Path(temporary_directory) / "scope.json"
+            scope_input.write_text(
+                json.dumps(
+                    {
+                        "codebase_relationship": "present",
+                        "development_claim": "present",
+                        "materiality": "present",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_script("evaluate_scope.py", "--input", str(scope_input))
+
+            self.assertEqual(result.returncode, 0, result.stdout)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["scope"], "development")
+            self.assertFalse(report["exited_before_references"])
+
+    def test_scope_gate_evaluator_preserves_non_development_classifications(self) -> None:
+        cases = {
+            ("absent", "present"): ("outside", True),
+            ("present", "mixed"): ("mixed", False),
+            ("uncertain", "present"): ("uncertain", True),
+        }
+        for (relationship, claim), expected in cases.items():
+            with (
+                self.subTest(relationship=relationship, claim=claim),
+                tempfile.TemporaryDirectory() as temporary_directory,
+            ):
+                scope_input = Path(temporary_directory) / "scope.json"
+                scope_input.write_text(
+                    json.dumps(
+                        {
+                            "codebase_relationship": relationship,
+                            "development_claim": claim,
+                            "materiality": "present",
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+
+                result = run_script("evaluate_scope.py", "--input", str(scope_input))
+
+                self.assertEqual(result.returncode, 0, result.stdout)
+                report = json.loads(result.stdout)
+                self.assertEqual(
+                    (report["scope"], report["exited_before_references"]),
+                    expected,
+                )
 
 
 class InspectProjectTests(unittest.TestCase):

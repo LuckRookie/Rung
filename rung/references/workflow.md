@@ -4,9 +4,9 @@ Read when several concerns interact or the most useful next action is unclear.
 
 ## Default run
 
-One logical Primary Agent owns the integrated DevelopmentRun. In one main session, it grounds outcome and target facts, resolves consequential decisions, designs enough, coordinates useful dependencies, implements, verifies and reviews the combined state, then hands it off.
+One Primary Agent owns the run. It grounds outcome and target facts, resolves consequential decisions, designs enough, coordinates useful dependencies, implements, verifies and reviews the combined state, then hands it off.
 
-Merge, skip, reorder, and revisit concerns. A local fix may collapse several actions into one short loop.
+Merge, skip, reorder, and revisit concerns. A bounded task may use one short loop.
 
 ## Concern loop
 
@@ -33,3 +33,5 @@ Read [Execution Model](execution-model.md) for inspection radius, design persist
 Read [Project Harness](project-harness.md) when project controls conflict or become change targets, [Verification Harness](verification-harness.md) for a missing evidence layer, and [Harness Evolution](harness-evolution.md) for material Harness repair or migration.
 
 For recovery, retain outcome, decisions and delegated scope, baseline and protected user work, chosen design, completed units, next action, evidence, and open risk. Reconcile them with current project state before continuing.
+
+Use [Risk signals](risk-signals.md) for depth and [Artifacts](artifacts.md) for persistence only when needed.

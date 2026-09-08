@@ -29,6 +29,12 @@ jobs:
       - name: Run behavior tests
         run: python -B -m unittest discover -s tests -v
 
+      - name: Validate Rung core contract
+        run: python rung/scripts/validate_contract.py --skill-root rung
+
+      - name: Check structured Scope Gate evaluator
+        run: python rung/scripts/evaluate_scope.py --input tests/scope-classification.json
+
   lint:
     name: Ruff
     runs-on: ubuntu-latest

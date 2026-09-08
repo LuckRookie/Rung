@@ -26,7 +26,7 @@ Reveal only after the initial task reaches handoff:
 
 ## Acceptable routing range
 
-- Candidate Rung is eligible because both prompts require durable verified codebase changes.
+- Both prompts are in development scope; implicit activation requires the fixture to expose consequential owner, error/resource, or verification decisions. Durable edits and routine tests alone are insufficient.
 - Implement, Verify, and Review are relevant. Design is relevant only for a real format-owner, error, or lifecycle choice.
 - Software Quality is relevant because current resource behavior and touched-owner coherence affect delivery.
 - Engineering Structure is relevant only if repository evidence shows a nonlocal ownership or public-surface decision.

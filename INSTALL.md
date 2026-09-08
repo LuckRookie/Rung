@@ -14,7 +14,7 @@ package:
   entrypoint: rung/SKILL.md
 ```
 
-安装单元是仓库中的整个 `rung/` 目录。`SKILL.md`、`agents/`、`references/`、`profiles/`、`assets/` 和 `scripts/` 需要保持相对路径不变。
+安装单元是仓库中的整个 `rung/` 目录。`SKILL.md`、`agents/`、`references/`、`profiles/`、`assets/`、`contracts/` 和 `scripts/` 需要保持相对路径不变。
 
 ## 标准安装
 
@@ -46,7 +46,9 @@ npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung 
 
 用户级安装使 Rung 对该用户的不同项目和普通工作目录可见，适合希望在各项目中自动获得开发治理的用户。项目级安装只在对应项目的 Skill 扫描范围内可见，适合希望按仓库选择治理能力的团队。
 
-Rung 保留隐式调用。宿主先根据 `SKILL.md` 的 name 与 description 判断主要验收结果是否形成持久代码库修改、指导具体修改的决定，或者当前变更与 Release 的准备结论。完整 Skill 加载后，Development Scope Gate 在任何 Reference 前再次核对代码库关系与活跃开发 Claim；仅有代码库关系、结果止于当前事实理解或缺少代码库关系时立即退出。仓库存在、文件位置、工具使用和偶然产生的代码不能单独触发治理。显式 `$rung` 调用始终经过同一 Scope Gate。
+候选开发线保留隐式调用，通过 `SKILL.md` 的 name 与 description 聚焦持续软件中的实质工程决定；`agents/openai.yaml` 的 short_description 用于 UI 展示。完整入口加载后核对开发范围和启用条件，简单局部修改或只读理解立即回到 Host；未知先做最小项目检查。显式要求 `$rung` 或开发治理可用于范围内的小任务，不豁免开发范围。详细边界以 [Rung.md §4.1](Rung.md#41-开始边界user-intent) 为准。
+
+安装范围只影响可发现性，不强制每次任务加载。没有启动脚本。稳定 tag 与本地候选包的触发规则可能不同；修改仓库不会自动更新已安装副本，安装后记录实际来源与内容标识。
 
 ## Codex 原生安装器
 
@@ -101,9 +103,10 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 1. 目标目录中的 `SKILL.md` 存在；
 2. `SKILL.md` frontmatter 包含精确值 `name: rung`；
 3. `SKILL.md` 引用的相对路径均可在安装目录中解析；
-4. `agents/`、`references/`、`profiles/`、`assets/` 和 `scripts/` 已完整安装；
-5. 使用 `skills` CLI 安装时，`npx skills list --global --json` 或项目级 `npx skills list --json` 能列出 `rung`；
-6. 宿主能够发现并调用 `$rung`。宿主缓存 Skill 清单时，在新会话中完成这项检查。
+4. `agents/`、`references/`、`profiles/`、`assets/`、`contracts/` 和 `scripts/` 已完整安装；
+5. `contracts/rung-contract.json` 存在且核心契约检查通过；
+6. 使用 `skills` CLI 安装时，`npx skills list --global --json` 或项目级 `npx skills list --json` 能列出 `rung`；
+7. 宿主能够发现并调用 `$rung`。宿主缓存 Skill 清单时，在新会话中完成这项检查。
 
 ### 5. 回报结果
 
