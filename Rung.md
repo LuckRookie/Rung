@@ -7,7 +7,7 @@
 
 ## 1. 执行摘要
 
-Rung 是运行在 Coding Agent Host 之上的软件开发渐进式治理 Skill。它覆盖实质软件变更从设计到可验证交付的开发范围；自动调用由实质工程决定触发，明确而局部的修改使用 Host 普通编码路径。
+Rung 是运行在 Coding Agent Host 之上的软件开发渐进式治理 Skill。它覆盖指导具体修改的决定、软件变更和可验证交付；自动调用由实质工程决定触发，明确而局部的修改使用 Host 普通编码路径。
 
 Rung 的默认形态是一层很薄的提示：
 
@@ -27,9 +27,9 @@ Coding Agent 保持原有的推理、工具选择和实现风格。Rung 负责�
 
 Rung 的产品承诺是：
 
-> 以尽可能低的上下文和流程成本，帮助 Coding Agent 把一次软件变更推进到有证据支持的可发布状态。
+> 以尽可能低的上下文和流程成本，帮助 Coding Agent 把当前软件开发 Claim 推进到有证据支持、与请求相称的交接状态。
 
-一次 DevelopmentRun 从 Code Project Development Intent 开始，在当前任务达到 `release ready` 或经授权完成 `published` 时结束。范围外工作由 Coding Agent Host 或对应下游系统接续。
+一次 DevelopmentRun 从 Code Project Development Intent 开始，在当前 Claim 达到 `decision complete`、`review complete`、`change verified`、`release ready`、`published` 或具有明确恢复条件的 `blocked handoff` 时结束。Release 只在当前请求包含发布就绪性、版本、制品、发布动作或下游交付时进入。范围外工作由 Coding Agent Host 或对应下游系统接续。
 
 ## 2. 背景与机会
 
@@ -149,9 +149,11 @@ Rung 的实际价值通过行为判断：
 - 项目检查从安全所需的最小半径开始，只有影响信号出现时才扩展；
 - Plan、持久化、额外 Session、Worker 和独立 Reviewer 都由实际协调或风险收益触发；
 - Worker 产出经过 Primary Agent 集成，最终验证针对合并后的代码状态；
-- 完成报告具有与任务规模相称的实际证据；
+- 完成报告使用与当前 Claim 相称的交接状态，设计和审查结论无需虚构 Release Readiness；
+- 完成、兼容和交付证据标识实际受检状态，检查期间发生的代码或 Plan 漂移会使 Evidence 失去适用性；
 - 高风险或跨会话任务能够按需增加结构化治理；
-- Release 交付对应明确代码状态和已知风险。
+- Ready 或 Published 的本地 Evidence 在格式、内部结果、代码状态和 Release-required Check 覆盖上保持一致；
+- Release 交付对应明确代码状态和已知风险，外部 Evidence 的本地核验状态清楚可见。
 
 ## 4. 系统边界
 
@@ -187,9 +189,22 @@ Rung 在读取 Concern Card 前根据当前验收结果、开发 Claim 和长期
 
 新证据改变主要验收对象时，Primary Agent 重新判断范围。理解型或范围外工作发现具体代码库问题后，可以在修改、设计决定或交付 Claim 进入用户请求时开始 DevelopmentRun；开发任务收敛为事实理解或其他结果时结束 Rung 路由。范围门控制 Rung 的上下文与责任，不阻断用户请求，也不改变 Host 的权限与安全策略。
 
-### 4.3 结束边界：Release
+### 4.3 结束边界：Claim Handoff
 
-Rung 在当前软件变更达到可交付状态时完成一次 DevelopmentRun。Release 的具体形态由项目决定，可以包括：
+DevelopmentRun 的结束状态由当前验收 Claim 决定：
+
+- **decision complete**：设计或诊断已经形成有证据、可执行且明确未知项的决定；
+- **review complete**：审查或评估已经形成有边界、有证据、经过反证检查且可供用户判断的结论；
+- **change verified**：授权范围内的修改已经集成，相关 Claim 在明确代码状态上获得相称验证；
+- **release ready**：目标代码状态或制品满足当前项目声明的发布条件；
+- **published**：经过授权的提交、推送、Tag、远端 Release 或包发布已经实际完成；
+- **blocked handoff**：权限、环境、事实、依赖或用户决定阻止当前 Claim 完成，并且阻塞证据、影响、下一 Owner 和恢复条件已经明确。
+
+一次运行只采用当前 Claim 需要的结束状态。设计、诊断、Review 和 Architecture Assessment 可以在结论交接后完成；实施和 Release 权限需要由用户请求、委托与 Host 权限单独建立。新请求把既有决定转为代码修改时，可以继续原运行的持久状态，也可以创建新的 DevelopmentRun。
+
+### 4.4 Release 边界
+
+当前 Claim 包含发布就绪性、版本、制品、发布动作或下游交付时，Release 的具体形态由项目决定，可以包括：
 
 - 对应明确 revision 的代码、测试、配置和文档；
 - 可复现生成的软件包、二进制、镜像或静态产物；
@@ -199,13 +214,13 @@ Rung 在当前软件变更达到可交付状态时完成一次 DevelopmentRun。
 
 代码库没有独立打包产物时，Release Package 可以由可发布 revision、验证证据与交付说明组成。
 
-### 4.4 Release 交接
+### 4.5 Release 交接
 
 Rung 可以开发和验证 Dockerfile、CI 配置、Helm Chart、Terraform、迁移文件、构建脚本和发布配置。通过用户授权执行的 Git Push、Tag、远端 Release 或包发布可以记录为 `published`。
 
 部署执行、服务管理、流量切换、线上数据变更和运行状态由相应 Host 或交付系统执行。Rung 将经过验证的配置、制品引用、顺序、风险和恢复信息交给这些系统。
 
-### 4.5 外部动作
+### 4.6 外部动作
 
 用户授权和 Coding Agent Host 的权限模型控制提交、推送、发布、消息、部署及其他外部写操作。Rung 只在当前任务范围内提醒授权触发点和结果记录。
 
@@ -223,7 +238,7 @@ Rung 被选中后先按 4.1 核对开发范围与启用条件。简单局部修�
 | Context | 哪些仓库事实、约束和已有修改影响这次工作？ |
 | Approach | 当前最小且连贯的实现方向是什么？ |
 | Evidence | 哪些实际结果足以支持完成声明？ |
-| Handoff | 代码、文档、版本和风险是否达到本次交付要求？ |
+| Handoff | 结果、证据、缺口和当前 Claim 状态是否足以交给下一 Owner？ |
 
 Agent 可以在内部使用这些提示。用户侧只呈现有助于协作、决策或验证的信息。
 
@@ -239,7 +254,7 @@ Development Scope Gate
             正常开发
                  │
                  ├─ 当前出现治理信号 → 加载一个相关提示卡
-                 └─ 继续开发 → 收集相称证据 → Release 交接
+                 └─ 继续开发 → 收集相称证据 → 与 Claim 相称的交接
 ```
 
 每次只处理当前最有价值的治理信号。未来可能经历的阶段不构成预加载理由；多个关注面只有在当前判断确实相互作用时同时进入上下文。新证据可以触发另一个提示卡，也可以回到先前关注面或重新判断开发范围。
@@ -439,7 +454,7 @@ Security、Privacy、Performance、Accessibility、Portability、Compatibility �
 
 行数、文件大小、复杂度、覆盖率、重复率、依赖数量、目录形状和工具评分提供调查入口。有效质量 Finding 连接当前质量目标、代码或运行证据、作用机制、当前使用者或维护者后果、最小响应和能够区分结果的 Evidence。稳定质量判断只有在保护真实重复问题或高影响契约、能够控制误报、具有 Owner 与例外边界，并说明 Rollout、成本和修订条件时，才晋升为 Project Harness 规则。
 
-Rung 在 Release Handoff 结束，Operability 因此只覆盖代码级 Release Readiness：错误语义、诊断、Timeout、Retry、Cancellation、Idempotency、Concurrency、Backpressure、Cleanup、必要日志或指标、可验证性能以及安全默认值。发布后的值班、流量运营和服务管理仍由下游系统负责。
+Rung 在与当前 Claim 相称的 Handoff 结束。代码发生修改或形成 Release Claim 时，Operability 覆盖相应的代码级 Readiness：错误语义、诊断、Timeout、Retry、Cancellation、Idempotency、Concurrency、Backpressure、Cleanup、必要日志或指标、可验证性能以及安全默认值。发布后的值班、流量运营和服务管理仍由下游系统负责。
 
 Technical Debt 是总概念，Code Debt 是其中一类。有效技术债满足以下最小因果链：
 
@@ -590,7 +605,7 @@ Rung 通过 Agent Skills 仓库分发。`rung/` 是可安装单元，`rung/SKILL
 
 ## 7. DevelopmentRun 执行模型
 
-每次 DevelopmentRun 由一个逻辑 **Primary Agent** 持有。它对用户工作保护、决策整合、全局 Plan、最终 diff、集成验证、Review 和 Release Handoff 负责。模型实例可以在一次短任务中直接完成这个角色，也可以在后续 Session 中通过持久状态继续承担该角色。
+每次 DevelopmentRun 由一个逻辑 **Primary Agent** 持有。它对用户工作保护、决策整合、全局 Plan、最终 diff、集成验证、Review 和与 Claim 相称的 Handoff 负责。模型实例可以在一次短任务中直接完成这个角色，也可以在后续 Session 中通过持久状态继续承担该角色。
 
 ### 7.1 默认执行形态
 
@@ -613,7 +628,7 @@ Implement 或集成变更
         ↓
 验证并 Review 集成状态
         ↓
-Release Handoff
+与当前 Claim 相称的 Handoff
 ```
 
 这条最小执行脊柱说明完整责任闭环。Primary Agent 可以合并、跳过、调序和回访关注面。一个局部修复可以在一次短循环中完成设计、计划、实现、验证、复查和交接。
@@ -711,17 +726,17 @@ Primary Agent 默认对集成 diff、需求、设计、当前 Software Quality�
 
 恢复时重新读取适用指令，对比保存的 revision、working tree 与当前 Git 状态，重新验证受漂移影响的假设，再从下一个有意义的动作继续。接续模型在逻辑上承担同一个 Primary Agent 角色。
 
-### 7.9 集成验证与 Release 责任
+### 7.9 集成验证与 Claim Handoff 责任
 
-Verification 针对集成 revision 或明确描述的 working-tree state。Worker 检查是候选 Evidence，Primary Agent 在合并后确认这些证据仍覆盖当前 Claim；最终检查覆盖组合后的实际状态。
+Verification 针对集成 Commit 或明确标识的 working-tree state。Primary Agent 在检查前后记录目标状态，代码或 Plan 在检查期间发生漂移时重新验证最终状态。Worker 检查是候选 Evidence，Primary Agent 在合并后确认这些证据仍覆盖当前 Claim；最终检查覆盖组合后的实际状态。
 
-Primary Agent 汇总用户可观察结果、实际检查、revision 或 Artifact 标识、未覆盖范围、影响交付或 Owner Handoff 的剩余债务、残余风险与 Release 状态。Commit、Push、Tag、Remote Release、Package Publish 和其他外部写操作继续使用各自所需的用户授权与 Host 权限。
+Primary Agent 汇总用户可观察结果、实际检查、Commit、working-tree 或 Artifact 标识、未覆盖范围、影响交付或 Owner Handoff 的剩余债务、残余风险与 Claim 状态。设计和审查工作可以在有证据的结论处完成，已实施修改可以在 `change verified` 完成；当前请求包含交付 Claim 时继续形成 `release ready` 或经授权完成 `published`。Commit、Push、Tag、Remote Release、Package Publish 和其他外部写操作继续使用各自所需的用户授权与 Host 权限。
 
 ## 8. 核心概念
 
 ### 8.1 DevelopmentRun
 
-一次从用户意图到 Release 交接的软件变更。每次运行有一个逻辑 Primary Agent。DevelopmentRun 可以只存在于当前对话与项目 diff 中，也可以在复杂任务中持久化。
+一次从用户意图到与当前开发 Claim 相称交接的治理运行。它可以形成决定、审查结论、经过验证的修改或 Release 交付，每次运行有一个逻辑 Primary Agent。DevelopmentRun 可以只存在于当前对话与项目 diff 中，也可以在复杂任务中持久化。
 
 有恢复或协作需要时，可以记录：
 
@@ -733,7 +748,7 @@ Primary Agent 汇总用户可观察结果、实际检查、revision 或 Artifact
 
 ### 8.2 Primary Agent
 
-对一个 DevelopmentRun 的集成结果负责的逻辑角色。它持有路由、用户工作保护、决策整合、全局 Plan、最终 diff、集成 Evidence、Review 和 Release Handoff。跨 Session 接续时，后继模型通过恢复状态继续承担这个角色。
+对一个 DevelopmentRun 的集成结果负责的逻辑角色。它持有路由、用户工作保护、决策整合、全局 Plan、最终 diff、集成 Evidence、Review 和最终 Handoff；当前 Claim 涉及交付时同时持有 Release。跨 Session 接续时，后继模型通过恢复状态继续承担这个角色。
 
 ### 8.3 Worker
 
@@ -815,7 +830,7 @@ Harness 的长期实现归目标项目所有。Rung 在证据缺口、基础设�
 
 ### 8.19 Release Handoff
 
-当前变更达到可交付状态时向代码托管、包仓库或下游交付系统提供的代码状态、制品、说明和风险信息。
+当前 Claim 包含交付并达到可发布状态时，向代码托管、包仓库或下游交付系统提供的代码状态、制品、说明和风险信息。
 
 ### 8.20 Development Scope Gate
 
@@ -990,7 +1005,9 @@ Agent 在修改前区分 Product Defect、Harness Defect、Coupled Defect 和 Un
 
 ### 12.6 Evidence 提醒
 
-对于 `complete`、`pass`、`compatible`、`reproducible` 和 `release ready` 等结论，Rung 提醒 Agent 保留相称的实际依据。环境、权限或工具限制进入未覆盖范围和残余风险说明。
+对于 `complete`、`pass`、`compatible`、`reproducible` 和 `release ready` 等结论，Rung 提醒 Agent 保留相称的实际依据。Evidence 标识检查开始时的目标状态与检查结束时的最终状态；两者或 Verification Plan 发生漂移时，当前 Evidence 记录为不再适用于最终状态。环境、权限或工具限制进入未覆盖范围和残余风险说明。
+
+可选 Verification Runner 产生 Evidence v2，并记录 `run_id`、Plan 摘要、计划 revision 匹配结果、Target State、Final State、状态稳定性、选择与跳过的检查、命令结果和 Applicability。Git Clean State 使用 Commit 身份；Git Dirty State 和无 Git 项目使用内容指纹。Plan 和 Evidence 文件本身从代码状态指纹中排除，`.rung/runs/` 作为运行记录位置统一排除。
 
 ### 12.7 Release 判断
 
@@ -1003,7 +1020,9 @@ Release 关注以下信息：
 - 交付物位置与复现方式；
 - 已知限制、未覆盖范围和下游动作。
 
-小任务可以使用简短 Release 摘要。具有正式发布流程的项目可以使用 Release Manifest 和确定性检查脚本；`ready` 或 `published` 状态引用本地 Evidence 时，Evidence 使用可解析的 JSON，并且顶层 `status` 为 `pass`。外部 CI 或制品系统可以使用 URI 作为证据引用。
+小任务可以使用简短 Release 摘要。具有正式发布流程的项目可以使用 Release Manifest 和确定性检查脚本。`ready` 或 `published` 状态引用本地 Evidence v2 时，检查器同时验证：Schema 与字段类型有效；顶层状态和每项 Check 的状态、Return Code 一致；Run ID 与 Manifest 一致；Target State 在检查期间保持稳定；Manifest revision 指向受检状态；Verification Plan 中标记 `required_for_release` 的检查均已执行。
+
+Release Checker 只判断明确声明的 Plan 和 Evidence 是否一致。验证范围是否充分继续由当前 Acceptance、项目 Harness 与风险判断决定。外部 CI 或制品系统可以使用 URI；本地无法读取其内容时，检查结果明确标记为 `delegated-unverified`。
 
 ## 13. 职责关系与覆盖流程
 
@@ -1051,7 +1070,7 @@ flowchart TB
         RV -. "当前质量判断" .-> SQ
         RV -. "未来负担判断" .-> TD
         TD -. "偿还或控制单元" .-> P
-        RV --> RH["Release Handoff<br/>revision · 制品 · 证据 · 限制"]
+        RV --> RH["Claim Handoff<br/>决定 · Review · 变更 · Release"]
         V -. "新事实或实质发现" .-> I
         RV -. "语义漂移或方向变化" .-> PM
 
@@ -1110,7 +1129,7 @@ flowchart TB
 - 在日常结构信号中路由 Engineering Structure，在需要形成开发决定的已有系统审查中路由场景与证据驱动的 Architecture Assessment；
 - 在项目约束可靠时复用 Project Harness，在 Harness 自身出现问题时路由独立诊断、Coverage Delta 与渐进迁移；
 - 在证据缺口或 Harness 增长信号出现时提供分层验证系统治理；
-- 提醒集成 Evidence、残余风险和 Release 交接；
+- 提醒集成 Evidence、残余风险和与 Claim 相称的交接；
 - 控制默认上下文和流程成本。
 
 ### 13.4 Primary Agent
@@ -1122,7 +1141,7 @@ flowchart TB
 - 维护全局 Plan，默认执行实际修改；
 - 在有具体收益时分配有界 Worker 或请求独立 Review；
 - 复查并集成所有执行者产出；
-- 针对组合后的状态完成 Verification、Review 和 Release Handoff。
+- 针对组合后的状态完成 Verification、Review 和最终 Handoff，交付 Claim 继续完成 Release。
 
 ### 13.5 Worker 与 Reviewer
 
@@ -1326,6 +1345,8 @@ Hidden follow-up 检验画像的预测价值：新能力是否进入清楚 Owner
 
 `37-activation-and-context-economy.md` 与 `activation-cases.json` 覆盖隐式简单任务、显式小任务、小型高风险修改、只读理解、混合范围和未知影响；实际 Agent Trace 与结构化分类测试分别记录。
 
+`38-claim-handoff-and-evidence-identity.md` 先检查设计或审查 Claim 是否在有证据的决定处结束，再通过隐藏 Follow-up 进入 Implement 与 Release，并在 Evidence 生成后注入 working-tree 漂移。评测观察 Agent 是否避免虚构 Release Readiness、识别 Evidence 失效并针对最终状态重新验证。
+
 ## 18. 产品不变量
 
 Rung 后续实现保持以下设计事实：
@@ -1337,7 +1358,7 @@ Rung 后续实现保持以下设计事实：
 5. Agent 保留具体路径、工具和实现方式的选择；
 6. Artifact、Profile、Tier 和脚本都是按需资源；
 7. 项目事实、用户修改和宿主权限进入当前判断；
-8. 完成与发布结论关联相称证据；
+8. DevelopmentRun 按当前 Claim 结束为 decision complete、review complete、change verified、release ready、published 或 blocked handoff；
 9. 外部动作遵循用户授权与宿主权限；
 10. 上下文成本和治理收益共同决定新增内容；
 11. 工程原则通过任务信号、情境问题和 diff 复查影响决策；
@@ -1348,7 +1369,7 @@ Rung 后续实现保持以下设计事实：
 16. 被修改的 Harness 组件不作为证明自身正确的唯一依据；
 17. Harness 保护被删除、放宽、重试、隔离或替换时记录 Claim-level Coverage Delta；
 18. 影响多个消费者或交付 Gate 的 Harness 演进保留生效、回退和旧机制清理条件；
-19. 每次 DevelopmentRun 由一个逻辑 Primary Agent 持有集成责任；
+19. 每次 DevelopmentRun 由一个逻辑 Primary Agent 持有集成责任和与 Claim 相称的 Handoff；
 20. 默认执行形态是一个 Primary Agent 和一个主 Session；
 21. 检查从 Baseline 与 Target 开始，并按影响证据扩展到 Impact 或声明过的 System 边界；
 22. 局部可逆 Design 可以留在对话、代码和测试中，长期事实进入其项目 Owner；
@@ -1388,6 +1409,10 @@ Rung 后续实现保持以下设计事实：
 56. 稳定质量判断只有在保护真实重复问题或高影响契约、能够可靠区分合规与违规状态并具有 Owner、范围、例外、成本和修订条件时，才进入 Project Harness；
 57. 质量修正与债务偿还均在集成状态上验证，确认当前 Claim 得到保护，并检查成本、风险与知识是否被转移到其他 Owner。
 58. 默认质量判断落实于代码与证据；后续变化只在影响边界时使用，无必填 Change Contract、固定步骤或默认质量 Guide；
+59. Verification Evidence 标识检查前后的项目状态和 Plan 摘要，执行期间发生漂移时不支持完成或发布 Claim；
+60. Ready 或 Published 的本地 Evidence 保持 Schema、聚合结果、Run ID、受检状态、Manifest revision 和 Release-required Check 覆盖一致；
+61. Release Checker 校验显式声明和 Evidence 的一致性，验证范围充分性由 Acceptance、项目 Harness 和风险决定；
+62. 外部 Evidence 在当前 Host 未实际核验时标记为 delegated-unverified。
 
 ## 19. 长期愿景
 
@@ -1408,7 +1433,7 @@ Development Scope Gate
                          ↕
               Rung 按信号渐进治理
                          ↓
-               Verified Release Handoff
+              Claim-appropriate Handoff
 ```
 
-Rung 让项目含义、当前质量和未来演进负担在最有价值的时点进入判断：平常保持轻量，语义、质量、债务或风险信号出现时提供深度，交付时保留证据。
+Rung 让项目含义、当前质量和未来演进负担在最有价值的时点进入判断：平常保持轻量，语义、质量、债务或风险信号出现时提供深度，在决定、审查、修改或发布交接时保留相称证据。

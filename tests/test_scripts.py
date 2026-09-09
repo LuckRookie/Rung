@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import textwrap
+import time
 import unittest
 from pathlib import Path
 
@@ -21,6 +22,82 @@ def run_script(name: str, *arguments: str) -> subprocess.CompletedProcess[str]:
         capture_output=True,
         text=True,
     )
+
+
+def create_passing_evidence(
+    project: Path,
+    *,
+    run_id: str = "RUN-1",
+    checks: list[dict[str, object]] | None = None,
+    max_tier: int = 3,
+) -> tuple[Path, dict[str, object]]:
+    run_directory = project / ".rung" / "runs" / run_id
+    run_directory.mkdir(parents=True, exist_ok=True)
+    plan = run_directory / "plan.json"
+    evidence_path = run_directory / "evidence.json"
+    plan.write_text(
+        json.dumps(
+            {
+                "schema_version": 2,
+                "run_id": run_id,
+                "checks": checks
+                or [
+                    {
+                        "name": "smoke",
+                        "claim": "the requested behavior passes its smoke check",
+                        "tier": 0,
+                        "required_for_release": True,
+                        "command": [sys.executable, "-c", "print('verified')"],
+                        "cwd": ".",
+                        "timeout_seconds": 10,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    result = run_script(
+        "run_verification.py",
+        "--project",
+        str(project),
+        "--plan",
+        str(plan),
+        "--max-tier",
+        str(max_tier),
+        "--output",
+        str(evidence_path),
+    )
+    if result.returncode not in {0, 1, 2} or not evidence_path.is_file():
+        raise AssertionError(result.stdout or result.stderr)
+    return evidence_path, json.loads(evidence_path.read_text(encoding="utf-8"))
+
+
+def run_git(project: Path, *arguments: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(project), *arguments],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def initialize_git_project(project: Path) -> str:
+    run_git(project, "init", "--quiet")
+    (project / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
+    run_git(project, "add", "app.py")
+    run_git(
+        project,
+        "-c",
+        "user.name=Rung Tests",
+        "-c",
+        "user.email=rung@example.invalid",
+        "commit",
+        "--quiet",
+        "-m",
+        "initial",
+    )
+    return run_git(project, "rev-parse", "HEAD")
 
 
 class SkillStructureTests(unittest.TestCase):
@@ -322,16 +399,17 @@ class SkillStructureTests(unittest.TestCase):
         self.assertIn("The Primary Agent owns the integrated plan", execution)
         self.assertIn("Worker success does not establish integrated success", execution)
         self.assertIn("On resume, re-read applicable instructions", execution)
-        self.assertIn("Verify claims against the integrated revision", execution)
+        self.assertIn("integrated commit or explicit working-tree identity", execution)
+        self.assertIn("claim-appropriate handoff", execution)
 
         self.assertIn("delegates an in-scope choice", cards["clarify"])
         self.assertIn("inspection radius", cards["inspect"])
         self.assertIn("human-facing surfaces", cards["design"])
         self.assertIn("owns the integrated plan", cards["plan"])
         self.assertIn("integrate all worker output", cards["implement"])
-        self.assertIn("integrated revision", cards["verify"])
+        self.assertIn("identified integrated state", cards["verify"])
         self.assertIn("independent reviewer", cards["review"])
-        self.assertIn("Primary Agent assembles", cards["release"])
+        self.assertIn("commit or state identity", cards["release"])
 
     def test_runtime_helper_examples_resolve_from_skill_root(self) -> None:
         runtime_text = "\n".join(
@@ -352,7 +430,13 @@ class SkillStructureTests(unittest.TestCase):
         for path in paths:
             with self.subTest(path=path):
                 parsed = json.loads(path.read_text(encoding="utf-8"))
-                self.assertEqual(parsed["schema_version"], 1)
+                self.assertEqual(parsed["schema_version"], 2)
+                self.assertTrue(
+                    all(
+                        isinstance(check.get("required_for_release"), bool)
+                        for check in parsed["checks"]
+                    )
+                )
 
     def test_machine_readable_core_contract_is_valid(self) -> None:
         result = run_script("validate_contract.py", "--skill-root", str(SKILL_ROOT))
@@ -372,6 +456,18 @@ class SkillStructureTests(unittest.TestCase):
                 "clarify", "inspect", "design", "plan", "implement", "verify", "review", "release"
             ]),
         )
+        self.assertEqual(
+            set(contract["completion"]["claim_states"]),
+            {
+                "decision-complete",
+                "review-complete",
+                "change-verified",
+                "release-ready",
+                "published",
+                "blocked-handoff",
+            },
+        )
+        self.assertEqual(contract["verification_evidence"]["schema_version"], 2)
 
     def test_core_contract_rejects_missing_route_entry(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -531,11 +627,15 @@ class InspectProjectTests(unittest.TestCase):
             purposes = {entry["purpose"] for entry in report["candidate_commands"]}
             self.assertTrue({"test", "lint", "build"}.issubset(purposes))
             test_command = next(
-                entry["command"]
+                entry
                 for entry in report["candidate_commands"]
                 if entry["purpose"] == "test"
             )
-            self.assertEqual(test_command[:4], ["python", "-m", "unittest", "discover"])
+            self.assertEqual(
+                test_command["command"][:4],
+                ["python", "-m", "unittest", "discover"],
+            )
+            self.assertEqual(test_command["confidence"], "inferred")
 
     def test_uses_package_manager_declared_by_project(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -560,6 +660,36 @@ class InspectProjectTests(unittest.TestCase):
             }
             self.assertEqual(commands["test"], ["pnpm", "run", "test"])
             self.assertEqual(commands["build"], ["pnpm", "run", "build"])
+            self.assertTrue(
+                all(
+                    command["confidence"] == "declared"
+                    for command in report["candidate_commands"]
+                )
+            )
+
+    def test_does_not_infer_python_test_command_from_typescript_tests(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            (project / "tests").mkdir()
+            (project / "src").mkdir()
+            (project / "tests" / "app.test.ts").write_text(
+                "export const ok = true;\n", encoding="utf-8"
+            )
+            (project / "src" / "app.ts").write_text(
+                "export const value = 1;\n", encoding="utf-8"
+            )
+
+            result = run_script("inspect_project.py", "--project", str(project))
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["languages"], {"TypeScript": 2})
+            self.assertFalse(
+                any(
+                    command["command"][:3] == ["python", "-m", "unittest"]
+                    for command in report["candidate_commands"]
+                )
+            )
 
 
 class VerificationRunnerTests(unittest.TestCase):
@@ -571,14 +701,14 @@ class VerificationRunnerTests(unittest.TestCase):
             plan.write_text(
                 json.dumps(
                     {
-                        "schema_version": 1,
+                        "schema_version": 2,
                         "run_id": "RUN-1",
-                        "revision": "working-tree",
                         "checks": [
                             {
                                 "name": "smoke",
                                 "claim": "Python can execute the project check",
                                 "tier": 0,
+                                "required_for_release": True,
                                 "command": [sys.executable, "-c", "print('verified')"],
                                 "cwd": ".",
                                 "timeout_seconds": 10,
@@ -601,7 +731,11 @@ class VerificationRunnerTests(unittest.TestCase):
 
             self.assertEqual(result.returncode, 0, result.stderr)
             evidence = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(evidence["schema_version"], 2)
             self.assertEqual(evidence["status"], "pass")
+            self.assertTrue(evidence["state_stable"])
+            self.assertEqual(evidence["applicability"], {"status": "pass", "reasons": []})
+            self.assertRegex(evidence["target_state"]["identity"], r"^filesystem:sha256:")
             self.assertEqual(evidence["checks"][0]["return_code"], 0)
             self.assertIn("verified", evidence["checks"][0]["stdout"])
 
@@ -612,10 +746,13 @@ class VerificationRunnerTests(unittest.TestCase):
             plan.write_text(
                 json.dumps(
                     {
+                        "schema_version": 2,
                         "checks": [
                             {
                                 "name": "escape",
+                                "claim": "the escaped check should not run",
                                 "tier": 0,
+                                "required_for_release": False,
                                 "command": [sys.executable, "-c", "pass"],
                                 "cwd": "..",
                             }
@@ -640,11 +777,13 @@ class VerificationRunnerTests(unittest.TestCase):
             plan.write_text(
                 json.dumps(
                     {
+                        "schema_version": 2,
                         "checks": [
                             {
                                 "name": f"tier-{tier}",
                                 "claim": f"tier {tier} claim",
                                 "tier": tier,
+                                "required_for_release": tier <= 2,
                                 "command": [sys.executable, "-c", f"print({tier})"],
                             }
                             for tier in (0, 2, 3)
@@ -687,10 +826,13 @@ class VerificationRunnerTests(unittest.TestCase):
                     plan.write_text(
                         json.dumps(
                             {
+                                "schema_version": 2,
                                 "checks": [
                                     {
                                         "name": "invalid",
+                                        "claim": "invalid tier is rejected",
                                         "tier": invalid_tier,
+                                        "required_for_release": False,
                                         "command": [sys.executable, "-c", "pass"],
                                     }
                                 ]
@@ -711,10 +853,13 @@ class VerificationRunnerTests(unittest.TestCase):
             plan.write_text(
                 json.dumps(
                     {
+                        "schema_version": 2,
                         "checks": [
                             {
                                 "name": "release-only",
+                                "claim": "release-only behavior passes",
                                 "tier": 3,
+                                "required_for_release": True,
                                 "command": [sys.executable, "-c", "pass"],
                             }
                         ]
@@ -733,6 +878,142 @@ class VerificationRunnerTests(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 2)
             self.assertIn("no checks at or below tier 2", result.stdout)
+
+    def test_blocks_evidence_when_project_state_changes_during_checks(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            checks = [
+                {
+                    "name": "mutating-check",
+                    "claim": "the check does not change the source state",
+                    "tier": 0,
+                    "required_for_release": False,
+                    "command": [
+                        sys.executable,
+                        "-c",
+                        "from pathlib import Path; Path('generated.py').write_text('changed')",
+                    ],
+                }
+            ]
+
+            _, evidence = create_passing_evidence(project, checks=checks)
+
+            self.assertEqual(evidence["status"], "blocked")
+            self.assertFalse(evidence["state_stable"])
+            self.assertEqual(evidence["applicability"]["status"], "blocked")
+            self.assertIn("project state changed", evidence["applicability"]["reasons"][0])
+
+    def test_rejects_plan_bound_to_another_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            plan = project / "plan.json"
+            plan.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 2,
+                        "run_id": "RUN-MISMATCH",
+                        "revision": "filesystem:sha256:" + "0" * 64,
+                        "checks": [
+                            {
+                                "name": "smoke",
+                                "claim": "the planned state passes",
+                                "tier": 0,
+                                "required_for_release": False,
+                                "command": [sys.executable, "-c", "pass"],
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "run_verification.py", "--project", str(project), "--plan", str(plan)
+            )
+
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("does not identify the current project state", result.stdout)
+
+    def test_bounds_and_decodes_command_output(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            checks = [
+                {
+                    "name": "binary-output",
+                    "claim": "non-text output remains diagnosable",
+                    "tier": 0,
+                    "required_for_release": False,
+                    "command": [
+                        sys.executable,
+                        "-c",
+                        "import os; os.write(1, b'\\xff' + b'x' * 1000)",
+                    ],
+                }
+            ]
+            run_directory = project / ".rung" / "runs" / "RUN-OUTPUT"
+            run_directory.mkdir(parents=True)
+            plan = run_directory / "plan.json"
+            output = run_directory / "evidence.json"
+            plan.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 2,
+                        "run_id": "RUN-OUTPUT",
+                        "checks": checks,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "run_verification.py",
+                "--project",
+                str(project),
+                "--plan",
+                str(plan),
+                "--output",
+                str(output),
+                "--max-output-chars",
+                "100",
+            )
+
+            self.assertEqual(result.returncode, 0, result.stdout)
+            evidence = json.loads(output.read_text(encoding="utf-8"))
+            check = evidence["checks"][0]
+            self.assertTrue(check["stdout_truncated"])
+            self.assertIn("output truncated by Rung", check["stdout"])
+            self.assertIn("\ufffd", check["stdout"])
+
+    @unittest.skipUnless(sys.platform != "win32", "process-group semantics require POSIX")
+    def test_timeout_terminates_descendant_processes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            marker = project / "orphan.txt"
+            child_code = (
+                "import time; from pathlib import Path; "
+                f"time.sleep(2); Path({str(marker)!r}).write_text('orphan')"
+            )
+            parent_code = (
+                "import subprocess, sys, time; "
+                f"subprocess.Popen([sys.executable, '-c', {child_code!r}]); "
+                "time.sleep(30)"
+            )
+            checks = [
+                {
+                    "name": "timeout-tree",
+                    "claim": "timed-out checks leave no descendant process",
+                    "tier": 0,
+                    "required_for_release": False,
+                    "command": [sys.executable, "-c", parent_code],
+                    "timeout_seconds": 1,
+                }
+            ]
+
+            _, evidence = create_passing_evidence(project, checks=checks)
+            self.assertEqual(evidence["status"], "blocked")
+            self.assertIn("Timed out", evidence["checks"][0]["message"])
+            time.sleep(2)
+            self.assertFalse(marker.exists())
 
 
 class ArtifactValidationTests(unittest.TestCase):
@@ -805,66 +1086,25 @@ class ArtifactValidationTests(unittest.TestCase):
 
 
 class ReleaseContractTests(unittest.TestCase):
-    def test_ready_release_can_use_revision_without_independent_artifact(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary_directory:
-            project = Path(temporary_directory)
-            (project / "evidence.json").write_text(
-                '{"status": "pass"}\n', encoding="utf-8"
-            )
-            manifest = project / "release.yaml"
-            manifest.write_text(
-                textwrap.dedent(
-                    """
-                    schema_version: 1
-                    run_id: "RUN-LIGHT"
-                    version: "unversioned"
-                    revision: "working-tree"
-                    status: ready
-                    artifacts: []
-                    acceptance: pass
-                    verification: "evidence.json"
-                    documentation: not-applicable
-                    known_limitations: []
-                    unverified_risks: []
-                    publish_actions: []
-                    """
-                ).strip()
-                + "\n",
-                encoding="utf-8",
-            )
-
-            result = run_script(
-                "check_release.py",
-                "--manifest",
-                str(manifest),
-                "--project",
-                str(project),
-            )
-
-            self.assertEqual(result.returncode, 0, result.stdout)
-            self.assertEqual(json.loads(result.stdout)["status"], "pass")
-
     def test_ready_release_with_local_evidence_passes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             project = Path(temporary_directory)
             (project / "dist").mkdir()
             (project / "dist" / "package.txt").write_text("artifact\n", encoding="utf-8")
-            (project / "evidence.json").write_text(
-                '{"status": "pass"}\n', encoding="utf-8"
-            )
-            manifest = project / "release.yaml"
+            evidence_path, evidence = create_passing_evidence(project)
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
             manifest.write_text(
                 textwrap.dedent(
-                    """
+                    f"""
                     schema_version: 1
                     run_id: "RUN-1"
                     version: "1.0.0"
-                    revision: "source-release-1"
+                    revision: "{evidence['target_state']['identity']}"
                     status: ready
                     artifacts:
                       - "dist/package.txt"
                     acceptance: pass
-                    verification: "evidence.json"
+                    verification: "{evidence_path}"
                     documentation: complete
                     known_limitations: []
                     unverified_risks: []
@@ -884,27 +1124,139 @@ class ReleaseContractTests(unittest.TestCase):
             )
 
             self.assertEqual(result.returncode, 0, result.stdout)
-            self.assertEqual(json.loads(result.stdout)["status"], "pass")
+            report = json.loads(result.stdout)
+            self.assertEqual(report["status"], "pass")
+            self.assertEqual(report["verification_applicability"], "verified")
+
+    def test_committed_evidence_matches_only_its_release_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            first_revision = initialize_git_project(project)
+            evidence_path, evidence = create_passing_evidence(project)
+            self.assertEqual(evidence["target_state"]["identity"], first_revision)
+            self.assertFalse(evidence["target_state"]["dirty"])
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    f"""
+                    schema_version: 1
+                    run_id: "RUN-1"
+                    version: "1.0.0"
+                    revision: "{first_revision}"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "{evidence_path}"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            passing = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+            self.assertEqual(passing.returncode, 0, passing.stdout)
+
+            (project / "app.py").write_text("VALUE = 2\n", encoding="utf-8")
+            run_git(project, "add", "app.py")
+            run_git(
+                project,
+                "-c",
+                "user.name=Rung Tests",
+                "-c",
+                "user.email=rung@example.invalid",
+                "commit",
+                "--quiet",
+                "-m",
+                "second",
+            )
+            second_revision = run_git(project, "rev-parse", "HEAD")
+            manifest.write_text(
+                manifest.read_text(encoding="utf-8").replace(
+                    first_revision, second_revision
+                ),
+                encoding="utf-8",
+            )
+
+            stale = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+            self.assertEqual(stale.returncode, 1)
+            self.assertIn("does not identify the state covered", stale.stdout)
+
+    def test_ready_release_rejects_changed_plan_and_run_id(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            evidence_path, evidence = create_passing_evidence(project)
+            plan_path = project / str(evidence["plan"])
+            plan_path.write_text(
+                plan_path.read_text(encoding="utf-8") + "\n",
+                encoding="utf-8",
+            )
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    f"""
+                    schema_version: 1
+                    run_id: "RUN-OTHER"
+                    version: "1.0.0"
+                    revision: "{evidence['target_state']['identity']}"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "{evidence_path}"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("plan digest does not match", result.stdout)
+            self.assertIn("run_id does not match", result.stdout)
 
     def test_ready_release_reports_missing_artifact(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             project = Path(temporary_directory)
-            (project / "evidence.json").write_text(
-                '{"status": "pass"}\n', encoding="utf-8"
-            )
-            manifest = project / "release.yaml"
+            evidence_path, evidence = create_passing_evidence(project)
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
             manifest.write_text(
                 textwrap.dedent(
-                    """
+                    f"""
                     schema_version: 1
                     run_id: "RUN-1"
                     version: "1.0.0"
-                    revision: "source-release-1"
+                    revision: "{evidence['target_state']['identity']}"
                     status: ready
                     artifacts:
                       - "dist/missing.txt"
                     acceptance: pass
-                    verification: "evidence.json"
+                    verification: "{evidence_path}"
                     documentation: complete
                     known_limitations: []
                     unverified_risks: []
@@ -926,20 +1278,21 @@ class ReleaseContractTests(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertIn("artifact 1 not found", result.stdout)
 
-    def test_ready_release_rejects_non_passing_local_evidence(self) -> None:
+    def test_ready_release_rejects_status_only_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             project = Path(temporary_directory)
             (project / "evidence.json").write_text(
-                '{"status": "fail"}\n', encoding="utf-8"
+                '{"status": "pass"}\n', encoding="utf-8"
             )
             manifest = project / "release.yaml"
+            state_identity = "filesystem:sha256:" + "0" * 64
             manifest.write_text(
                 textwrap.dedent(
-                    """
+                    f"""
                     schema_version: 1
-                    run_id: "RUN-FAILED-EVIDENCE"
+                    run_id: "RUN-STATUS-ONLY"
                     version: "1.0.0"
-                    revision: "working-tree"
+                    revision: "{state_identity}"
                     status: ready
                     artifacts: []
                     acceptance: pass
@@ -963,7 +1316,335 @@ class ReleaseContractTests(unittest.TestCase):
             )
 
             self.assertEqual(result.returncode, 1)
-            self.assertIn("verification evidence status must be pass", result.stdout)
+            self.assertIn("schema_version must be 2", result.stdout)
+            self.assertIn("checks must be a non-empty array", result.stdout)
+
+    def test_ready_release_rejects_internally_contradictory_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            evidence_path, evidence = create_passing_evidence(project)
+            check = evidence["checks"][0]
+            check["status"] = "fail"
+            check["return_code"] = 1
+            evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    f"""
+                    schema_version: 1
+                    run_id: "RUN-1"
+                    version: "1.0.0"
+                    revision: "{evidence['target_state']['identity']}"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "{evidence_path}"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("inconsistent with its check results", result.stdout)
+
+    def test_ready_release_rejects_evidence_for_stale_working_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            (project / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
+            evidence_path, evidence = create_passing_evidence(project)
+            (project / "app.py").write_text("VALUE = 2\n", encoding="utf-8")
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    f"""
+                    schema_version: 1
+                    run_id: "RUN-1"
+                    version: "1.0.0"
+                    revision: "{evidence['target_state']['identity']}"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "{evidence_path}"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("no longer applies to the current project state", result.stdout)
+
+    def test_ready_release_requires_only_checks_declared_for_release(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            checks = [
+                {
+                    "name": f"tier-{tier}",
+                    "claim": f"tier {tier} release claim",
+                    "tier": tier,
+                    "required_for_release": True,
+                    "command": [sys.executable, "-c", "pass"],
+                }
+                for tier in (0, 3)
+            ]
+            evidence_path, evidence = create_passing_evidence(
+                project, checks=checks, max_tier=0
+            )
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    f"""
+                    schema_version: 1
+                    run_id: "RUN-1"
+                    version: "1.0.0"
+                    revision: "{evidence['target_state']['identity']}"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "{evidence_path}"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("skipped required checks", result.stdout)
+
+            checks[1]["required_for_release"] = False
+            optional_path, optional_evidence = create_passing_evidence(
+                project,
+                run_id="RUN-OPTIONAL",
+                checks=checks,
+                max_tier=0,
+            )
+            optional_manifest = (
+                project / ".rung" / "runs" / "RUN-OPTIONAL" / "release.yaml"
+            )
+            optional_manifest.write_text(
+                textwrap.dedent(
+                    f"""
+                    schema_version: 1
+                    run_id: "RUN-OPTIONAL"
+                    version: "1.0.0"
+                    revision: "{optional_evidence['target_state']['identity']}"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "{optional_path}"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            optional_result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(optional_manifest),
+                "--project",
+                str(project),
+            )
+            self.assertEqual(optional_result.returncode, 0, optional_result.stdout)
+
+    def test_manifest_type_error_is_reported_without_exception(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            manifest = project / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    schema_version: 1
+                    run_id: "RUN-TYPE"
+                    version: "1.0.0"
+                    revision: "unknown"
+                    status: []
+                    artifacts: []
+                    acceptance: blocked
+                    verification: "unknown.json"
+                    documentation: blocked
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 1, result.stderr)
+            self.assertIn("status must be blocked, ready, or published", result.stdout)
+
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    schema_version: 1
+                    run_id: "RUN-TYPE"
+                    version: "1.0.0"
+                    revision: "external-revision"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "https://ci.example/evidence/1"
+                    documentation: []
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+            documentation_result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+            self.assertEqual(documentation_result.returncode, 1, documentation_result.stderr)
+            self.assertIn("documentation must be", documentation_result.stdout)
+
+    def test_evidence_type_errors_are_reported_without_exception(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            evidence_path, evidence = create_passing_evidence(project)
+            manifest = project / ".rung" / "runs" / "RUN-1" / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    f"""
+                    schema_version: 1
+                    run_id: "RUN-1"
+                    version: "1.0.0"
+                    revision: "{evidence['target_state']['identity']}"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "{evidence_path}"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            for field, value in [
+                ("status", []),
+                ("target_state.kind", []),
+                ("checks.0.status", []),
+            ]:
+                with self.subTest(field=field):
+                    malformed = json.loads(json.dumps(evidence))
+                    if field == "status":
+                        malformed["status"] = value
+                    elif field == "target_state.kind":
+                        malformed["target_state"]["kind"] = value
+                    else:
+                        malformed["checks"][0]["status"] = value
+                    evidence_path.write_text(json.dumps(malformed), encoding="utf-8")
+
+                    result = run_script(
+                        "check_release.py",
+                        "--manifest",
+                        str(manifest),
+                        "--project",
+                        str(project),
+                    )
+
+                    self.assertEqual(result.returncode, 1, result.stderr)
+                    self.assertTrue(result.stdout)
+
+    def test_external_evidence_reports_delegated_applicability(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            project = Path(temporary_directory)
+            manifest = project / "release.yaml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    schema_version: 1
+                    run_id: "RUN-EXTERNAL"
+                    version: "1.0.0"
+                    revision: "external-revision"
+                    status: ready
+                    artifacts: []
+                    acceptance: pass
+                    verification: "https://ci.example/evidence/1"
+                    documentation: complete
+                    known_limitations: []
+                    unverified_risks: []
+                    publish_actions: []
+                    """
+                ).strip()
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_script(
+                "check_release.py",
+                "--manifest",
+                str(manifest),
+                "--project",
+                str(project),
+            )
+
+            self.assertEqual(result.returncode, 0, result.stdout)
+            report = json.loads(result.stdout)
+            self.assertEqual(
+                report["verification_applicability"], "delegated-unverified"
+            )
+            self.assertTrue(report["warnings"])
 
 
 if __name__ == "__main__":

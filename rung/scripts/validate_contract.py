@@ -13,6 +13,27 @@ from typing import Any
 CONTRACT_NAME = "contracts/rung-contract.json"
 REQUIRED_PACKAGE_KEYS = {"name", "stable_ref", "candidate_version"}
 ALLOWED_KINDS = {"card", "guide"}
+EXPECTED_CLAIM_STATES = {
+    "decision-complete",
+    "review-complete",
+    "change-verified",
+    "release-ready",
+    "published",
+    "blocked-handoff",
+}
+EXPECTED_EVIDENCE_BINDINGS = {
+    "run-id",
+    "plan-digest",
+    "target-state",
+    "final-state",
+    "check-results",
+}
+EXPECTED_RELEASE_EVIDENCE = {
+    "internal-consistency",
+    "stable-state",
+    "revision-match",
+    "declared-required-check-coverage",
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -25,6 +46,12 @@ def load_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError("Contract root must be an object")
     return value
+
+
+def string_set(value: Any) -> set[str] | None:
+    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+        return None
+    return set(value)
 
 
 def validate_contract(skill_root: Path, contract: dict[str, Any]) -> list[str]:
@@ -88,6 +115,37 @@ def validate_contract(skill_root: Path, contract: dict[str, Any]) -> list[str]:
             problems.append("scope_gate.development_outcomes must be a non-empty list")
         if scope_gate.get("understanding_only_exits_before_references") is not True:
             problems.append("understanding-only work must exit before references")
+
+    completion = contract.get("completion")
+    if not isinstance(completion, dict):
+        problems.append("completion must be an object")
+    else:
+        if string_set(completion.get("claim_states")) != EXPECTED_CLAIM_STATES:
+            problems.append("completion.claim_states must cover claim-appropriate handoffs")
+        if string_set(completion.get("release_states")) != {"release-ready", "published"}:
+            problems.append("completion.release_states must identify release claims")
+        if completion.get("release_is_conditional") is not True:
+            problems.append("completion.release_is_conditional must be true")
+
+    verification_evidence = contract.get("verification_evidence")
+    if not isinstance(verification_evidence, dict):
+        problems.append("verification_evidence must be an object")
+    else:
+        if verification_evidence.get("schema_version") != 2:
+            problems.append("verification_evidence.schema_version must be 2")
+        if string_set(verification_evidence.get("binds")) != EXPECTED_EVIDENCE_BINDINGS:
+            problems.append("verification_evidence.binds must preserve evidence identity")
+        if (
+            string_set(verification_evidence.get("release_requires"))
+            != EXPECTED_RELEASE_EVIDENCE
+        ):
+            problems.append(
+                "verification_evidence.release_requires must preserve release applicability"
+            )
+        if verification_evidence.get("external_applicability") != "delegated-unverified":
+            problems.append(
+                "verification_evidence.external_applicability must expose delegated evidence"
+            )
 
     concerns = contract.get("concerns")
     if not isinstance(concerns, list) or not concerns:

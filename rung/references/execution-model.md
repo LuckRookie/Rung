@@ -15,7 +15,7 @@ Read when inspection scope, design persistence, planning ownership, cross-sessio
 
 ## Run ownership
 
-Each DevelopmentRun has one logical **Primary Agent**. The same model instance may hold that role for a short run, or a later session may resume it from durable state. The Primary Agent owns the integrated outcome, routing, user-work protection, decisions, plan, final diff, evidence, review, and release handoff.
+Each DevelopmentRun has one logical **Primary Agent**, held in one session or recovered later. It owns the integrated outcome, routing, user-work protection, decisions, plan, final diff, evidence, review, and claim-appropriate handoff, including active Release.
 
 The user supplies intent, constraints, product direction, and external-action authorization. A request such as "decide for me" delegates in-scope design choices; it does not expand task scope or authorize commit, push, publication, production mutation, or another external action.
 
@@ -25,7 +25,7 @@ Concern Cards are capabilities used by the Primary Agent. They do not imply one 
 
 ## Default mode
 
-Use one Primary Agent in one main session. Keep working state in the conversation and actual project until persistence or delegation improves coordination, recovery, review, or delivery. Load only the references relevant to the next decision.
+Use one Primary Agent in one main session. Keep state in the conversation and project until persistence or delegation improves coordination, recovery, review, or delivery. Load only what the next decision needs.
 
 A run may expand to:
 
@@ -46,7 +46,7 @@ For a project-changing request, the Primary Agent normally:
 5. implements or integrates the scoped change;
 6. verifies claims against the actual integrated state;
 7. reviews the diff, evidence, and delivery state;
-8. hands off the release state, gaps, and risks.
+8. hands off the completed claim, gaps, risks, and any active release state.
 
 Merge, skip, reorder, and revisit concerns as evidence changes. A local fix may collapse design, planning, implementation, review, and handoff into one short loop.
 
@@ -70,7 +70,7 @@ Expand to consumers, schemas, migrations, generated artifacts, lock state, build
 
 Use a declared system-level boundary for an explicit audit, core architecture change, broad migration, security-boundary change, build-system replacement, or Project Harness evolution. State included surfaces and remaining uninspected areas; "the whole repository" is not a verifiable scope by itself.
 
-Inspection is sufficient when the next action has a known owner and constraint set, relevant user work is protected, the likely impact and check path are bounded, and remaining unknowns are visible. Read [Project Harness](project-harness.md) when authoritative sources or configured judgment mechanisms conflict.
+Inspection is sufficient when the next action has a known owner and constraints, user work is protected, impact and checks are bounded, and unknowns are visible. Read [Project Harness](project-harness.md) when authorities conflict.
 
 ## Collaborative decisions and design authority
 
@@ -78,7 +78,7 @@ Clarify manages consequential decisions with the user. Design supplies professio
 
 When project identity, semantic center, feature fit, or intended evolution can change the decision, Clarify and Inspect form a Project Model from human meaning and project reality before Design commits to durable boundaries.
 
-Present a user decision in plain language: the issue, recommendation, immediate consequence, credible development impact, reversibility, and requested choice. Keep mechanisms and terminology available by reference or on request. Decision-relevant risks remain in the plain-language view.
+Present the issue, recommendation, consequence, credible development impact, reversibility, and requested choice plainly. Keep mechanisms available by reference or request; retain decision risks in the plain view.
 
 When the user delegates an in-scope decision, the Primary Agent acts as the project designer. Ground the choice in current facts, credible development signals, and change cost. Human-facing surfaces receive UX attention, including task flow, information hierarchy, defaults, feedback, error prevention, recovery, consistency, accessibility, and trust.
 
@@ -96,7 +96,7 @@ Use the lowest durable surface that has a real future consumer.
 | Public contract, persistent data, core ownership, lasting UX, security boundary, or migration | owning project requirement, ADR, API, schema, architecture, or configuration |
 | Cross-session, multi-executor, evolving comparison, or temporary recovery state | `.rung/runs/<run-id>/design.md` or an existing project issue |
 
-Avoid duplicating one design fact across temporary and durable locations. Promote stable facts into their project owner and retain or clean temporary state according to project convention and an explicit cleanup condition.
+Keep each design fact in one place. Promote stable facts to their project owner; retain or clean temporary state by project convention and an explicit condition.
 
 ## Planning ownership
 
@@ -151,11 +151,11 @@ Before ending a session that cannot complete the run, persist only what a succes
 
 On resume, re-read applicable instructions and compare the saved revision and user-work state with current Git state. Revalidate assumptions affected by drift, then continue from the next meaningful action rather than repeating valid completed work.
 
-## Verification and release responsibility
+## Claim completion and release responsibility
 
-Verify claims against the integrated revision or explicitly described working-tree state. Worker checks are candidate evidence; the Primary Agent confirms their relevance after integration. A changed Harness component cannot be the sole evidence of its own correctness.
+Verify claims against the integrated commit or explicit working-tree identity. Record the target before checks and confirm that project and plan state remain stable through them. Worker checks are candidate evidence; the Primary Agent confirms their relevance after integration. A changed Harness component cannot be the sole evidence of its own correctness.
 
-The Primary Agent assembles the final handoff: observable result, actual checks, artifact or revision identity, uncovered scope, residual risk, and release state. External writes occur only under the required user authorization and host permissions.
+The final handoff gives result, checks, target identity, uncovered scope, risk, and claim state. Decisions and reviews close at an evidenced conclusion; implementation can close as change verified. Release readiness and publication require an active delivery claim and its code-state or artifact handoff. External writes require user authority and host permission.
 
 ## Operating invariants
 
@@ -165,5 +165,5 @@ The Primary Agent assembles the final handoff: observable result, actual checks,
 - Durable facts live with their project owner.
 - The Primary Agent owns the global plan and integrated result.
 - Delegation uses bounded context and explicit ownership.
-- Final verification targets the combined state.
+- Final verification targets an identified, stable combined state.
 - Session and Agent count increase only when they improve execution or confidence.

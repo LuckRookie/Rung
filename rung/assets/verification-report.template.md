@@ -4,12 +4,15 @@
 |---|---|
 | Run ID | `{{run_id}}` |
 | Primary Agent | `{{primary_agent}}` |
-| Integrated state | `{{revision_or_working_tree_identity}}` |
+| Target state | `{{target_commit_or_state_identity}}` |
+| State stable during checks | `{{true_or_false}}` |
+| Plan digest | `{{plan_sha256}}` |
 | Governance depth | `{{governance_depth}}` |
 | Requested maximum Tier | `{{requested_max_tier}}` |
 | Selected plan checks | `{{selected_check_count}} / {{planned_check_count}}` |
 | Evidence file | `{{evidence_path}}` |
 | Overall result | `{{pass_fail_blocked_or_waived}}` |
+| Evidence applicability | `{{pass_blocked_and_reason}}` |
 
 ## Acceptance evidence
 

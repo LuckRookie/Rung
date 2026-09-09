@@ -23,6 +23,6 @@ Final entrypoint SHA-256: `aec89301f15c00fb55a35c0f9ecf5d0f3c7bf62541ad5e9bc7cbf
 
 ## Evidence locations and limits
 
-Local raw evaluation artifacts: `/tmp/rung-pruning-bc97ail7/forward-result.json` and `/tmp/rung-pruning-bc97ail7/independent-checks.json`. Temporary fixtures and raw logs are outside the installable package. This report retains the results if temporary files are removed.
+The recorded raw outputs are retained beside this report in `2026-09-09-pruning-smoke/forward-result.json` and `2026-09-09-pruning-smoke/independent-checks.json`. Their embedded `/tmp/rung-pruning-bc97ail7/` paths identify the original isolated run; temporary fixtures and complete process logs remain outside the repository and installable package.
 
 The repository tests also cover the labeled activation corpus, malformed inputs, legacy input defaults, reclassification, explicit membership limits, indirect guide reachability, and entrypoint growth. They test supplied host judgments and structure, not natural-language intent classification. Full host traces, repeated variants, broad lifecycle tasks, and real integration/release environments remain outside this smoke.

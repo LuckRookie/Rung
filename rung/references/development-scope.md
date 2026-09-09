@@ -51,7 +51,7 @@ Ask one plain-language question only when the unresolved answer changes the work
 
 When one request contains both active development and other outcomes, keep their claims and owners separate even if one Agent performs both:
 
-- Rung governs codebase facts needed for the active claim, decisions, changes, integrated verification, review, and Release Handoff.
+- Rung governs codebase facts needed for the active claim, decisions, changes, integrated verification, review, and claim-appropriate Handoff. Release joins when delivery is active.
 - Each remaining outcome keeps its owning workflow, evidence method, authorization, and recovery path.
 - Shared observations support a codebase claim only when their relevant state and artifact identity are known. They do not broaden the DevelopmentRun by association.
 - External execution remains subject to its own authority and does not inherit authorization from codebase change.

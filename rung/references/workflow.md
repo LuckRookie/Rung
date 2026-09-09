@@ -4,34 +4,35 @@ Read when several concerns interact or the most useful next action is unclear.
 
 ## Default run
 
-One Primary Agent owns the run. It grounds outcome and target facts, resolves consequential decisions, designs enough, coordinates useful dependencies, implements, verifies and reviews the combined state, then hands it off.
+One Primary Agent grounds outcome and facts, resolves decisions, coordinates useful dependencies, implements when authorized, verifies and reviews the combined state, then closes the claim proportionately. Release joins for readiness, artifact, publication, or downstream delivery claims.
 
 Merge, skip, reorder, and revisit concerns. A bounded task may use one short loop.
 
 ## Concern loop
 
-1. Notice the unknown, decision, risk, coordination need, or delivery claim most likely to affect the result.
-2. Read its Concern Card and perform the minimum useful action.
-3. Continue until evidence changes ownership, direction, scope, risk, or confidence.
-4. Revisit the owning concern and update any stale decision or plan.
+1. Notice the unknown, decision, risk, coordination need, or claim most likely to affect the result.
+2. Read its Card and take the minimum useful action.
+3. Revisit its owner when evidence changes direction, scope, risk, or confidence.
 
 | Concern | Operating result |
 |---|---|
-| Clarify | accepted decisions, delegated authority, and open choices |
-| Inspect | relevant facts, protected user work, and bounded unknowns |
-| Design | a coherent project or change solution |
-| Plan | owned change units, dependencies, checks, and recovery points |
-| Implement | an integrated change aligned with current facts and decisions |
-| Verify | claim-linked evidence and visible gaps |
-| Review | resolved findings and accepted residual risk |
-| Release | a traceable handoff of revision, artifacts, evidence, and risks |
+| Clarify | decisions, authority, open choices |
+| Inspect | facts, protected work, unknowns |
+| Design | coherent solution |
+| Plan | owned units, dependencies, checks, recovery |
+| Implement | integrated change |
+| Verify | claim-linked evidence and gaps |
+| Review | resolved findings and residual risk |
+| Release | traceable delivery handoff |
+
+Close as `decision complete`, `review complete`, `change verified`, `release ready`, `published`, or `blocked handoff`, according to the active claim.
 
 ## Execution expansion
 
-Read [Execution Model](execution-model.md) for inspection radius, design persistence, plan ownership, workers, review, or recovery. Keep one Primary Agent responsible after delegation.
+Read [Execution Model](execution-model.md) for inspection radius, persistence, ownership, workers, review, or recovery. Keep one Primary Agent responsible.
 
 Read [Project Harness](project-harness.md) when project controls conflict or become change targets, [Verification Harness](verification-harness.md) for a missing evidence layer, and [Harness Evolution](harness-evolution.md) for material Harness repair or migration.
 
-For recovery, retain outcome, decisions and delegated scope, baseline and protected user work, chosen design, completed units, next action, evidence, and open risk. Reconcile them with current project state before continuing.
+For recovery, retain outcome, decisions, scope, baseline, protected work, chosen design, completed units, next action, evidence, and risk. Reconcile with current state.
 
 Use [Risk signals](risk-signals.md) for depth and [Artifacts](artifacts.md) for persistence only when needed.

@@ -12,7 +12,7 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它为�
 |---|---|
 | 开发意图路由 | 分别判断开发范围与治理启用；隐式调用需要实质工程决定，显式调用可用于范围内的小任务 |
 | 薄层导航 | 默认只提醒 Outcome、Context、Approach、Evidence 和 Handoff |
-| 执行责任 | 每次 DevelopmentRun 由一个 Primary Agent 持有全局 Plan、集成结果与 Release Handoff |
+| 执行责任 | 每次 DevelopmentRun 由一个 Primary Agent 持有全局 Plan、集成结果与 Claim Handoff |
 | 按需治理 | 当前信号决定加载哪个开发关注面和治理深度 |
 | 项目适配 | 仓库事实、现有规则、工具链和用户修改进入当前判断 |
 | 项目画像 | 项目含义、语义中心、能力归属或演进方向存在实质不确定性时，将用户意图与项目现实合成为可修正的 Project Model |
@@ -25,7 +25,7 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它为�
 | 技术债治理 | 以当前承载状态、可信 Trigger 与未来负担机制限定有效债务，管理 Interest、Exposure、Propagation、Principal、策略与 Revisit |
 | Project Harness 演进 | 复用可靠的已有约束，并在事实源、测试、规则、构建、CI 或 Gate 自身出现问题时进行独立诊断和渐进迁移 |
 | 分层验证系统 | 在证据缺口或 Harness 增长时治理测试、Fixture、文档检查、CI、构建、打包和端到端入口 |
-| 相称证据 | 完成、兼容和可发布结论关联与风险相称的实际结果 |
+| 相称证据 | 完成、兼容和可发布结论关联受检代码状态、实际结果与证据适用性 |
 | 发布交接 | 整理 revision、制品、说明、限制和下游待办 |
 
 ## Progressive Governance
@@ -35,7 +35,7 @@ User Intent
    ↓
 Development Scope Gate
    ├─ 理解型结果或未建立代码库关系 → Host / 对应工作流
-   └─ 满足开发范围及启用条件的部分 → 按当前信号加载零到一张提示卡 → Verified Release Handoff
+   └─ 满足开发范围及启用条件的部分 → 按当前信号加载零到一张提示卡 → Claim-appropriate Handoff
 ```
 
 Rung 先确认代码库关系与活跃开发 Claim，再决定是否启用。自动调用需要实质的职责、契约、状态、失败、兼容、迁移、验证或交付决定。行为、Owner、影响与检查已知的局部可逆修改直接由 Host 完成；文件数、项目规模和常规测试不单独触发。显式 `$rung` 或开发治理请求可用于小任务，仍须满足开发范围。边界的权威定义见 [Rung.md §4.1](Rung.md#41-开始边界user-intent)。
@@ -51,6 +51,8 @@ Clarify · Inspect · Design · Plan · Implement · Verify · Review · Release
 Agent 可以合并、跳过和回访这些关注面。普通任务不创建 Rung 工作区；复杂、跨会话或高风险任务可以按需使用 Profile、Artifact 和脚本。
 
 每次 DevelopmentRun 由一个逻辑 Primary Agent 负责。默认在一个主 Session 中完成相称检查、方案、修改、集成验证、Review 和 Handoff；跨 Session 状态、Worker 与独立 Reviewer 只在能够改善恢复、并行或置信度时加入。完整的执行契约见 [Execution Model](rung/references/execution-model.md)。
+
+Handoff 跟随当前 Claim：设计或诊断可以形成 `decision complete`，审查与评估可以形成 `review complete`，已实施修改可以形成 `change verified`，交付请求继续形成 `release ready` 或经授权完成 `published`；阻塞结果记录恢复条件和下一 Owner。Release Card 只在发布就绪性、版本、制品、发布动作或下游交付进入当前请求时加载。
 
 项目检查从 Baseline 和 Target 开始，公共接口、持久数据、共享行为、依赖、平台或多模块影响会把半径扩展到 Impact；明确审查、核心架构、广泛迁移、安全边界或 Harness Evolution 使用声明过的 System 边界。局部可逆 Design 可以留在对话、代码与测试中，长期契约和架构事实进入项目自己的事实源，临时恢复状态可以按需进入 `.rung/`。
 
@@ -124,7 +126,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 $rung 为现有项目实现导出功能，并准备一个经过验证的可发布版本。
 ```
 
-Rung 默认保持轻量，先确认当前验收对象同时具备代码库关系和活跃开发 Claim，再检查启用条件。简单隐式修改、理解型与范围外结果沿用 Host；进入 DevelopmentRun 后以与任务规模相称的方式说明实现结果、实际验证、残余风险和 Release 交接状态。
+Rung 默认保持轻量，先确认当前验收对象同时具备代码库关系和活跃开发 Claim，再检查启用条件。简单隐式修改、理解型与范围外结果沿用 Host；进入 DevelopmentRun 后以与任务规模相称的方式说明结果、实际证据、残余风险和 Claim Handoff 状态。
 
 ## 可选确定性工具
 
@@ -146,7 +148,11 @@ python rung/scripts/run_verification.py \
   --output .rung/runs/RUN_ID/evidence.json
 ```
 
-`--max-tier` 选择本次执行的最高验证层，并把跳过项写入 Evidence。需要设计或扩展 Fixture、Mock、测试服务、文档检查、CI Gate、构建、打包或端到端环境时，可以按需形成 `.rung/runs/RUN_ID/verification-harness.md`；长期 Harness 代码和配置进入目标项目自己的正式结构。
+Verification Plan 使用 schema v2；`revision` 可以省略，也可以填写预期 Commit 或精确 State Identity。Runner 在执行前后记录项目状态和 Plan 摘要，状态漂移会把 Evidence 适用性降为 `blocked`。`--max-tier` 选择本次执行的最高验证层并记录跳过项；部分 Tier Evidence 可以支持局部判断，但不能独立支持 `ready` 或 `published`。命令输出在读取期间保持有界，非法编码使用替换字符保留，Timeout 会终止命令进程组。
+
+候选版本中的 Verification Plan 与本地 Release Evidence 已升级到 schema v2。旧的 Plan 和只有顶层 `status` 的 Evidence 需要重新运行生成；检查器会给出明确诊断，不会把旧格式静默视为发布证据。
+
+需要设计或扩展 Fixture、Mock、测试服务、文档检查、CI Gate、构建、打包或端到端环境时，可以按需形成 `.rung/runs/RUN_ID/verification-harness.md`；长期 Harness 代码和配置进入目标项目自己的正式结构。
 
 已有 Project Harness 自身进入修改范围时，可以按需形成 `.rung/runs/RUN_ID/harness-change.md`，记录权威事实、基线、独立证据、Coverage Delta、生效、回退和旧路径清理条件。
 
@@ -165,7 +171,9 @@ Artifact 检查默认验证运行目录中实际存在的 Rung 制品；需要�
 
 Qualified Debt Item 通常写入项目已有管理系统。项目缺少可用形态且后续 Owner 需要持久状态时，可以从 [Technical Debt Item 模板](rung/assets/technical-debt-item.template.md)选择必要字段，并在可选运行目录中保存为 `debt.md`。
 
-Release Manifest 标记为 `ready` 或 `published` 时，本地 `verification` 引用使用顶层 `status` 为 `pass` 的 JSON Evidence；外部 CI 或制品系统可以提供 URI。
+Release Manifest 标记为 `ready` 或 `published` 时，本地 `verification` 引用使用 Evidence v2。检查器验证 Schema、Check 与聚合状态、Run ID、检查前后状态、Manifest revision，并确认 Plan 中标记 `required_for_release` 的检查均已执行。Git Clean State 使用 Commit；Git Dirty State 和无 Git 项目使用 Evidence 中的内容身份。外部 CI 或制品 URI 会明确报告为 `delegated-unverified`，其充分性仍由当前项目流程负责。
+
+`inspect_project.py` 输出的候选命令带有 `confidence: declared | inferred`。项目声明的脚本和配置优先；目录名称只有在出现对应语言测试文件时才参与命令推断。
 
 所有脚本只使用 Python 标准库，并输出机器可读 JSON。
 

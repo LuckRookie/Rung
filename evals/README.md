@@ -91,7 +91,7 @@ Technical Debt 场景将当前质量与未来负担分别记录。Qualified Debt
 
 `35-lifecycle-guidance-smoke.md` 检查当前变化所需的生命周期决定是否有责任与证据；关注面允许组合、跳过和回访，无八步执行或文案匹配要求。
 
-`36-autonomous-quality-loop.md` 检查简短默认指导是否改善错误语义、验证与隐藏后续变化，不要求 Change Contract、质量 Guide 或内部思考自述。`37-activation-and-context-economy.md` 专门测量隐式/显式触发、误触退出与上下文成本。
+`36-autonomous-quality-loop.md` 检查简短默认指导是否改善错误语义、验证与隐藏后续变化，不要求 Change Contract、质量 Guide 或内部思考自述。`37-activation-and-context-economy.md` 专门测量隐式/显式触发、误触退出与上下文成本。`38-claim-handoff-and-evidence-identity.md` 检查决策型任务能否在相称 Handoff 结束，以及后续实施与 Release 是否识别 Evidence 之后的 working-tree 漂移。
 
 显式 Debt System 场景记录债务间传播、共同根因、交付能力消耗、Owner 缺失和过期清理条件。评审比较主要机制命中、False debt finding、干预杠杆、当前行为保护与 Hidden follow-up 的 Interest 变化，不设置统一债务分数、数量目标或零债务标准。
 

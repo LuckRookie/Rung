@@ -18,6 +18,38 @@
     ],
     "understanding_only_exits_before_references": true
   },
+  "completion": {
+    "claim_states": [
+      "decision-complete",
+      "review-complete",
+      "change-verified",
+      "release-ready",
+      "published",
+      "blocked-handoff"
+    ],
+    "release_states": [
+      "release-ready",
+      "published"
+    ],
+    "release_is_conditional": true
+  },
+  "verification_evidence": {
+    "schema_version": 2,
+    "binds": [
+      "run-id",
+      "plan-digest",
+      "target-state",
+      "final-state",
+      "check-results"
+    ],
+    "release_requires": [
+      "internal-consistency",
+      "stable-state",
+      "revision-match",
+      "declared-required-check-coverage"
+    ],
+    "external_applicability": "delegated-unverified"
+  },
   "concerns": [
     {
       "id": "clarify",

@@ -1,0 +1,13 @@
+{
+  "local": {
+    "user_work_preserved": true,
+    "no_governance_artifacts": true,
+    "independent_behavior_cases": 6
+  },
+  "access": {
+    "user_work_preserved": true,
+    "no_governance_artifacts": true,
+    "independent_behavior_cases": 8,
+    "original_failure_reproduced": true
+  }
+}

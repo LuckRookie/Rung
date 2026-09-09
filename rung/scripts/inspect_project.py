@@ -123,8 +123,15 @@ def run_git(root: Path, *args: str) -> str | None:
 def infer_commands(root: Path, relative_files: set[str]) -> list[dict[str, Any]]:
     commands: list[dict[str, Any]] = []
 
-    def add(purpose: str, command: list[str], source: str) -> None:
-        entry = {"purpose": purpose, "command": command, "source": source}
+    def add(
+        purpose: str, command: list[str], source: str, confidence: str
+    ) -> None:
+        entry = {
+            "purpose": purpose,
+            "command": command,
+            "source": source,
+            "confidence": confidence,
+        }
         if entry not in commands:
             commands.append(entry)
 
@@ -172,11 +179,24 @@ def infer_commands(root: Path, relative_files: set[str]) -> list[dict[str, Any]]
             if isinstance(scripts, dict):
                 for name in ("lint", "typecheck", "test", "build", "pack"):
                     if isinstance(scripts.get(name), str):
-                        add(name, [declared_manager, "run", name], "package.json")
+                        add(
+                            name,
+                            [declared_manager, "run", name],
+                            "package.json script",
+                            "declared",
+                        )
         except (OSError, ValueError):
             pass
 
-    python_tests = any(path.startswith("tests/") for path in relative_files)
+    python_tests = any(
+        Path(path).suffix.lower() == ".py"
+        and (
+            "tests" in Path(path).parts
+            or Path(path).name.startswith("test_")
+            or Path(path).name.endswith("_test.py")
+        )
+        for path in relative_files
+    )
     if "pyproject.toml" in relative_files:
         pyproject: dict[str, Any] = {}
         try:
@@ -204,32 +224,39 @@ def infer_commands(root: Path, relative_files: set[str]) -> list[dict[str, Any]]
             or any(mentions_pytest(source) for source in dependency_sources)
         )
         if uses_pytest:
-            add("test", ["python", "-m", "pytest"], "pyproject.toml or pytest.ini")
+            add(
+                "test",
+                ["python", "-m", "pytest"],
+                "declared pytest configuration or dependency",
+                "declared",
+            )
         elif python_tests:
             add(
                 "test",
                 ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
-                "Python tests/ directory",
+                "Python test files",
+                "inferred",
             )
         if isinstance(tool_config.get("ruff"), dict):
-            add("lint", ["ruff", "check", "."], "pyproject.toml")
+            add("lint", ["ruff", "check", "."], "pyproject.toml [tool.ruff]", "declared")
         if "build-system" in pyproject:
-            add("build", ["python", "-m", "build"], "pyproject.toml")
+            add("build", ["python", "-m", "build"], "pyproject.toml build-system", "declared")
     elif "pytest.ini" in relative_files:
-        add("test", ["python", "-m", "pytest"], "pytest.ini or tests/")
+        add("test", ["python", "-m", "pytest"], "pytest.ini", "declared")
     elif python_tests:
         add(
             "test",
             ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
-            "Python tests/ directory",
+            "Python test files",
+            "inferred",
         )
 
     if "Cargo.toml" in relative_files:
-        add("test", ["cargo", "test"], "Cargo.toml")
-        add("build", ["cargo", "build", "--release"], "Cargo.toml")
+        add("test", ["cargo", "test"], "Cargo.toml convention", "inferred")
+        add("build", ["cargo", "build", "--release"], "Cargo.toml convention", "inferred")
     if "go.mod" in relative_files:
-        add("test", ["go", "test", "./..."], "go.mod")
-        add("build", ["go", "build", "./..."], "go.mod")
+        add("test", ["go", "test", "./..."], "go.mod convention", "inferred")
+        add("build", ["go", "build", "./..."], "go.mod convention", "inferred")
     if "Makefile" in relative_files:
         try:
             makefile = (root / "Makefile").read_text(encoding="utf-8")
@@ -241,7 +268,7 @@ def infer_commands(root: Path, relative_files: set[str]) -> list[dict[str, Any]]
             for target in ("lint", "test", "build", "package", "release", "help"):
                 if target in targets:
                     purpose = "project tasks" if target == "help" else target
-                    add(purpose, ["make", target], "Makefile")
+                    add(purpose, ["make", target], "declared Makefile target", "declared")
         except OSError:
             pass
 

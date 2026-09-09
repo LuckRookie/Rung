@@ -19,8 +19,8 @@
 - `rung/references/technical-debt.md` defines qualified future engineering obligations, debt economics and systems, management strategies, safe repayment, and consumer-driven persistence.
 - `rung/profiles/` contains optional depth hints for Lite, Standard, and Strict governance.
 - `rung/assets/` contains optional templates selected when persistence improves coordination, recovery, recurring decisions, review, or handoff; `project-model.template.md` is the fallback for shared identity facts and `technical-debt-item.template.md` for qualified debt without a project-owned issue shape.
-- `rung/contracts/rung-contract.json` is the machine-readable owner for the Scope Gate, activation policy, reachable Concern routes, context budgets, and package channel facts.
-- `rung/scripts/` contains deterministic, dependency-free helpers, including the structured Scope Gate evaluator.
+- `rung/contracts/rung-contract.json` is the machine-readable owner for the Scope Gate, activation policy, claim-appropriate completion, Evidence applicability, reachable Concern routes, context budgets, and package channel facts.
+- `rung/scripts/` contains deterministic, dependency-free helpers, including the structured Scope Gate evaluator and shared project-state identity support.
 - `evals/` contains host-neutral behavioral scenarios for development-intent routing, Design Exploration, Project Model decisions, software quality, technical debt, engineering structure, architecture assessment, evidence, and context-cost evaluation.
 
 ## Documentation style
@@ -28,17 +28,17 @@
 - Define products through capabilities, behavior, inputs, outputs, and responsibility handoffs.
 - Use direct statements. Category-exclusion inventories and comparison slogans do not belong in product descriptions.
 - Keep each fact in one maintained location and link to it from other documents.
-- Preserve the User Intent → Development Scope Gate → Active Codebase Development Intent-to-Release boundary established in `Rung.md`.
+- Preserve the User Intent → Development Scope Gate → Active Codebase Development Claim → Claim-appropriate Handoff boundary established in `Rung.md`.
 - Before References, check codebase relationship and active development claim, then activation. Implicit use requires material engineering decisions; explicit governance requests waive materiality only. Routine local reversible work with direct checks bypasses Rung. Unknown activation uses minimal host inspection, not speculative governance or a classification question.
 - Treat a codebase relationship, repository presence, path, file type, tool use, and incidental code as insufficient scope evidence on their own. An outcome that ends with understanding current codebase facts exits before another Rung resource loads. Runtime guidance defines the positive set without inventorying the open-ended space outside it.
-- Keep work outside the positive set on the Host or its owning workflow. For mixed work, govern only the qualifying codebase portion through Release Handoff and preserve independent ownership and authorization for the rest.
+- Keep work outside the positive set on the Host or its owning workflow. For mixed work, govern only the qualifying codebase portion through its claim-appropriate Handoff and preserve independent ownership and authorization for the rest.
 - Preserve progressive governance: thin by default, signal-driven, composable, and proportional to risk.
 - New prompt content must justify its context cost by changing a meaningful Agent decision.
 - Concern cards provide questions and evidence hints; they do not impose a mandatory stage sequence or default Artifact set.
 - Keep one logical Primary Agent responsible for each DevelopmentRun. Concern Cards are capabilities of that role and do not map to separate Agents or Sessions.
 - Default to one Primary Agent in one main Session. Workers, independent Reviewers, and durable recovery state remain optional, signal-driven, and subject to Host capability and policy.
-- Give Workers bounded context and explicit, non-overlapping ownership. The Primary Agent owns global planning, integration, finding resolution, and Release Handoff.
-- Verify completion against the integrated revision or explicitly identified working-tree state. Worker checks are candidate evidence until integration preserves their relevance.
+- Give Workers bounded context and explicit, non-overlapping ownership. The Primary Agent owns global planning, integration, finding resolution, and final Handoff; Release applies to active delivery claims.
+- Verify completion against an identified integrated Commit or working-tree state. Evidence records target and final state plus Plan identity; drift removes applicability. Worker checks are candidate evidence until integration preserves their relevance.
 - Keep the entrypoint and Concern Cards short. Put complex domain reasoning in precisely routed Domain Guides; measure context cost by what a task actually loads.
 - Default to zero or one Reference for the current decision; reuse loaded guidance. Future phases do not justify preloading; combine References only when concerns interact in the current judgment.
 - Treat Software Quality as current fitness and Technical Debt as avoidable future burden under credible evolution. Either axis can be high while the other remains low.
@@ -62,7 +62,8 @@
 - Script stdout is machine-readable JSON; diagnostics belong in structured fields.
 - Verification commands use argument arrays and `shell=False`.
 - Verification-plan tiers are integers from 0 through 3. Tier filtering records both selected and skipped checks without adding hidden retries or orchestration.
-- Ready or published Release Manifests use passing local JSON evidence or an external evidence URI.
+- Ready or published Release Manifests use internally consistent local Evidence v2 that matches the target state and covers every check declared `required_for_release`, or an external Evidence URI reported as delegated-unverified.
+- Candidate commands from project inspection distinguish project-declared entry points from convention-based inference; a tests directory alone supplies no language evidence.
 - Runtime helper examples resolve scripts from the installed Skill root and pass the target project explicitly.
 - External writes remain subject to user authorization and host permissions.
 - User changes and dirty worktrees enter the protection scope before edits.
