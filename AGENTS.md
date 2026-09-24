@@ -21,6 +21,7 @@
 - `rung/assets/` contains optional templates selected when persistence improves coordination, recovery, recurring decisions, review, or handoff; `project-model.template.md` is the fallback for shared identity facts and `technical-debt-item.template.md` for qualified debt without a project-owned issue shape.
 - `rung/contracts/rung-contract.json` is the machine-readable owner for the Scope Gate, activation policy, claim-appropriate completion, Evidence applicability, reachable Concern routes, context budgets, and package channel facts.
 - `rung/scripts/` contains deterministic, dependency-free helpers, including the structured Scope Gate evaluator and shared project-state identity support.
+- `rung/scripts/README.md` owns helper state coverage, exclusions, unsupported configurations, and state-schema migration rules.
 - `evals/` contains host-neutral behavioral scenarios for development-intent routing, Design Exploration, Project Model decisions, software quality, technical debt, engineering structure, architecture assessment, evidence, and context-cost evaluation.
 
 ## Documentation style
@@ -63,6 +64,7 @@
 - Verification commands use argument arrays and `shell=False`.
 - Verification-plan tiers are integers from 0 through 3. Tier filtering records both selected and skipped checks without adding hidden retries or orchestration.
 - Ready or published Release Manifests use internally consistent local Evidence v2 that matches the target state and covers every check declared `required_for_release`, or an external Evidence URI reported as delegated-unverified.
+- Local Evidence uses State schema v2. Git identity covers the repository; unmodeled gitlinks, nested repositories, and unreadable state block helper evidence. Apply coverage rules to historical commits as well as current worktrees.
 - Candidate commands from project inspection distinguish project-declared entry points from convention-based inference; a tests directory alone supplies no language evidence.
 - Runtime helper examples resolve scripts from the installed Skill root and pass the target project explicitly.
 - External writes remain subject to user authorization and host permissions.

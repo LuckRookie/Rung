@@ -35,6 +35,9 @@
   },
   "verification_evidence": {
     "schema_version": 2,
+    "state_schema_version": 2,
+    "git_scope": "repository",
+    "gitlinks": "blocked",
     "binds": [
       "run-id",
       "plan-digest",

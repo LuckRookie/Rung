@@ -14,7 +14,14 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlparse
 
-from project_state import capture_project_state, revision_matches_state
+from project_state import (
+    STATE_SCHEMA_VERSION,
+    capture_project_state,
+    git_repository_root,
+    normalize_exclusions,
+    revision_matches_state,
+    validate_commit_coverage,
+)
 
 REQUIRED_KEYS = {
     "schema_version",
@@ -74,6 +81,7 @@ CHECK_REQUIRED_KEYS = {
     "message",
 }
 STATE_REQUIRED_KEYS = {
+    "schema_version",
     "kind",
     "identity",
     "head_revision",
@@ -207,17 +215,18 @@ def file_sha256(path: Path) -> str:
     return f"sha256:{digest.hexdigest()}"
 
 
-def project_relative(project: Path, path: Path) -> str | None:
-    try:
-        return path.resolve().relative_to(project.resolve()).as_posix()
-    except ValueError:
-        return None
-
-
 def validate_state(value: Any, label: str, problems: list[str]) -> dict[str, Any] | None:
     if not isinstance(value, dict):
         problems.append(f"{label} must be an object")
         return None
+    initial_problem_count = len(problems)
+    if (
+        type(value.get("schema_version")) is not int
+        or value["schema_version"] != STATE_SCHEMA_VERSION
+    ):
+        problems.append(
+            f"{label}.schema_version must be {STATE_SCHEMA_VERSION}; rerun verification"
+        )
     missing = sorted(STATE_REQUIRED_KEYS - value.keys())
     if missing:
         problems.append(f"{label} missing keys: {', '.join(missing)}")
@@ -240,6 +249,15 @@ def validate_state(value: Any, label: str, problems: list[str]) -> dict[str, Any
     ):
         problems.append(f"{label}.excluded_paths must contain safe relative paths")
     if kind == "git":
+        repository_root = value.get("repository_root")
+        if not isinstance(repository_root, str) or not Path(repository_root).is_absolute():
+            problems.append(f"{label}.repository_root must be an absolute path")
+        subpath = value.get("project_subpath")
+        if (
+            not isinstance(subpath, str) or not subpath
+            or Path(subpath).is_absolute() or ".." in Path(subpath).parts
+        ):
+            problems.append(f"{label}.project_subpath must be a safe relative path")
         head = value.get("head_revision")
         if head is not None and (not isinstance(head, str) or not head.strip()):
             problems.append(f"{label}.head_revision must be null or a non-empty string")
@@ -256,7 +274,7 @@ def validate_state(value: Any, label: str, problems: list[str]) -> dict[str, Any
             )
         if identity != f"filesystem:{fingerprint}":
             problems.append(f"{label} filesystem identity must match its fingerprint")
-    return value
+    return value if len(problems) == initial_problem_count else None
 
 
 def validate_check_result(value: Any, index: int, problems: list[str]) -> str | None:
@@ -570,24 +588,35 @@ def validate_verification_evidence(
         "excluded_paths"
     ) != final_state.get("excluded_paths"):
         problems.append("verification target and final state exclusions do not match")
+    if target_state and final_state and target_state != final_state:
+        problems.append("verification target and final state records do not match")
 
-    if target_state and isinstance(target_state.get("excluded_paths"), list):
-        allowed_exclusions = {".rung/runs"}
-        evidence_relative = project_relative(project, path)
-        plan_relative = project_relative(project, plan_path) if plan_path else None
-        if evidence_relative:
-            allowed_exclusions.add(evidence_relative)
-        if plan_relative:
-            allowed_exclusions.add(plan_relative)
-        for exclusion in target_state["excluded_paths"]:
-            if (
-                isinstance(exclusion, str)
-                and exclusion not in allowed_exclusions
-                and not exclusion.startswith(".rung/runs/")
+    scope_root = project
+    if target_state:
+        try:
+            repository = git_repository_root(project)
+            if target_state["kind"] == "git":
+                if repository is None:
+                    raise ValueError("Git evidence requires a Git project")
+                scope_root = repository
+                if target_state["project_subpath"] != project.relative_to(repository).as_posix():
+                    problems.append(
+                        "verification evidence project_subpath does not match the project"
+                    )
+            elif repository is not None:
+                problems.append("filesystem evidence cannot identify a Git project")
+            allowed_paths = [path] + ([plan_path] if plan_path is not None else [])
+            allowed_exclusions = normalize_exclusions(scope_root, allowed_paths, project=project)
+            defaults = normalize_exclusions(scope_root, [], project=project)
+            observed_exclusions = set(target_state["excluded_paths"])
+            if not set(defaults).issubset(observed_exclusions) or any(
+                item not in allowed_exclusions
+                and not any(item.startswith(f"{prefix}/") for prefix in defaults)
+                for item in observed_exclusions
             ):
-                problems.append(
-                    f"verification state excludes an unrelated project path: {exclusion}"
-                )
+                problems.append("verification state exclusions do not match the evidence scope")
+        except (OSError, ValueError) as exc:
+            problems.append(f"cannot resolve verification evidence scope: {exc}")
 
     applicability = evidence.get("applicability")
     if not isinstance(applicability, dict):
@@ -598,26 +627,33 @@ def validate_verification_evidence(
         if applicability.get("reasons") != []:
             problems.append("passing verification evidence must have no applicability reasons")
 
+    if problems:
+        return "invalid"
+
     revision = manifest.get("revision")
     if target_state and isinstance(revision, str) and revision.strip():
-        if not revision_matches_state(project, revision, target_state):
-            problems.append(
-                "manifest revision does not identify the state covered by verification evidence"
-            )
-        if target_state.get("kind") != "git" or target_state.get("dirty") is not False:
-            exclusions = list(target_state.get("excluded_paths") or [])
-            exclusions.extend([path, manifest_path])
-            try:
-                current_state = capture_project_state(
-                    project, excluded_paths=exclusions
+        try:
+            if not revision_matches_state(project, revision, target_state):
+                problems.append(
+                    "manifest revision does not identify the state covered by verification evidence"
                 )
-            except ValueError as exc:
-                problems.append(f"cannot capture current project state: {exc}")
+            if target_state["kind"] == "git" and target_state["dirty"] is False:
+                # Inspect the recorded commit, not today's checkout. This also
+                # prevents historical or legacy submodule evidence bypassing
+                # the runner's unsupported-state boundary.
+                validate_commit_coverage(
+                    project, target_state["head_revision"], target_state["project_subpath"]
+                )
             else:
+                current_state = capture_project_state(
+                    project, excluded_paths=[*allowed_paths, manifest_path]
+                )
                 if current_state["identity"] != target_state.get("identity"):
                     problems.append(
                         "verification evidence no longer applies to the current project state"
                     )
+        except (OSError, ValueError) as exc:
+            problems.append(f"cannot establish verification state coverage: {exc}")
     return "verified" if not problems else "invalid"
 
 

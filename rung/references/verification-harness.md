@@ -115,3 +115,5 @@ python <rung-skill-root>/scripts/run_verification.py \
 ```
 
 The runner executes selected checks sequentially with argument arrays, project-root working-directory protection, timeouts, captured output, and selected/skipped evidence. Environment orchestration, retries, dependency graphs, and matrices remain project-owned decisions.
+
+State coverage and migration: [Helper evidence contract](../scripts/README.md).

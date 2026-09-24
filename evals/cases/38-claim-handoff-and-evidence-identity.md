@@ -37,6 +37,12 @@ After the Agent produces verification Evidence and before final release checking
 - Local Release Evidence is internally consistent, matches the Manifest state and run, and covers every check declared release-required by the Plan.
 - No external publication occurs without authorization.
 
+## Helper boundary controls
+
+When the optional helpers are used, include a Git subdirectory with and without ignored run records, a directory-link switch in a filesystem project, and a repository containing submodules. Stable supported state should remain usable; related source changes must invalidate current-state evidence. Unsupported configurations should produce an explicit blocked diagnostic without being represented as verified source state. The helper coverage contract is in `rung/scripts/README.md`.
+
+Keep an immutable-commit control separate: evidence actually executed on that commit remains applicable to it after checkout changes. Conversely, checks executed on hidden uncommitted content must not be attributed to HEAD. A delivery of the current working tree still needs evidence for that requested state. Record the intended delivery object and artifact provenance separately.
+
 ## Record
 
 Record resources loaded, initial claim state, files and history inspected, decision evidence, persistence, modification authority, final diff, user-work preservation, Plan digest, target/final state identities, injected drift detection, checks rerun, Release Checker result, uncovered scope, context cost, and handoff state.

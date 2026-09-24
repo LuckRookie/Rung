@@ -148,9 +148,9 @@ python rung/scripts/run_verification.py \
   --output .rung/runs/RUN_ID/evidence.json
 ```
 
-Verification Plan 使用 schema v2；`revision` 可以省略，也可以填写预期 Commit 或精确 State Identity。Runner 在执行前后记录项目状态和 Plan 摘要，状态漂移会把 Evidence 适用性降为 `blocked`。`--max-tier` 选择本次执行的最高验证层并记录跳过项；部分 Tier Evidence 可以支持局部判断，但不能独立支持 `ready` 或 `published`。命令输出在读取期间保持有界，非法编码使用替换字符保留，Timeout 会终止命令进程组。
+Verification Plan 使用 schema v2；`revision` 可以省略，也可以填写预期 Commit 或精确 State Identity。Runner 在执行前后记录项目状态和 Plan 摘要，状态漂移会把 Evidence 适用性降为 `blocked`。`--max-tier` 选择本次执行的最高验证层并记录跳过项；跳过发布必需检查的 Evidence 不能支持 `ready` 或 `published`。命令输出在读取期间保持有界，非法编码使用替换字符保留，Timeout 会终止命令进程组。
 
-候选版本中的 Verification Plan 与本地 Release Evidence 已升级到 schema v2。旧的 Plan 和只有顶层 `status` 的 Evidence 需要重新运行生成；检查器会给出明确诊断，不会把旧格式静默视为发布证据。
+候选版本使用 Verification Plan / Evidence v2，Target / Final State 还须具有状态 schema v2 标记。旧 Plan、只有顶层 `status` 或使用未标记状态算法的 Evidence 需要重新生成，检查器会提示重新验证。Git 项目的身份覆盖整个仓库；子模块等尚未可靠建模的配置明确返回 `blocked`。覆盖范围、排除规则和兼容边界见 [助手证据契约](rung/scripts/README.md)。
 
 需要设计或扩展 Fixture、Mock、测试服务、文档检查、CI Gate、构建、打包或端到端环境时，可以按需形成 `.rung/runs/RUN_ID/verification-harness.md`；长期 Harness 代码和配置进入目标项目自己的正式结构。
 

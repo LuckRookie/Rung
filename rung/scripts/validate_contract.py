@@ -133,6 +133,14 @@ def validate_contract(skill_root: Path, contract: dict[str, Any]) -> list[str]:
     else:
         if verification_evidence.get("schema_version") != 2:
             problems.append("verification_evidence.schema_version must be 2")
+        for field, expected in (
+            ("state_schema_version", 2), ("git_scope", "repository"), ("gitlinks", "blocked")
+        ):
+            if (
+                type(verification_evidence.get(field)) is not type(expected)
+                or verification_evidence.get(field) != expected
+            ):
+                problems.append(f"verification_evidence.{field} must be {expected}")
         if string_set(verification_evidence.get("binds")) != EXPECTED_EVIDENCE_BINDINGS:
             problems.append("verification_evidence.binds must preserve evidence identity")
         if (

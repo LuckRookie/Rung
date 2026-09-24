@@ -1,6 +1,6 @@
 # 安装 Rung
 
-本文件是 Rung 的安装契约，供开发者和 Coding Agent 共同读取。安装过程以这里记录的包坐标、作用域规则、冲突处理和验证条件为准。
+本文件维护安装坐标和执行规则，供开发者和 Coding Agent 共同读取。确定 ref 后，使用该 ref 自带的 `INSTALL.md` 和完整包内容作为安装与验收依据；开发分支新增的文件要求只适用于包含这些文件的版本。
 
 ## 包坐标
 
@@ -14,7 +14,7 @@ package:
   entrypoint: rung/SKILL.md
 ```
 
-安装单元是仓库中的整个 `rung/` 目录。`SKILL.md`、`agents/`、`references/`、`profiles/`、`assets/`、`contracts/` 和 `scripts/` 需要保持相对路径不变。
+安装单元是所选 ref 中的整个 `rung/` 目录，文件集合和相对路径保持不变。稳定版 `v0.1.0` 不包含 `contracts/` 与 `validate_contract.py`；候选开发线包含它们，分别按对应版本验收。
 
 ## 标准安装
 
@@ -87,7 +87,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 | 项目级 | `<project>/.agents/skills/rung` |
 | 用户级 | `${HOME}/.agents/skills/rung` |
 
-宿主提供的安装器使用其自身目标目录；手动路径只用于没有可用安装器的 Codex 环境。手动安装在临时目录完成来源检查，再执行最终复制。安装过程不执行 `rung/scripts/` 中的程序，也不修改 Codex 配置。
+宿主提供的安装器使用其自身目标目录；手动路径只用于没有可用安装器的 Codex 环境。手动安装在临时目录完成来源检查，再执行最终复制。下载与复制阶段不执行 `rung/scripts/` 中的程序；安装后的验证阶段运行所选版本声明的只读检查。安装不修改 Codex 配置。
 
 ### 3. 处理已有安装
 
@@ -98,13 +98,13 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 
 ### 4. 验证安装
 
-安装完成需要同时满足：
+先完整读取所选 ref 的 `INSTALL.md`。安装完成需要满足该版本的要求，并确认：
 
 1. 目标目录中的 `SKILL.md` 存在；
 2. `SKILL.md` frontmatter 包含精确值 `name: rung`；
 3. `SKILL.md` 引用的相对路径均可在安装目录中解析；
-4. `agents/`、`references/`、`profiles/`、`assets/`、`contracts/` 和 `scripts/` 已完整安装；
-5. `contracts/rung-contract.json` 存在且核心契约检查通过；
+4. 目标包的文件集合与所选 ref 中的 `rung/` 一致，引用路径保持可解析；
+5. 当所选 ref 包含 `contracts/rung-contract.json` 和 `scripts/validate_contract.py` 时，确认两者已安装并运行该版本的核心契约检查；`v0.1.0` 按其自带契约验证，不要求候选版新增的文件；
 6. 使用 `skills` CLI 安装时，`npx skills list --global --json` 或项目级 `npx skills list --json` 能列出 `rung`；
 7. 宿主能够发现并调用 `$rung`。宿主缓存 Skill 清单时，在新会话中完成这项检查。
 

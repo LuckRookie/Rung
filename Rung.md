@@ -1007,7 +1007,7 @@ Agent 在修改前区分 Product Defect、Harness Defect、Coupled Defect 和 Un
 
 对于 `complete`、`pass`、`compatible`、`reproducible` 和 `release ready` 等结论，Rung 提醒 Agent 保留相称的实际依据。Evidence 标识检查开始时的目标状态与检查结束时的最终状态；两者或 Verification Plan 发生漂移时，当前 Evidence 记录为不再适用于最终状态。环境、权限或工具限制进入未覆盖范围和残余风险说明。
 
-可选 Verification Runner 产生 Evidence v2，并记录 `run_id`、Plan 摘要、计划 revision 匹配结果、Target State、Final State、状态稳定性、选择与跳过的检查、命令结果和 Applicability。Git Clean State 使用 Commit 身份；Git Dirty State 和无 Git 项目使用内容指纹。Plan 和 Evidence 文件本身从代码状态指纹中排除，`.rung/runs/` 作为运行记录位置统一排除。
+可选 Verification Runner 产生 Evidence v2，并记录 `run_id`、Plan 摘要、计划 revision 匹配结果、Target State、Final State、状态稳定性、选择与跳过的检查、命令结果和 Applicability。Target / Final State 使用明确的状态 schema v2；旧算法的无版本记录需要重新验证。Git Clean State 使用实际受检 Commit 身份；Git Dirty State 和无 Git 项目使用内容指纹。范围与排除路径必须采用同一坐标系，无法可靠识别的状态返回 `blocked`。具体支持边界、迁移规则和原始 Commit 证据的用法由 [助手证据契约](rung/scripts/README.md)维护。
 
 ### 12.7 Release 判断
 

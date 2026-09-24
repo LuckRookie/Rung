@@ -17,7 +17,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from project_state import capture_project_state, revision_matches_state
+from project_state import StateCaptureError, capture_project_state, revision_matches_state
 
 
 def utc_now() -> str:
@@ -292,6 +292,15 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def write_report(report: dict[str, Any], output: Path | None) -> None:
+    payload = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if output is None:
+        sys.stdout.write(payload)
+    else:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(payload, encoding="utf-8")
+
+
 def main() -> int:
     args = parse_args()
     project = Path(args.project).expanduser().resolve()
@@ -305,8 +314,21 @@ def main() -> int:
         print(json.dumps({"status": "error", "message": "--max-tier must be between 0 and 3"}))
         return 2
 
+    plan_path = Path(args.plan).expanduser().resolve()
+    output_path = None if args.output == "-" else Path(args.output).expanduser().resolve()
     try:
-        plan_path = Path(args.plan).expanduser().resolve()
+        if output_path is not None and (
+            output_path == plan_path
+            or (output_path.exists() and plan_path.exists() and output_path.samefile(plan_path))
+        ):
+            print(
+                json.dumps({"status": "error", "message": "Evidence output must differ from plan"})
+            )
+            return 2
+    except OSError as exc:
+        print(json.dumps({"status": "error", "message": f"Cannot check output identity: {exc}"}))
+        return 2
+    try:
         plan = load_plan(plan_path)
         checks = [
             validate_check(raw, index, project)
@@ -321,9 +343,6 @@ def main() -> int:
             raise ValueError(
                 f"Verification plan has no checks at or below tier {args.max_tier}"
             )
-        output_path = (
-            None if args.output == "-" else Path(args.output).expanduser().resolve()
-        )
         state_exclusions: list[Path] = [plan_path]
         if output_path is not None:
             state_exclusions.append(output_path)
@@ -342,31 +361,37 @@ def main() -> int:
                 f"expected {planned_revision}, observed {target_state['identity']}"
             )
         initial_plan_sha256 = file_sha256(plan_path)
+    except StateCaptureError as exc:
+        write_report(
+            {"schema_version": 2, "status": "blocked", "run_id": plan.get("run_id"),
+             "phase": "target-state", "message": str(exc), "checks": []},
+            output_path,
+        )
+        return 2
     except (OSError, ValueError) as exc:
-        print(json.dumps({"status": "error", "message": str(exc)}, ensure_ascii=False))
+        report = {"status": "error", "message": str(exc)}
+        write_report(report, output_path)
+        if output_path is not None:
+            print(json.dumps(report, ensure_ascii=False))
         return 2
 
     started_at = utc_now()
     results = [execute_check(check, args.max_output_bytes) for check in selected_checks]
+    applicability_reasons: list[str] = []
     try:
         final_state = capture_project_state(project, excluded_paths=state_exclusions)
         final_plan_sha256 = file_sha256(plan_path)
     except (OSError, ValueError) as exc:
-        print(
-            json.dumps(
-                {"status": "error", "message": f"Cannot capture final project state: {exc}"},
-                ensure_ascii=False,
-            )
-        )
-        return 2
+        final_state = None
+        final_plan_sha256 = None
+        applicability_reasons.append(f"Cannot capture final project state: {exc}")
     state_stable = (
-        target_state["identity"] == final_state["identity"]
+        target_state == final_state
         and initial_plan_sha256 == final_plan_sha256
     )
-    applicability_reasons: list[str] = []
-    if target_state["identity"] != final_state["identity"]:
+    if final_state is not None and target_state != final_state:
         applicability_reasons.append("project state changed while verification was running")
-    if initial_plan_sha256 != final_plan_sha256:
+    if final_plan_sha256 is not None and initial_plan_sha256 != final_plan_sha256:
         applicability_reasons.append("verification plan changed while verification was running")
     statuses = {result["status"] for result in results}
     overall = (
@@ -410,13 +435,7 @@ def main() -> int:
         "status": overall,
         "checks": results,
     }
-    payload = json.dumps(evidence, ensure_ascii=False, indent=2) + "\n"
-    if args.output == "-":
-        sys.stdout.write(payload)
-    else:
-        assert output_path is not None
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(payload, encoding="utf-8")
+    write_report(evidence, output_path)
 
     return {"pass": 0, "fail": 1, "blocked": 2}[overall]
 
