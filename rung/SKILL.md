@@ -1,29 +1,27 @@
 ---
 name: rung
-description: "Guide material engineering decisions in maintained software: architecture, contracts, state, migration, verification, and release. Routine local edits with direct checks stay on the host path."
+description: "Guide material engineering decisions in maintained software: architecture, contracts, state, migration, verification, and release. Routine local edits with direct checks use the host path."
 ---
 
 # Rung
 
 ## Scope gate
 
-Before references, require a codebase relationship and an active claim: a durable change, a decision directing one, or current change/release evidence. Understanding-only and unrelated outcomes exit; govern only qualifying mixed work.
+Before references, require a codebase relationship and an active claim: durable change, a decision directing one, or current change/release evidence. Understanding-only and unrelated outcomes exit; govern only qualifying mixed work.
 
-Then check activation:
+- **Implicit:** enter for material ownership, contract, state, failure, migration, verification, or delivery decisions. Clear local work with direct checks bypasses; size and ordinary tests alone do not qualify.
+- **Explicit:** governance can enter small in-scope work; a mention alone does not qualify.
+- **Uncertain:** inspect minimally on the host, then recheck. No classification-only questions or speculative loading.
 
-- **Implicit:** enter for material ownership, contract, state, failure, migration, verification, or delivery decisions. Clear local work with a direct check stays on the host path; size and ordinary testing are insufficient.
-- **Explicit:** requested governance can enter for small in-scope work; a mention alone does not qualify.
-- **Uncertain:** inspect minimally on the host and recheck when facts change. Do not ask only to classify or load speculatively.
-
-On bypass, load no Rung resource. Scope decisions: [Development scope](references/development-scope.md).
+Bypass loads no resources. Unresolved scope: [Development scope](references/development-scope.md).
 
 ## Default work
 
-One Primary Agent owns the integrated result. Connect outcome, facts/user work, invariants, owner, failures, and evidence. Implement when authorized; verify and review the actual state. Probe a credible next change when it informs a boundary. Close the claim proportionately. No required worksheet or stage sequence.
+One Primary Agent owns the result. Connect outcome, facts, invariants, owners, failures and evidence. Implement when authorized; verify and review actual state. Probe credible evolution when it informs a boundary. No required worksheet or stages.
 
-## Signal routing
+## Routing
 
-Load zero or one reference for the current decision; do not preload. Follow deeper links as needed.
+Read zero or one reference for the current decision; follow deeper links only as needed.
 
 - Intent/authority: [Clarify](references/clarify.md)
 - Missing facts: [Inspect](references/inspect.md)
@@ -31,11 +29,18 @@ Load zero or one reference for the current decision; do not preload. Follow deep
 - Dependencies/recovery: [Plan](references/plan.md)
 - Editing/integration: [Implement](references/implement.md)
 - Proof: [Verify](references/verify.md)
-- Diff/architecture judgment: [Review](references/review.md)
-- Release readiness, artifact, or publication claim: [Release](references/release.md)
+- Diff/architecture: [Review](references/review.md)
+- Readiness/artifact/publication: [Release](references/release.md)
 
-Interacting concerns: [Workflow](references/workflow.md).
+Interactions: [Workflow](references/workflow.md).
 
 ## Handoff
 
-Report result, evidence, gaps, and state: decision complete, review complete, change verified, release ready, published, or blocked handoff. Use Release for readiness, artifact, or publication claims. Preserve user work; persist only for a future consumer. Scripts are optional. External actions follow user authority and host policy.
+- decision complete: actionable choice, evidence, explicit unknowns.
+- review complete: bounded findings, evidence and counterevidence.
+- change verified: integrated change verified on identified state.
+- release ready: declared target conditions met.
+- published: authorized delivery target succeeded.
+- blocked handoff: blocker, impact, next owner and recovery condition.
+
+Report result, evidence and gaps. Preserve user work; persist for a future consumer. Optional scripts; external actions follow user authority and host policy.

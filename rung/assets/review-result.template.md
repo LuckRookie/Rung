@@ -1,5 +1,7 @@
 # Review Result
 
+Select only sections needed by the active claim and future reader. For decision or assessment work, use the assessment fields; include implementation and integration fields only when reviewing a change.
+
 | Field | Value |
 |---|---|
 | Run ID | `{{run_id}}` |
@@ -8,6 +10,17 @@
 | Reviewer | `{{reviewer}}` |
 | Review mode | `{{primary_self_review_or_independent}}` |
 | Overall result | `{{pass_fail_blocked_or_waived}}` |
+| Claim state | `{{decision_complete_review_complete_change_verified_or_blocked_handoff}}` |
+
+## Assessment basis
+
+- Current decision or driver: {{decision_or_driver}}
+- Inspected boundary and uninspected surfaces: {{review_boundary}}
+- Conclusion, priority and uncertainty: {{conclusion_priority_and_unknowns}}
+
+| Material finding or recommendation | Evidence and causal mechanism | Counterevidence considered | Expected consequence and verification |
+|---|---|---|---|
+| {{finding_or_recommendation}} | {{evidence_and_mechanism}} | {{counterevidence_and_response}} | {{consequence_and_verification}} |
 
 ## Traceability
 
@@ -33,6 +46,8 @@
 
 ## Software quality review
 
+Keep only attributes that affect this review's conclusion.
+
 - Active quality goals and evidence: {{quality_goals_and_evidence}}
 - Current correctness and failure semantics: {{correctness_and_errors}}
 - Touched-owner understandability and changeability: {{understandability_and_changeability}}
@@ -55,3 +70,4 @@
 | {{debt_item}} | {{construct_trigger_and_exposure}} | {{interest_or_propagation}} | {{strategy}} | {{owner_and_revisit}} |
 
 - Non-debt follow-up and destination: {{other_follow_up}}
+- Blocker, impact, next owner and recovery condition, if blocked: {{blocked_handoff_or_omit}}

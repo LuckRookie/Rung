@@ -13,6 +13,7 @@
 - `rung/references/verification-harness.md` is a specialized Verify reference for evidence gaps and growing test, documentation, build, CI, package, or end-to-end infrastructure.
 - `rung/references/engineering-structure.md` is the shared guide for contextual ownership, change locality, information hiding, dependency knowledge, state, data, errors, abstractions, and structural testability.
 - `rung/references/architecture-assessment.md` is the scenario- and evidence-driven guide for decision-ready assessment of an existing architecture, modularity, structural debt, dependency shape, or framework fit.
+- `rung/references/architecture-design.md` guides new boundaries using current scenarios, credible evolution when relevant, and persistence only for a future consumer.
 - `rung/references/project-model.md` defines how Clarify and Inspect recover an evidence-backed project identity, semantic center, feature-fit boundary, and credible evolution for Design and Review.
 - `rung/references/design-exploration.md` defines scenario-driven exploration when materially different paths leave a consequential development decision under-supported.
 - `rung/references/software-quality.md` defines current software fitness, touched-owner coherence, quality evidence, code-level operability, and promotion of stable judgments into the Project Harness.

@@ -1,0 +1,91 @@
+{
+  "date": "2026-09-25",
+  "variant": "candidate-rung",
+  "base_revision": "aa2312e422d875a6f5a76935d7a577065180ce5b",
+  "candidate_identity": "sha256:0a80a485050b410a356bb6fa3a87e87987a5ae3b1729c7a81f0bd0568c8c4358",
+  "identity_definition": "SHA256 of compact, sorted JSON mapping every relative skill file path to its SHA256; see candidate-skill-manifest.json",
+  "host": "Codex desktop delegated task sessions",
+  "model": "inherited host model; exact model identifier and sampling settings were not captured",
+  "read_evidence": "Agent-reported exact paths; no independent host read trace captured",
+  "prompt_protocol": "evals/fixtures/content-review/README.md",
+  "limits": [
+    "One candidate run per fixture; no host-baseline or control comparison.",
+    "Follow-ups reuse their prior task session.",
+    "Skill path/metadata were supplied explicitly; production discovery is not measured.",
+    "No live registry or Git remote used by evaluating agents.",
+    "No broad quality or token-saving claim."
+  ],
+  "records": [
+    {
+      "case": "roster-understanding",
+      "agent": "roster_forward",
+      "handoff": "Factual explanation; released rota behavior distinguished from README and room experiment; unknown consumers and time semantics disclosed.",
+      "reported_rung_reads": [],
+      "reported_project_changes": [],
+      "reported_checks": [
+        "3 configured unittest cases passed",
+        "in-memory boundary observations passed"
+      ]
+    },
+    {
+      "case": "roster-decision-followup",
+      "agent": "roster_forward",
+      "same_session_as": "roster-understanding",
+      "handoff": "Actionable rota-owner recommendation, half-open and coverage invariants, pure transformation boundary and explicit overlap/cancellation/concurrency unknowns; no implementation or release claim.",
+      "reported_rung_reads": [
+        "SKILL.md",
+        "references/design.md"
+      ],
+      "reported_project_changes": [],
+      "reported_checks": [
+        "existing owner_at accepted manually constructed substitution intervals; no transformation implementation claimed"
+      ]
+    },
+    {
+      "case": "existing-helper-regression",
+      "agent": "regression_forward",
+      "handoff": "One empty-timeout test added; production behavior unchanged; 3 tests passed.",
+      "reported_rung_reads": [
+        "SKILL.md",
+        "references/verify.md"
+      ],
+      "reported_project_changes": [
+        "test_config.py"
+      ],
+      "reported_checks": [
+        "baseline 2 tests passed",
+        "final 3 tests passed",
+        "git diff --check passed",
+        "config.py and README.md unchanged"
+      ]
+    },
+    {
+      "case": "package-publication-failure",
+      "agent": "delivery_forward",
+      "handoff": "blocked handoff; package not published; prerequisite push separated; release maintainer and reconcile-before-retry condition retained.",
+      "reported_rung_reads": [
+        "SKILL.md",
+        "references/release.md"
+      ],
+      "reported_project_changes": [],
+      "reported_checks": [
+        "delivery.json read; no remote or artifact claims independently verified"
+      ]
+    },
+    {
+      "case": "git-target-success",
+      "agent": "delivery_forward",
+      "same_session_as": "package-publication-failure",
+      "handoff": "published for the explicitly authorized Git push target; based on supplied local receipt, no remote verification claimed.",
+      "reported_rung_reads": [],
+      "reused_rung_resources": [
+        "SKILL.md",
+        "references/release.md"
+      ],
+      "reported_project_changes": [],
+      "reported_checks": [
+        "separate delivery.json read; no external actions"
+      ]
+    }
+  ]
+}

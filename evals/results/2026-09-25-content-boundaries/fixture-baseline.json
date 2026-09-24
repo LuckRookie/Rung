@@ -1,0 +1,13 @@
+{
+  "roster/README.md": "80e350bdfccf4b28f289988fb886ad461d968cb460b7b92974bc90c96ef45104",
+  "roster/CHANGELOG.md": "b05140c0695bc8258d3f3124e569a71b1df6f669c9b352b1a90e4921edee4449",
+  "roster/CONTRACT.md": "6b1fbe4602d421f350f1b3873263a476adb19f99c95fcc4dada37c163c318342",
+  "roster/USER-NOTE.md": "dfb37b69daef25445d61560e4724a4085ccec0ee7bc3cbe74fc5ef4ac87e8a1a",
+  "roster/test_rota.py": "c7438acfc06631362c49ed6c3780e287bcdd54ac0ce7c47996d00afded15452d",
+  "roster/rota.py": "01b33cd730f583d855ac0fa6ec1bba3343717272e57087ffba5f4574efda9785",
+  "roster/experiments/rooms.py": "98d422f4ca234987a217dbcdb299bcd5c7c57e91f1fa12f0b6dc5a2d8f73f2ce",
+  "local-check/README.md": "f80d7eee8ba7666d6be6595e4b5e817e452abd05952ca5c83cfcbf082d45365f",
+  "local-check/config.py": "cd5e6d3286783ea14fb8eb045250fe7d33f3824ba8637da41974f3de65a9b88b",
+  "local-check/test_config.py": "f0871d0e8f7509778e1a97c0eaebc0ffc4dd98ea0848f4b9e62c9b90f8420160",
+  "delivery/delivery.json": "82c36514267158fbb5a78a5b40342f9c83b4da8a30089327069b429aaa35255d"
+}

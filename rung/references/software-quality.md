@@ -79,7 +79,7 @@ Promote only after false positives, owner, cost, and revision are known.
 
 ## Operability before Release
 
-Rung ends at Release handoff, while code-level operability can be required for readiness. Inspect only relevant behavior:
+Rung closes at the claim-appropriate handoff. For code changes or release readiness, inspect relevant code-level operability:
 
 - failure classification, stable error semantics, user or operator visibility, and diagnostic context;
 - ownership and limits for timeout, retry, cancellation, idempotency, concurrency, backpressure, and recovery;

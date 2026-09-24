@@ -40,3 +40,7 @@ The import checks now need to run in parallel CI jobs on Linux and Windows. Remo
 ## Observations
 
 Record the claims mapped to each check, reused entry points, new fixture or helper ownership, setup and cleanup behavior, failure output, Tier selection, required versus extended checks, runtime, retries, flake handling, duplicated assertions, coupling to incidental internals, and files changed by the follow-up. Compare whether additional harness infrastructure produces distinct evidence and whether its maintenance condition is visible.
+
+## Ordinary-maintenance control
+
+Use `fixtures/content-review/local-check` in a separate session. Ask for the specified regression case using existing unittest support, without a shared helper, policy or gate change. Candidate Rung may enter on explicit request, but the added case coverage does not by itself activate Harness extension or evolution. Check production bytes, the configured suite, and a known-bad evaluation copy; record resource reads and artifacts separately from correctness.

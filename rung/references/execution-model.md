@@ -155,7 +155,7 @@ On resume, re-read applicable instructions and compare the saved revision and us
 
 Verify claims against the integrated commit or explicit working-tree identity. Record the target before checks and confirm that project and plan state remain stable through them. Worker checks are candidate evidence; the Primary Agent confirms their relevance after integration. A changed Harness component cannot be the sole evidence of its own correctness.
 
-The final handoff gives result, checks, target identity, uncovered scope, risk, and claim state. Decisions and reviews close at an evidenced conclusion; implementation can close as change verified. Release readiness and publication require an active delivery claim and its code-state or artifact handoff. External writes require user authority and host permission.
+Report result, checks, target identity, gaps, risk and the claim state defined in [SKILL.md](../SKILL.md#handoff). For blockers, identify evidence, impact, next owner and recovery. Release requires an active delivery claim and identified code or artifact. Publication completes when its authorized target succeeds; record partial actions and remaining blockers separately. External writes require user authority and host permission.
 
 ## Operating invariants
 

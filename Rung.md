@@ -197,10 +197,12 @@ DevelopmentRun 的结束状态由当前验收 Claim 决定：
 - **review complete**：审查或评估已经形成有边界、有证据、经过反证检查且可供用户判断的结论；
 - **change verified**：授权范围内的修改已经集成，相关 Claim 在明确代码状态上获得相称验证；
 - **release ready**：目标代码状态或制品满足当前项目声明的发布条件；
-- **published**：经过授权的提交、推送、Tag、远端 Release 或包发布已经实际完成；
+- **published**：当前 Claim 指定且经过授权的目标交付动作已经实际成功；提交、推送或 Tag 若只是前置动作，不能代替目标完成。部分失败保留已完成动作、阻塞影响与恢复条件；
 - **blocked handoff**：权限、环境、事实、依赖或用户决定阻止当前 Claim 完成，并且阻塞证据、影响、下一 Owner 和恢复条件已经明确。
 
 一次运行只采用当前 Claim 需要的结束状态。设计、诊断、Review 和 Architecture Assessment 可以在结论交接后完成；实施和 Release 权限需要由用户请求、委托与 Host 权限单独建立。新请求把既有决定转为代码修改时，可以继续原运行的持久状态，也可以创建新的 DevelopmentRun。
+
+可安装入口 `rung/SKILL.md` 保留这些状态的最小判定条件，普通任务无需为了结束判断加载完整 Execution Model。Release Manifest 的 `ready`、`blocked` 分别对应 `release ready`、`blocked handoff`；Manifest 与整体 Claim 使用各自的状态字段。
 
 ### 4.4 Release 边界
 
@@ -216,7 +218,7 @@ DevelopmentRun 的结束状态由当前验收 Claim 决定：
 
 ### 4.5 Release 交接
 
-Rung 可以开发和验证 Dockerfile、CI 配置、Helm Chart、Terraform、迁移文件、构建脚本和发布配置。通过用户授权执行的 Git Push、Tag、远端 Release 或包发布可以记录为 `published`。
+Rung 可以开发和验证 Dockerfile、CI 配置、Helm Chart、Terraform、迁移文件、构建脚本和发布配置。当前授权目标本身是 Git Push、Tag、远端 Release 或包发布时，目标实际成功才记录为 `published`；包发布失败时，已经完成的推送只记录为部分进度。
 
 部署执行、服务管理、流量切换、线上数据变更和运行状态由相应 Host 或交付系统执行。Rung 将经过验证的配置、制品引用、顺序、风险和恢复信息交给这些系统。
 
@@ -501,7 +503,7 @@ Rung 对成熟项目采用三种按信号选择的行为：
 - **Extend**：当前 Claim 缺少证据或入口时，在最近的可靠边界增加必要能力；
 - **Evolve**：Harness 自身出现冲突、误报、漏报、漂移、波动、高成本或政策变化时，使用独立证据和渐进迁移修复判断系统。
 
-Test System 是 Verification Harness 的子集，Verification Harness 是 Project Harness 的子集。测试内容维护、Harness 能力扩展、共享测试系统演进和 Gate 政策演进采用不同治理深度。集合归属本身不触发高层流程；共享判断机制、证据覆盖、可靠性、成本、诊断或交付控制发生变化时加载详细 Harness Evolution 指南。
+Test System 是 Verification Harness 的子集，Verification Harness 是 Project Harness 的子集。测试内容维护、Harness 能力扩展、共享测试系统演进和 Gate 政策演进采用不同治理深度。使用可靠既有 Helper 新增回归用例仍是内容维护；共享判断、执行、隔离或诊断机制、覆盖政策、Gate、保护移除或放宽发生实质变化时，才加载 Harness Evolution。用例覆盖增加本身不升级治理。
 
 修改 Harness 时，被修改组件不作为证明自身正确的唯一依据。删除、跳过、放宽、重试、隔离或替换已有保护时，记录原 Claim、替代证据、Coverage Delta 和残余风险。影响多个模块、平台、团队或 Release Gate 的变化保留生效、回退和旧机制清理条件。
 
@@ -940,7 +942,7 @@ Project Harness
 
 一个实际组件可以承担多个逻辑责任。例如 CI 同时编排测试、生成 Evidence 并执行 Release Policy；Schema 同时是权威事实源和契约检查输入。
 
-测试改造在集合关系上属于 Verification Harness 改造。局部回归用例和经过批准的 Expected Result 同步通常沿用普通 Implement 与 Verify；共享 Fixture、Mock、Runner、Framework、Environment、Isolation、Retry、Quarantine、Coverage 或 Gate 变化进入相应深度的 Harness Evolution。
+测试改造在集合关系上属于 Verification Harness 改造。局部回归用例和经过批准的 Expected Result 同步通常沿用普通 Implement 与 Verify；共享 Fixture、Mock、Runner、Framework、Environment、Isolation、Retry、Quarantine、Coverage Policy 或 Gate 变化进入相应深度的 Harness Evolution。
 
 Harness 也受 Software Quality 与 Technical Debt 两个判断维度约束。当前可靠性、诊断、隔离、成本与证据能力进入质量判断；临时 Ignore、复制权威、迁移缺口、EOL 工具或未来 Gate 阻塞在形成可信 Trigger 与 Interest 机制后进入债务判断。Technical Debt 决定携带或偿还策略，Verification Harness 与 Harness Evolution 负责实际证据系统和治理机制的改变。
 
@@ -1250,7 +1252,7 @@ Primary Agent 在 Session 结束前保存 Outcome、决定和委托范围、Base
 
 ### 17.4 数据迁移
 
-Agent 加载 Design、Plan、Verify、Release 与 Strict 深度提示，关注兼容窗口、顺序、回退、数据恢复和交付信息。
+Agent 按当前迁移决定加载 Design、Plan、Verify 与相称深度提示，关注兼容窗口、顺序、回退和数据恢复；存在交付 Claim 时再进入 Release。
 
 ### 17.5 Release-only
 
@@ -1275,7 +1277,7 @@ Agent 复用项目已有实现和证据，只补充当前发布缺失的 revisio
 
 ### 17.7 项目画像与能力归属
 
-稀疏 Greenfield 意图、已有项目语义恢复、边界能力判断、主动产品演进和多产品仓库使用不同场景检验 Project Model。Agent 需要把用户表达与项目现实合成为通俗、可修正、有声明边界的模型，并将 Accepted、Evidenced、Inferred、Contested 与 Unknown 陈述保持可区分。
+稀疏 Greenfield 意图、服务当前开发决定的项目语义恢复、边界能力判断、主动产品演进和多产品仓库使用不同场景检验 Project Model。单纯恢复现状仍由 Host 完成；当前开发 Claim 出现后，Agent 再将相关事实合成为通俗、可修正、有声明边界的模型，并区分 Accepted、Evidenced、Inferred、Contested 与 Unknown。
 
 行为评测观察画像是否真实影响人和核心任务、UX、概念 Owner、模块边界、公共语言、数据、不变量、依赖、验证与后续变化局部性。文档篇幅、术语数量、图表和生成画像文件本身不产生收益分数；普通明确任务保持原有轻量路径。
 
@@ -1283,7 +1285,7 @@ Agent 复用项目已有实现和证据，只补充当前发布缺失的 revisio
 
 - `13-project-model-sparse-greenfield.md` 检查多个合理产品解释、通俗校准、委托设计与最小可运行实现；
 - `14-project-model-feature-fit.md` 使用水果目录、蔬菜与水果礼盒检查 Core fit、Adjacent extension 和 Identity change；
-- `15-project-model-existing-recovery.md` 检查 README、行为、测试、历史和休眠代码冲突时的证据状态与语义恢复；
+- `15-project-model-existing-recovery.md` 保留理解型首轮的退出对照，检查隐藏实施请求后的重新分类，并用独立的当前开发决定变体检验语义恢复、Owner 与兼容判断；
 - `16-project-model-intentional-evolution.md` 检查用户主动把水果目录扩展为生鲜目录时的画像修正、兼容责任和渐进实施；
 - `17-project-model-multiple-centers.md` 检查 Monorepo 中共享身份与工具链、客户支持、分析流水线等多个语义中心的分层边界。
 

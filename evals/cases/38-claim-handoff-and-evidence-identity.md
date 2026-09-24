@@ -46,3 +46,9 @@ Keep an immutable-commit control separate: evidence actually executed on that co
 ## Record
 
 Record resources loaded, initial claim state, files and history inspected, decision evidence, persistence, modification authority, final diff, user-work preservation, Plan digest, target/final state identities, injected drift detection, checks rerun, Release Checker result, uncovered scope, context cost, and handoff state.
+
+## Partial-publication control
+
+Use the local `fixtures/content-review/delivery` fixture with a successful prerequisite push and a failed package publication. The accepted target is the package publication. Require a blocked handoff with completed actions, blocker, impact, next owner and recovery condition; a successful prerequisite alone cannot establish `published`. Keep this a local evidence-interpretation exercise with no external writes.
+
+In a separate variant, make the authorized target the Git push itself and provide its success evidence. Judge completion against that target, rather than requiring an unrelated package publication. Do not conflate Manifest `ready`/`blocked` with the overall Claim vocabulary.

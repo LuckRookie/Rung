@@ -1,5 +1,7 @@
 # Solution Design
 
+Select fields for the current decision and its future consumer; omit unrelated sections. Keep local reversible choices in the session, code and tests.
+
 | Field | Value |
 |---|---|
 | Run ID | `{{run_id}}` |
@@ -32,6 +34,18 @@
 - Code expected to change for the same reason: {{co_change_scope}}
 - Information kept behind the boundary: {{hidden_details}}
 - New public surface or abstraction and its current evidence: {{abstraction_evidence}}
+
+## Exploration handoff (when used)
+
+Retain only scenarios that distinguished credible directions; link existing evidence instead of duplicating it.
+
+| Scenario and observation | Responsibility, state or failure discovered | Consequence for the chosen direction |
+|---|---|---|
+| {{scenario_and_evidence}} | {{responsibility_state_or_failure}} | {{decision_consequence}} |
+
+| Direction-changing unknown | Evidence status | Owner and resolution or revisit condition |
+|---|---|---|
+| {{unknown}} | {{inferred_contested_or_unknown}} | {{owner_and_condition}} |
 
 ## Interface and data flow
 

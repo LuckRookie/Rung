@@ -1,0 +1,21 @@
+{
+  "run_id": "fixture-release-2",
+  "authorized_target": {
+    "kind": "git-push",
+    "destination": "fixture-git-origin/main",
+    "source_revision": "4444444444444444444444444444444444444444"
+  },
+  "source_revision": "4444444444444444444444444444444444444444",
+  "verification": {
+    "tests": "passed",
+    "package_build": "passed",
+    "artifact": "example-widget-1.0.0.tar.gz"
+  },
+  "completed_actions": [],
+  "target_action": {
+    "action": "push",
+    "target": "fixture-git-origin/main",
+    "exit_code": 0,
+    "observation": "The remote main ref matches the verified source revision."
+  }
+}

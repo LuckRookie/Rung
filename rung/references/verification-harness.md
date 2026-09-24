@@ -1,6 +1,6 @@
 # Verification Harness
 
-Read when existing checks cannot support a material claim, or when work starts adding or expanding tests, fixtures, mocks, test services, test databases, documentation checks, static checks, CI execution, build checks, packaging checks, or end-to-end infrastructure.
+Read when a material claim needs a new evidence layer or test infrastructure beyond reliable existing helpers. Adding a regression case or synchronizing an approved expectation stays ordinary maintenance. Shared verification or gate changes route through [Project Harness](project-harness.md).
 
 The Verification Harness is the evidence-producing subset of the [Project Harness](project-harness.md). The Test System—cases, assertions, fixtures, data, fakes, mocks, helpers, runners, and environments—is a subset of the Verification Harness.
 

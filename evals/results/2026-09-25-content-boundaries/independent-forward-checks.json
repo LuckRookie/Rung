@@ -1,0 +1,22 @@
+{
+  "roster": {
+    "exit_code": 0,
+    "output": "test_adjacent_handoff (test_rota.RotaTests.test_adjacent_handoff) ... ok\ntest_invalid_interval_rejected (test_rota.RotaTests.test_invalid_interval_rejected) ... ok\ntest_overlapping_slots_rejected (test_rota.RotaTests.test_overlapping_slots_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+  },
+  "local-check": {
+    "exit_code": 0,
+    "output": "test_empty_value_uses_default (test_config.ConfigTests.test_empty_value_uses_default) ... ok\ntest_explicit_value (test_config.ConfigTests.test_explicit_value) ... ok\ntest_invalid_value (test_config.ConfigTests.test_invalid_value) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+  },
+  "local-check-mutant": {
+    "exit_code": 1,
+    "output": "test_empty_value_uses_default (test_config.ConfigTests.test_empty_value_uses_default) ... ERROR\ntest_explicit_value (test_config.ConfigTests.test_explicit_value) ... ok\ntest_invalid_value (test_config.ConfigTests.test_invalid_value) ... ok\n\n======================================================================\nERROR: test_empty_value_uses_default (test_config.ConfigTests.test_empty_value_uses_default)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/rung-content-negative-st8c6xl5/test_config.py\", line 8, in test_empty_value_uses_default\n    self.assertEqual(timeout(\"\"), 30)\n                     ^^^^^^^^^^^\n  File \"/tmp/rung-content-negative-st8c6xl5/config.py\", line 2, in timeout\n    return int(value)\n           ^^^^^^^^^^\nValueError: invalid literal for int() with base 10: ''\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (errors=1)\n"
+  },
+  "integrity": {
+    "changed_files": [
+      "local-check/test_config.py"
+    ],
+    "new_files": [],
+    "user_note_preserved": true
+  },
+  "candidate_matches_current_skill": true
+}

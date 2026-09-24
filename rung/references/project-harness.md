@@ -49,7 +49,7 @@ Set membership and governance escalation are separate decisions.
 | Harness evolution | Change shared execution, authority, isolation, framework, or ownership | [Harness Evolution](harness-evolution.md) |
 | Governance evolution | Relax, replace, or promote a gate or release rule | Harness Evolution with stronger Review and Release attention |
 
-A local test edit remains part of the Test System. Load the higher-level evolution guide when the edit changes how future code is judged, accepted, isolated, or delivered; affects shared infrastructure or consumers; changes coverage, reliability, cost, or diagnostics; or removes existing protection.
+A regression case using reliable existing helpers stays content maintenance. Load the evolution guide for changes to shared judgment, execution, isolation or diagnostic mechanisms; coverage policy or gates; or the removal or relaxation of existing protection. Added case coverage alone does not escalate governance.
 
 Read [Technical Debt](technical-debt.md) when a Harness condition or temporary control is being qualified or carried as a future obligation. Continue to Verification Harness or Harness Evolution for the actual evidence or governance change.
 

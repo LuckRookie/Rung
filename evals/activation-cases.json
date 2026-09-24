@@ -264,5 +264,47 @@
       "scope": "uncertain",
       "activation": "defer"
     }
+  },
+  {
+    "id": "project-model-understanding",
+    "prompt": "Recover what this project currently is from docs, behavior, tests and history; explain conflicts and unknowns without changing the project.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "absent",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "understanding-only",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "project-model-current-decision",
+    "prompt": "The next release will add on-call substitution. Recover the project model to decide its owner and preserved coverage contracts; do not implement yet.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "existing-helper-regression",
+    "prompt": "Use Rung to add a specified regression case for the accepted timeout default using the existing test helper and command; no infrastructure or gate changes.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "explicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
   }
 ]

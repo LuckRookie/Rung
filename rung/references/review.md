@@ -4,8 +4,8 @@ Read when a diff, structure, risk, evidence, or delivery needs judgment.
 
 ## Operate
 
-- Compare outcome, design, diff, evidence, and release.
-- Judge current correctness and coherence in touched and affected boundaries.
+- Compare outcome, design, diff and evidence within the declared scope.
+- Check counterevidence before confirming material findings.
 - Check ownership, public surface, dependencies, state, errors, compatibility, and facts.
 - Confirm tests protect behavior, contracts, invariants, and failures without incidental internals.
 - Fix authorized ordinary findings; route material findings to their concern.

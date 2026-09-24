@@ -1,0 +1,27 @@
+{
+  "run_id": "fixture-release-1",
+  "authorized_target": {
+    "kind": "package-publication",
+    "package": "example-widget",
+    "version": "1.0.0",
+    "destination": "fixture-registry"
+  },
+  "source_revision": "4444444444444444444444444444444444444444",
+  "verification": {
+    "tests": "passed",
+    "package_build": "passed",
+    "artifact": "example-widget-1.0.0.tar.gz"
+  },
+  "completed_actions": [
+    {"action": "push", "target": "fixture-git-origin/main", "exit_code": 0}
+  ],
+  "target_action": {
+    "action": "publish-package",
+    "exit_code": 3,
+    "observation": "Registry returned service unavailable before accepting the upload."
+  },
+  "recovery": {
+    "owner": "release maintainer",
+    "condition": "Confirm registry availability and reconcile remote version state before an authorized retry."
+  }
+}

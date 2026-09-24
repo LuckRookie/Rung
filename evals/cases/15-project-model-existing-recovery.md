@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Test whether the Agent reconstructs a mature project's current semantic model from human intent and repository reality without treating one stale source or accidental implementation as complete authority.
+Test whether factual model recovery stays on the host path, and a later development decision uses that evidence without treating a stale source or accidental implementation as complete authority.
 
 ## Fixture
 
@@ -22,18 +22,32 @@ Reveal only after the model reaches handoff:
 下一项需求是给值班轮换增加临时替班，并保证覆盖时间没有空档。请基于刚才的画像设计并实现它，保持已有公开行为兼容。
 ```
 
+## Decision-driven variant
+
+In a fresh session with the same fixture, replace the initial prompt with:
+
+```text
+下一版已经决定增加临时替班并保证值班覆盖没有空档。请结合文档、行为、测试和近期变化恢复项目画像，
+用它判断这项需求应归属哪个 Owner、哪些现有契约必须保留，并给出实施边界。先不要修改项目或我的本地修改。
+```
+
+Keep the original understanding-only prompt as a separate control. Do not reveal the hidden follow-up while evaluating it.
+
 ## Acceptable routing range
 
-- Inspect and Project Model are relevant to declared boundary, sources, public behavior, vocabulary, history, tests, dormant code, and protected work.
-- Clarify is relevant only for authority conflicts that change the product conclusion or implementation direction.
-- Design, Engineering Structure, Verify, and Review become relevant for the follow-up.
-- Project Harness is relevant if fact-source authority or tests conflict in a way that changes project governance.
+- The original initial prompt is understanding-only. Candidate Rung stays unselected or exits before any Reference or Artifact; the host still investigates sources, behavior, history and protected work.
+- The hidden follow-up and decision-driven variant establish an active development claim. Reassess then; possible later development does not qualify the original prompt.
+- After entry, Inspect and Project Model are relevant when semantic conflicts affect ownership or compatibility. Reuse sound observations from the initial answer.
+- Clarify addresses authority conflicts that change the current decision. Design and Engineering Structure follow boundary needs; Verify and Review follow the active claim. The decision-driven variant ends without edits.
+- Project Harness joins only if disputed fact-source authority or verification controls need a governance decision.
 
 ## Correctness gate
 
 - The model identifies shared on-call coordination as the supported current center and marks the general-calendar README claim as stale or contested with concrete evidence.
 - Dormant room-booking code is evidence of an experiment, not proof of an active product capability.
 - Facts, inference, conflicts, unknowns, uninspected surfaces, and confidence remain visible.
+- The original initial run and the decision-driven variant leave project files unchanged; only the hidden implementation request authorizes edits.
+- The decision-driven variant identifies an actionable owner and preserved contracts with evidence and unknowns, and closes as a decision or review rather than a release.
 - The working-tree localization change is preserved byte-for-byte.
 - Temporary substitution enters the rotation owner, preserves coverage invariants, and passes relevant integrated checks.
 
@@ -45,4 +59,4 @@ Reveal only after the model reaches handoff:
 
 ## Observations
 
-Record inspection radius, sources and revisions, conflict handling, model claims by status, dormant-code treatment, user-work protection, follow-up owner and files, invariants tested, Project Harness routing, persistence, context cost, and remaining uncertainty.
+Record invocation and reclassification separately for the initial prompt, follow-up and decision-driven variant. Also record inspected sources and revisions, conflict handling, model claims by status, dormant-code treatment, protected work, owner and files, invariants tested, routing, persistence, context cost and remaining uncertainty.
