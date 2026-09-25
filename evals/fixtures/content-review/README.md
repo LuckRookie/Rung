@@ -1,7 +1,7 @@
 # Content boundary fixtures
 
 These small, standard-library fixtures support focused forward tests of the
-content contract. They do not implement the full 38-case evaluation suite.
+content contract. They do not implement the full evaluation suite.
 
 Copy each fixture to a separate temporary Git repository before use. Commit its
 initial files; for `roster`, then append one user-owned line to `USER-NOTE.md` and

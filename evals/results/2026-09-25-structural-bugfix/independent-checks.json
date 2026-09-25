@@ -1,0 +1,1522 @@
+{
+  "original": {
+    "returncode": 1,
+    "pass": false,
+    "checks": [
+      {
+        "entry": "http",
+        "input": "pending",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "pending",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "cancelled",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "cancelled",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "shipped",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "shipped",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": false
+      },
+      {
+        "entry": "http",
+        "input": "delivered",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "delivered",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "mixed-batch",
+        "expected": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "cancelled"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "pass": false
+      }
+    ]
+  },
+  "candidate-initial": {
+    "returncode": 0,
+    "pass": true,
+    "checks": [
+      {
+        "entry": "http",
+        "input": "pending",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "pending",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "cancelled",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "cancelled",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "shipped",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "shipped",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "delivered",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "delivered",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "mixed-batch",
+        "expected": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "pass": true
+      }
+    ],
+    "suite": {
+      "returncode": 0,
+      "output": "test_batch_mixed_preserves_order_and_states (test_cancellation.CancellationTests.test_batch_mixed_preserves_order_and_states) ... ok\ntest_batch_pending_and_delivered (test_cancellation.CancellationTests.test_batch_pending_and_delivered) ... ok\ntest_batch_shipped (test_cancellation.CancellationTests.test_batch_shipped) ... ok\ntest_cancelled_is_idempotent (test_cancellation.CancellationTests.test_cancelled_is_idempotent) ... ok\ntest_http_delivered (test_cancellation.CancellationTests.test_http_delivered) ... ok\ntest_http_pending (test_cancellation.CancellationTests.test_http_pending) ... ok\ntest_http_shipped (test_cancellation.CancellationTests.test_http_shipped) ... ok\ntest_unsupported_state_conflicts_without_mutation (test_cancellation.CancellationTests.test_unsupported_state_conflicts_without_mutation) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.000s\n\nOK\n"
+    },
+    "regressions_on_original": {
+      "returncode": 1,
+      "output": "test_batch_mixed_preserves_order_and_states (test_cancellation.CancellationTests.test_batch_mixed_preserves_order_and_states) ... FAIL\ntest_batch_pending_and_delivered (test_cancellation.CancellationTests.test_batch_pending_and_delivered) ... ok\ntest_batch_shipped (test_cancellation.CancellationTests.test_batch_shipped) ... FAIL\ntest_cancelled_is_idempotent (test_cancellation.CancellationTests.test_cancelled_is_idempotent) ... ok\ntest_http_delivered (test_cancellation.CancellationTests.test_http_delivered) ... ok\ntest_http_pending (test_cancellation.CancellationTests.test_http_pending) ... ok\ntest_http_shipped (test_cancellation.CancellationTests.test_http_shipped) ... ok\ntest_unsupported_state_conflicts_without_mutation (test_cancellation.CancellationTests.test_unsupported_state_conflicts_without_mutation) ... FAIL\n\n======================================================================\nFAIL: test_batch_mixed_preserves_order_and_states (test_cancellation.CancellationTests.test_batch_mixed_preserves_order_and_states)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/rung-regression-check-s5md7iqw/test_cancellation.py\", line 39, in test_batch_mixed_preserves_order_and_states\n    self.assertEqual(\nAssertionError: Lists differ: [{'id[13 chars]': 'cancelled'}, {'id': 1, 'result': 'cancelle[66 chars]ct'}] != [{'id[13 chars]': 'conflict'}, {'id': 1, 'result': 'cancelled[65 chars]ct'}]\n\nFirst differing element 0:\n{'id': 4, 'result': 'cancelled'}\n{'id': 4, 'result': 'conflict'}\n\n- [{'id': 4, 'result': 'cancelled'},\n?                        ^  ^^^^^\n\n+ [{'id': 4, 'result': 'conflict'},\n?                        ^ +++ ^\n\n   {'id': 1, 'result': 'cancelled'},\n   {'id': 3, 'result': 'cancelled'},\n   {'id': 2, 'result': 'conflict'}]\n\n======================================================================\nFAIL: test_batch_shipped (test_cancellation.CancellationTests.test_batch_shipped)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/rung-regression-check-s5md7iqw/test_cancellation.py\", line 29, in test_batch_shipped\n    self.assertEqual(cancel_batch([order]), [{\"id\": 2, \"result\": \"conflict\"}])\nAssertionError: Lists differ: [{'id': 2, 'result': 'cancelled'}] != [{'id': 2, 'result': 'conflict'}]\n\nFirst differing element 0:\n{'id': 2, 'result': 'cancelled'}\n{'id': 2, 'result': 'conflict'}\n\n- [{'id': 2, 'result': 'cancelled'}]\n?                        ^  ^^^^^\n\n+ [{'id': 2, 'result': 'conflict'}]\n?                        ^ +++ ^\n\n\n======================================================================\nFAIL: test_unsupported_state_conflicts_without_mutation (test_cancellation.CancellationTests.test_unsupported_state_conflicts_without_mutation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/rung-regression-check-s5md7iqw/test_cancellation.py\", line 64, in test_unsupported_state_conflicts_without_mutation\n    self.assertEqual(\nAssertionError: Lists differ: [{'id': 5, 'result': 'cancelled'}] != [{'id': 5, 'result': 'conflict'}]\n\nFirst differing element 0:\n{'id': 5, 'result': 'cancelled'}\n{'id': 5, 'result': 'conflict'}\n\n- [{'id': 5, 'result': 'cancelled'}]\n?                        ^  ^^^^^\n\n+ [{'id': 5, 'result': 'conflict'}]\n?                        ^ +++ ^\n\n\n----------------------------------------------------------------------\nRan 8 tests in 0.002s\n\nFAILED (failures=3)\n"
+    },
+    "user_note_preserved": true
+  },
+  "control-initial": {
+    "returncode": 0,
+    "pass": true,
+    "checks": [
+      {
+        "entry": "http",
+        "input": "pending",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "pending",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "cancelled",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "cancelled",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "shipped",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "shipped",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "delivered",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "delivered",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "mixed-batch",
+        "expected": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "pass": true
+      }
+    ],
+    "suite": {
+      "returncode": 0,
+      "output": "test_batch_mixed_states_preserves_order_and_conflicting_states (test_cancellation.CancellationTests.test_batch_mixed_states_preserves_order_and_conflicting_states) ... ok\ntest_batch_pending_and_delivered (test_cancellation.CancellationTests.test_batch_pending_and_delivered) ... ok\ntest_cancelled_is_idempotent (test_cancellation.CancellationTests.test_cancelled_is_idempotent) ... ok\ntest_http_delivered (test_cancellation.CancellationTests.test_http_delivered) ... ok\ntest_http_pending (test_cancellation.CancellationTests.test_http_pending) ... ok\ntest_http_shipped (test_cancellation.CancellationTests.test_http_shipped) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n"
+    },
+    "regressions_on_original": {
+      "returncode": 1,
+      "output": "test_batch_mixed_states_preserves_order_and_conflicting_states (test_cancellation.CancellationTests.test_batch_mixed_states_preserves_order_and_conflicting_states) ... FAIL\ntest_batch_pending_and_delivered (test_cancellation.CancellationTests.test_batch_pending_and_delivered) ... ok\ntest_cancelled_is_idempotent (test_cancellation.CancellationTests.test_cancelled_is_idempotent) ... ok\ntest_http_delivered (test_cancellation.CancellationTests.test_http_delivered) ... ok\ntest_http_pending (test_cancellation.CancellationTests.test_http_pending) ... ok\ntest_http_shipped (test_cancellation.CancellationTests.test_http_shipped) ... ok\n\n======================================================================\nFAIL: test_batch_mixed_states_preserves_order_and_conflicting_states (test_cancellation.CancellationTests.test_batch_mixed_states_preserves_order_and_conflicting_states)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/rung-regression-check-msziyzfa/test_cancellation.py\", line 40, in test_batch_mixed_states_preserves_order_and_conflicting_states\n    self.assertEqual(\nAssertionError: Lists differ: [{'id[49 chars]': 'cancelled'}, {'id': 30, 'result': 'cancell[69 chars]ed'}] != [{'id[49 chars]': 'conflict'}, {'id': 30, 'result': 'cancelle[68 chars]ed'}]\n\nFirst differing element 1:\n{'id': 10, 'result': 'cancelled'}\n{'id': 10, 'result': 'conflict'}\n\n  [{'id': 40, 'result': 'cancelled'},\n-  {'id': 10, 'result': 'cancelled'},\n?                         ^  ^^^^^\n\n+  {'id': 10, 'result': 'conflict'},\n?                         ^ +++ ^\n\n   {'id': 30, 'result': 'cancelled'},\n   {'id': 20, 'result': 'conflict'},\n   {'id': 50, 'result': 'cancelled'}]\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\n"
+    },
+    "user_note_preserved": true
+  },
+  "symptom-only-patch": {
+    "returncode": 0,
+    "pass": true,
+    "checks": [
+      {
+        "entry": "http",
+        "input": "pending",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "pending",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "cancelled",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "cancelled",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "shipped",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "shipped",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "delivered",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "delivered",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "mixed-batch",
+        "expected": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 20,
+            "result": "conflict"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "cancelled"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          }
+        ],
+        "pass": true
+      }
+    ],
+    "structural_review": "Two eligibility predicates remain in HTTP and batch. Behavior passes, structural gate fails."
+  },
+  "local": {
+    "pass": true,
+    "checks": [
+      {
+        "subtotal": 0,
+        "credit": 0,
+        "pass": true
+      },
+      {
+        "subtotal": 0,
+        "credit": 1,
+        "pass": true
+      },
+      {
+        "subtotal": 0,
+        "credit": 20,
+        "pass": true
+      },
+      {
+        "subtotal": 0,
+        "credit": 100,
+        "pass": true
+      },
+      {
+        "subtotal": 0,
+        "credit": 120,
+        "pass": true
+      },
+      {
+        "subtotal": 0,
+        "credit": 1000,
+        "pass": true
+      },
+      {
+        "subtotal": 1,
+        "credit": 0,
+        "pass": true
+      },
+      {
+        "subtotal": 1,
+        "credit": 1,
+        "pass": true
+      },
+      {
+        "subtotal": 1,
+        "credit": 20,
+        "pass": true
+      },
+      {
+        "subtotal": 1,
+        "credit": 100,
+        "pass": true
+      },
+      {
+        "subtotal": 1,
+        "credit": 120,
+        "pass": true
+      },
+      {
+        "subtotal": 1,
+        "credit": 1000,
+        "pass": true
+      },
+      {
+        "subtotal": 20,
+        "credit": 0,
+        "pass": true
+      },
+      {
+        "subtotal": 20,
+        "credit": 1,
+        "pass": true
+      },
+      {
+        "subtotal": 20,
+        "credit": 20,
+        "pass": true
+      },
+      {
+        "subtotal": 20,
+        "credit": 100,
+        "pass": true
+      },
+      {
+        "subtotal": 20,
+        "credit": 120,
+        "pass": true
+      },
+      {
+        "subtotal": 20,
+        "credit": 1000,
+        "pass": true
+      },
+      {
+        "subtotal": 100,
+        "credit": 0,
+        "pass": true
+      },
+      {
+        "subtotal": 100,
+        "credit": 1,
+        "pass": true
+      },
+      {
+        "subtotal": 100,
+        "credit": 20,
+        "pass": true
+      },
+      {
+        "subtotal": 100,
+        "credit": 100,
+        "pass": true
+      },
+      {
+        "subtotal": 100,
+        "credit": 120,
+        "pass": true
+      },
+      {
+        "subtotal": 100,
+        "credit": 1000,
+        "pass": true
+      },
+      {
+        "subtotal": 120,
+        "credit": 0,
+        "pass": true
+      },
+      {
+        "subtotal": 120,
+        "credit": 1,
+        "pass": true
+      },
+      {
+        "subtotal": 120,
+        "credit": 20,
+        "pass": true
+      },
+      {
+        "subtotal": 120,
+        "credit": 100,
+        "pass": true
+      },
+      {
+        "subtotal": 120,
+        "credit": 120,
+        "pass": true
+      },
+      {
+        "subtotal": 120,
+        "credit": 1000,
+        "pass": true
+      },
+      {
+        "subtotal": 1000,
+        "credit": 0,
+        "pass": true
+      },
+      {
+        "subtotal": 1000,
+        "credit": 1,
+        "pass": true
+      },
+      {
+        "subtotal": 1000,
+        "credit": 20,
+        "pass": true
+      },
+      {
+        "subtotal": 1000,
+        "credit": 100,
+        "pass": true
+      },
+      {
+        "subtotal": 1000,
+        "credit": 120,
+        "pass": true
+      },
+      {
+        "subtotal": 1000,
+        "credit": 1000,
+        "pass": true
+      }
+    ],
+    "user_note_preserved": true
+  },
+  "candidate-followup": {
+    "returncode": 0,
+    "pass": true,
+    "checks": [
+      {
+        "entry": "http",
+        "input": "pending",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "pending",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "cancelled",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "cancelled",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "shipped",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "shipped",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "delivered",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "delivered",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "on_hold",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "on_hold",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "mixed-batch",
+        "expected": [
+          {
+            "id": 20,
+            "result": "cancelled"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "conflict"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          },
+          {
+            "id": 16,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 20,
+            "result": "cancelled"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "conflict"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          },
+          {
+            "id": 16,
+            "result": "cancelled"
+          }
+        ],
+        "pass": true
+      }
+    ],
+    "suite": {
+      "returncode": 0,
+      "output": "test_batch_mixed_preserves_order_and_states (test_cancellation.CancellationTests.test_batch_mixed_preserves_order_and_states) ... ok\ntest_batch_on_hold (test_cancellation.CancellationTests.test_batch_on_hold) ... ok\ntest_batch_pending_and_delivered (test_cancellation.CancellationTests.test_batch_pending_and_delivered) ... ok\ntest_batch_shipped (test_cancellation.CancellationTests.test_batch_shipped) ... ok\ntest_cancelled_is_idempotent (test_cancellation.CancellationTests.test_cancelled_is_idempotent) ... ok\ntest_http_delivered (test_cancellation.CancellationTests.test_http_delivered) ... ok\ntest_http_on_hold (test_cancellation.CancellationTests.test_http_on_hold) ... ok\ntest_http_pending (test_cancellation.CancellationTests.test_http_pending) ... ok\ntest_http_shipped (test_cancellation.CancellationTests.test_http_shipped) ... ok\ntest_unsupported_state_conflicts_without_mutation (test_cancellation.CancellationTests.test_unsupported_state_conflicts_without_mutation) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.000s\n\nOK\n"
+    },
+    "user_note_preserved": true,
+    "changed_sources_on_followup": [
+      "orders.py",
+      "test_cancellation.py"
+    ],
+    "final_hashes": {
+      "README.md": "a9439829b04755aac0bcdcc8faae478ca029dd3a09c9394cd8d43aa6a6983463",
+      "USER-NOTE.md": "71e86b61c572c0bc8b8dcd6a838a5703e0b1900ad67709f6f6ff9e3f18f7ca73",
+      "batch.py": "bcc2e04aaf6e923e23370367336e1fb3262d8387d648eebbdaa5066065090670",
+      "http_api.py": "0a89ec5105dd88b1dccaf46e8d249e814a354ca47d0edffeffeb2a81f905e7f7",
+      "orders.py": "516621c00daa25bedd035f8d6577b931871c55e48094dcc5057842b4ba97ad3c",
+      "test_cancellation.py": "a1a6f2597d9cb0133ef8a2fae40413a6b32c0f35a6b64a6866638070a639b35c"
+    }
+  },
+  "control-followup": {
+    "returncode": 0,
+    "pass": true,
+    "checks": [
+      {
+        "entry": "http",
+        "input": "pending",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "pending",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "cancelled",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "cancelled",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "shipped",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "shipped",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "shipped",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "delivered",
+        "expected": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "observed": [
+          409,
+          {
+            "id": 7,
+            "error": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "delivered",
+        "expected": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "conflict"
+          }
+        ],
+        "state_after": "delivered",
+        "pass": true
+      },
+      {
+        "entry": "http",
+        "input": "on_hold",
+        "expected": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "observed": [
+          200,
+          {
+            "id": 7,
+            "state": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "batch",
+        "input": "on_hold",
+        "expected": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 7,
+            "result": "cancelled"
+          }
+        ],
+        "state_after": "cancelled",
+        "pass": true
+      },
+      {
+        "entry": "mixed-batch",
+        "expected": [
+          {
+            "id": 20,
+            "result": "cancelled"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "conflict"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          },
+          {
+            "id": 16,
+            "result": "cancelled"
+          }
+        ],
+        "observed": [
+          {
+            "id": 20,
+            "result": "cancelled"
+          },
+          {
+            "id": 19,
+            "result": "conflict"
+          },
+          {
+            "id": 18,
+            "result": "conflict"
+          },
+          {
+            "id": 17,
+            "result": "cancelled"
+          },
+          {
+            "id": 16,
+            "result": "cancelled"
+          }
+        ],
+        "pass": true
+      }
+    ],
+    "suite": {
+      "returncode": 0,
+      "output": "test_batch_mixed_states_preserves_order_and_conflicting_states (test_cancellation.CancellationTests.test_batch_mixed_states_preserves_order_and_conflicting_states) ... ok\ntest_batch_pending_and_delivered (test_cancellation.CancellationTests.test_batch_pending_and_delivered) ... ok\ntest_cancelled_is_idempotent (test_cancellation.CancellationTests.test_cancelled_is_idempotent) ... ok\ntest_http_delivered (test_cancellation.CancellationTests.test_http_delivered) ... ok\ntest_http_on_hold (test_cancellation.CancellationTests.test_http_on_hold) ... ok\ntest_http_pending (test_cancellation.CancellationTests.test_http_pending) ... ok\ntest_http_shipped (test_cancellation.CancellationTests.test_http_shipped) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n"
+    },
+    "user_note_preserved": true,
+    "changed_sources_on_followup": [
+      "orders.py",
+      "test_cancellation.py"
+    ],
+    "final_hashes": {
+      "README.md": "7231b6a6a8ca38c4dc9313f7751cb14db6a3ac20880b237654af84e0b937c6f7",
+      "USER-NOTE.md": "71e86b61c572c0bc8b8dcd6a838a5703e0b1900ad67709f6f6ff9e3f18f7ca73",
+      "batch.py": "61268f68d3590f982a4620036d91aea04a25a70cddc5b95c5689281e6c5f16c6",
+      "http_api.py": "0a89ec5105dd88b1dccaf46e8d249e814a354ca47d0edffeffeb2a81f905e7f7",
+      "orders.py": "6a8ed54f25ea3340f5c88c2fd2e7dd911cc79e38287ed97353c63779cae59c69",
+      "test_cancellation.py": "d75b2ea27db72b414f446c0d6304c78fc8ed61248c1c77bdff5e512d830ace65"
+    }
+  },
+  "oracle_source": "import json\nimport sys\nfrom batch import cancel_batch\nfrom http_api import cancel_http\nfrom orders import Order\nstates = [\"pending\", \"cancelled\", \"shipped\", \"delivered\"]\nallowed = {\"pending\", \"cancelled\"}\nif sys.argv[1] == \"followup\":\n    states.append(\"on_hold\")\n    allowed.add(\"on_hold\")\nchecks = []\nfor state in states:\n    accepted = state in allowed\n    expected_state = \"cancelled\" if accepted else state\n    for entry in [\"http\", \"batch\"]:\n        order = Order(7, state)\n        if entry == \"http\":\n            observed = cancel_http(order)\n            expected = (200, {\"id\": 7, \"state\": \"cancelled\"}) if accepted else (409, {\"id\": 7, \"error\": \"conflict\"})\n        else:\n            observed = cancel_batch([order])\n            expected = [{\"id\": 7, \"result\": \"cancelled\" if accepted else \"conflict\"}]\n        checks.append({\"entry\": entry, \"input\": state, \"expected\": expected, \"observed\": observed, \"state_after\": order.state, \"pass\": observed == expected and order.state == expected_state})\norders = [Order(20 - i, state) for i, state in enumerate(reversed(states))]\nexpected = [{\"id\": o.id, \"result\": \"cancelled\" if o.state in allowed else \"conflict\"} for o in orders]\nexpected_states = [\"cancelled\" if o.state in allowed else o.state for o in orders]\nobserved = cancel_batch(orders)\nchecks.append({\"entry\": \"mixed-batch\", \"expected\": expected, \"observed\": observed, \"pass\": observed == expected and [o.state for o in orders] == expected_states})\nprint(json.dumps({\"pass\": all(c[\"pass\"] for c in checks), \"checks\": checks}))\nsys.exit(0 if all(c[\"pass\"] for c in checks) else 1)\n"
+}

@@ -101,6 +101,8 @@ Technical Debt 场景将当前质量与未来负担分别记录。Qualified Debt
 
 `36-autonomous-quality-loop.md` 检查简短默认指导是否改善错误语义、验证与隐藏后续变化，不要求 Change Contract、质量 Guide 或内部思考自述。`37-activation-and-context-economy.md` 专门测量隐式/显式触发、误触退出与上下文成本。`38-claim-handoff-and-evidence-identity.md` 检查决策型任务能否在相称 Handoff 结束，以及后续实施与 Release 是否识别 Evidence 之后的 working-tree 漂移。
 
+[`39-bugfix-structural-cause.md`](cases/39-bugfix-structural-cause.md) 提供可复制的取消订单 fixture，只报告 bug，观察 Agent 是否识别重复规则这一致错机制并主动形成一致的规则归属。隐藏后续任务测量修改传播；Case 01 的纯局部修复作为对照。报告用例通过、结构机制消除、后续复用和过度抽象分别记录，不能用任一单项替代整体判断。
+
 显式 Debt System 场景记录债务间传播、共同根因、交付能力消耗、Owner 缺失和过期清理条件。评审比较主要机制命中、False debt finding、干预杠杆、当前行为保护与 Hidden follow-up 的 Interest 变化，不设置统一债务分数、数量目标或零债务标准。
 
 Project Model 场景检查 Agent 能否把稀疏用户表达和项目现实合成为可修正的语义模型。评分关注模型是否帮助判断一个能力自然属于当前中心、构成相邻扩展，或需要用户确认产品身份变化；篇幅、术语数量和图表数量不产生分数。

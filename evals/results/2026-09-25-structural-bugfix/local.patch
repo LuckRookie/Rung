@@ -1,0 +1,9 @@
+--- a/USER-NOTE.md
++++ b/USER-NOTE.md
+@@ -1,0 +2 @@
++User draft: preserve this line during the repair.
+--- a/cart.py
++++ b/cart.py
+@@ -2 +2 @@
+-    return subtotal - credit
++    return max(0, subtotal - credit)

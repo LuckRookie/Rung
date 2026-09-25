@@ -1,6 +1,6 @@
 # Engineering Structure
 
-Read when a change or review can alter concept ownership, module boundaries, public surface, dependency knowledge, shared state, data or error semantics, an external-detail boundary, or an abstraction with more than local effect. Keep a local edit on the ordinary path when its owner and impact are already clear.
+Read when inspection, a change or review exposes a structural cause or affects ownership, module boundaries, public surface, dependency knowledge, shared state, data or error semantics. Keep clear local implementation defects on the ordinary path.
 
 For a decision-ready review of an existing architecture, modularity, structural debt, or framework fit, also read [Architecture Assessment](architecture-assessment.md).
 
@@ -10,9 +10,9 @@ Read [Software Quality](software-quality.md) when the active concern is current 
 
 ## Governing outcome
 
-Keep the knowledge and change required for a coherent behavior bounded and explainable. Judge structure by the current product, repository, credible variation, and important quality goals. Source code and executable configuration are the implemented design; diagrams and prose are useful claims to verify against them.
+Keep knowledge and change for a coherent behavior bounded and explainable. Judge structure by current needs, repository evidence and credible variation. Code and executable configuration implement the design; verify diagrams and prose against them.
 
-Consider both scale and significance. A one-line schema, dependency, or public-contract choice can be architectural. A large private implementation can remain well contained. File length, class count, directory depth, pattern names, and visual symmetry are discovery signals rather than design verdicts.
+A one-line schema or contract choice can be architectural; a large private implementation can remain contained. File length, class count, directory depth and pattern names are investigation signals.
 
 ## Ownership and change locality
 
@@ -21,7 +21,7 @@ Consider both scale and significance. A one-line schema, dependency, or public-c
 - Treat a small requirement spreading through unrelated components as evidence to inspect ownership, public surface, shared state, or a missing domain concept.
 - Allow several valid decompositions when each has a coherent owner and explainable dependency shape.
 
-Names such as `common`, `shared`, `utils`, `manager`, or `helpers` warrant a question about ownership; their names alone do not establish a defect. Duplication warrants structural action when it duplicates policy or unstable knowledge. Incidental repetition can be cheaper than a premature shared abstraction.
+Names such as `utils` or `manager` invite ownership questions, not a defect verdict. Consolidate duplicated policy or unstable knowledge when justified; incidental repetition can be cheaper than a shared abstraction.
 
 ## Information hiding and public surface
 
@@ -30,7 +30,7 @@ Names such as `common`, `shared`, `utils`, `manager`, or `helpers` warrant a que
 - Check whether an internal change forces callers to change. Repeated propagation can reveal information leakage or a shallow boundary.
 - Keep public configuration and extension points tied to a current consumer, real variant, unstable boundary, or stable contract.
 
-A simple interface is not automatically valuable. Judge the complexity hidden, the knowledge required to use it correctly, and the cost it transfers into implementations or callers.
+Judge an interface by complexity hidden, caller knowledge required and cost transferred.
 
 ## Dependencies and external details
 
@@ -40,7 +40,7 @@ A simple interface is not automatically valuable. Judge the complexity hidden, t
 - Revisit responsibility before using registries, late imports, global lookup, callbacks, or other indirection to hide a cycle.
 - Include generated code, build configuration, schemas, queue payloads, and persistence when they carry the effective contract.
 
-Core logic need not follow a universal inward-dependency diagram. The project must be able to explain why stable policy knows a concrete detail and what future change that choice optimizes.
+Explain why stable policy knows a concrete detail and which changes that dependency serves.
 
 ## Data, state, behavior, and errors
 
@@ -56,7 +56,7 @@ Create or retain an abstraction when current evidence shows at least one useful 
 
 Before adding a base type, factory, provider, handler layer, option, plugin point, wrapper, or generic framework, ask which present consumer or variation uses it. Prefer a direct implementation while the shape is uncertain. Before removing an existing abstraction, inspect its consumers, compatibility role, and history; unfamiliarity is not evidence of waste.
 
-Composition, delegation, inheritance, functions, traits, protocols, packages, and services are possible mechanisms. Choose the mechanism that contains relevant knowledge with the least new coordination burden for this project.
+Choose functions, composition, types, packages or services by knowledge contained and coordination cost.
 
 For a nonlocal boundary, make a small design record covering owner, caller-visible contract, hidden knowledge, state and errors, dependency direction, verification seam, and the next change it should contain. If one of these remains unknown, keep the choice provisional and name the evidence that would resolve it.
 
@@ -69,11 +69,15 @@ For a nonlocal boundary, make a small design record covering owner, caller-visib
 
 ## Working with existing code
 
-Extend a sound current owner when it can absorb the behavior coherently. When the existing boundary creates the problem, separate the structural move from behavior change as far as useful evidence and project risk allow. Preserve public behavior, persistent data, user work, and compatibility through small checkable slices.
+For a bug fix, follow the failing behavior to its rule, state or lifecycle owner and inspect relevant sibling paths. Repeated special cases, divergent copies of a rule, invalid state combinations, caller sequencing and leaked infrastructure knowledge are signals to explain the cause. Do not assume the reported location is the repair boundary.
 
-Use recent changes, issue history, co-change patterns, callers, dependency paths, and tests when a claim concerns frequency or propagation. Use them only when available and relevant; do not manufacture historical certainty from the current tree.
+Compare a local correction with a bounded structural repair when evidence supports both. Extend a sound owner for a local defect. If existing responsibilities, boundaries or state modeling cause the failure, include the necessary abstraction, modularization or responsibility move in the fix without waiting for an explicit refactor request. Minimize the coherent repair, including compatibility and verification cost; changed-line count alone cannot choose it.
 
-When actual code reveals a structural decision with durable consumers, route it back to Design. When a structure rule, dependency check, generated boundary, or test policy must change, route to Project Harness. Broad or risky changes may need Plan, migration, recovery, and independent Review.
+Preserve public behavior, data and user work through checkable slices; separate structural moves from behavior changes when useful. Remove replaced policy and obsolete workarounds once consumers are accounted for. If only containment is currently safe, explain the remaining mechanism and a concrete follow-up owner or condition; do not claim the cause is removed.
+
+Verify the reported failure, relevant sibling paths and preserved contracts at their owning boundaries. Inspect whether a credible next change would still require duplicated edits or caller knowledge; no speculative feature or framework is required. Use history only when available and relevant.
+
+Return durable boundary decisions to Design and changed structural controls to Project Harness. Broad or risky repairs may need Plan, migration, recovery and independent Review.
 
 ## Review discipline
 

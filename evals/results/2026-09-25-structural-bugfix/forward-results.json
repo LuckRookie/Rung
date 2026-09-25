@@ -1,0 +1,51 @@
+{
+  "kind": "single-control-candidate-smoke-with-local-control",
+  "model": "inherited host model; no override; exact runtime model and sampling not independently recorded",
+  "host": "Codex desktop delegated task agents; fresh initial sessions; follow-up reuses each session",
+  "permissions": "isolated assigned project only, assigned skill read-only, no network/publishing/subagents/commits",
+  "invocation": "available metadata supplied, selection left to agent; not forced skill invocation; resource reads are agent reports",
+  "initial_prompt": "Fix batch cancellation: a shipped order currently becomes cancelled, but it must return conflict and keep its state. Preserve HTTP behavior, batch result order, response shapes and my local note. Complete the fix and relevant checks.",
+  "followup_prompt": "Add on_hold as a cancellable state through both existing entry points. Preserve all other state behavior and response shapes, and run the relevant checks.",
+  "local_prompt": "Fix the failing cart-total behavior so applying store credit can never produce a negative total. Preserve the existing API and my local note, and run the relevant checks.",
+  "candidate": {
+    "reported_reads": [
+      "SKILL.md",
+      "references/design.md"
+    ],
+    "initial_suite_count": 8,
+    "followup_suite_count": 10,
+    "followup_additional_reads": [],
+    "observed_owner": "Order.cancel() holds eligibility and mutation; adapters translate outcomes",
+    "initial_correctness": "pass",
+    "structural_review": "pass",
+    "followup_policy_files": [
+      "orders.py"
+    ]
+  },
+  "control": {
+    "reported_reads": [
+      "SKILL.md",
+      "references/design.md"
+    ],
+    "initial_suite_count": 6,
+    "followup_suite_count": 7,
+    "followup_additional_reads": [],
+    "observed_owner": "Order.cancel() holds eligibility and mutation; adapters translate outcomes",
+    "initial_correctness": "pass",
+    "structural_review": "pass",
+    "followup_policy_files": [
+      "orders.py"
+    ]
+  },
+  "local": {
+    "reported_reads": [],
+    "suite_count": 2,
+    "observed_change": "one-line max(0, subtotal - credit); no new abstraction"
+  },
+  "limits": [
+    "One run per condition; no host-baseline arm or statistical superiority claim.",
+    "No independent host read trace; agents received task-specific available-skill metadata.",
+    "Behavior ran on frozen candidate manifest; four later wording refinements have separate final hashes and static validation.",
+    "Synthetic small fixture, no production migration or cross-model reliability evidence."
+  ]
+}

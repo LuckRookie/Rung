@@ -1,0 +1,39 @@
+--- a/README.md
++++ b/README.md
+@@ -10 +10 @@
+-`shipped`, `delivered` and `cancelled`.
++`on_hold`, `shipped`, `delivered` and `cancelled`.
+@@ -12 +12 @@
+-- Pending orders may be cancelled.
++- Pending and on-hold orders may be cancelled.
+@@ -25,2 +25,3 @@
+-entry points use it and format their existing responses. Only pending and already
+-cancelled orders succeed; other state strings are rejected without mutation.
++entry points use it and format their existing responses. Only pending, on-hold
++and already cancelled orders succeed; other state strings are rejected without
++mutation.
+--- a/orders.py
++++ b/orders.py
+@@ -13 +13 @@
+-        if self.state != "pending":
++        if self.state not in {"pending", "on_hold"}:
+--- a/test_cancellation.py
++++ b/test_cancellation.py
+@@ -11,0 +12,10 @@
++        self.assertEqual(order.state, "cancelled")
++
++    def test_http_on_hold(self):
++        order = Order(6, "on_hold")
++        self.assertEqual(cancel_http(order), (200, {"id": 6, "state": "cancelled"}))
++        self.assertEqual(order.state, "cancelled")
++
++    def test_batch_on_hold(self):
++        order = Order(6, "on_hold")
++        self.assertEqual(cancel_batch([order]), [{"id": 6, "result": "cancelled"}])
+@@ -35,0 +46 @@
++            Order(6, "on_hold"),
+@@ -43,0 +55 @@
++                {"id": 6, "result": "cancelled"},
+@@ -50 +62 @@
+-            ["shipped", "cancelled", "cancelled", "delivered"],
++            ["shipped", "cancelled", "cancelled", "cancelled", "delivered"],

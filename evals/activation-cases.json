@@ -252,6 +252,36 @@
     }
   },
   {
+    "id": "bugfix-before-cause-inspection",
+    "prompt": "Fix batch cancellation of shipped orders; preserve HTTP behavior and response shapes.",
+    "observed_facts": "The cause and cancellation rule ownership have not been inspected.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "uncertain",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "defer"
+    }
+  },
+  {
+    "id": "bugfix-policy-drift",
+    "prompt": "Fix batch cancellation of shipped orders; preserve HTTP behavior and response shapes.",
+    "observed_facts": "Inspection found cancellation policy duplicated across adapters and a previous HTTP-only fix. A shared rule owner must be chosen despite an unchanged public contract.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "present",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
     "id": "unknown-relationship",
     "prompt": "Use $rung on this output; its codebase ownership has not yet been established.",
     "judgments": {

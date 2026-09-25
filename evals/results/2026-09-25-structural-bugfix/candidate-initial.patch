@@ -1,0 +1,83 @@
+--- a/README.md
++++ b/README.md
+@@ -23,0 +24,4 @@
++`Order.cancel()` owns cancellation eligibility and the state transition. Both
++entry points use it and format their existing responses. Only pending and already
++cancelled orders succeed; other state strings are rejected without mutation.
++
+--- a/USER-NOTE.md
++++ b/USER-NOTE.md
+@@ -1,0 +2 @@
++User draft: preserve this line during the repair.
+--- a/batch.py
++++ b/batch.py
+@@ -7 +7 @@
+-        if order.state == "delivered":
++        if not order.cancel():
+@@ -10 +9,0 @@
+-        order.state = "cancelled"
+--- a/http_api.py
++++ b/http_api.py
+@@ -5 +5 @@
+-    if order.state not in {"pending", "cancelled"}:
++    if not order.cancel():
+@@ -7 +6,0 @@
+-    order.state = "cancelled"
+--- a/orders.py
++++ b/orders.py
+@@ -7,0 +8,9 @@
++
++    def cancel(self) -> bool:
++        """Cancel an eligible order, returning False without mutation on conflict."""
++        if self.state == "cancelled":
++            return True
++        if self.state != "pending":
++            return False
++        self.state = "cancelled"
++        return True
+--- a/test_cancellation.py
++++ b/test_cancellation.py
+@@ -26,0 +27,43 @@
++    def test_batch_shipped(self):
++        order = Order(2, "shipped")
++        self.assertEqual(cancel_batch([order]), [{"id": 2, "result": "conflict"}])
++        self.assertEqual(order.state, "shipped")
++
++    def test_batch_mixed_preserves_order_and_states(self):
++        orders = [
++            Order(4, "shipped"),
++            Order(1, "pending"),
++            Order(3, "cancelled"),
++            Order(2, "delivered"),
++        ]
++        self.assertEqual(
++            cancel_batch(orders),
++            [
++                {"id": 4, "result": "conflict"},
++                {"id": 1, "result": "cancelled"},
++                {"id": 3, "result": "cancelled"},
++                {"id": 2, "result": "conflict"},
++            ],
++        )
++        self.assertEqual(
++            [order.state for order in orders],
++            ["shipped", "cancelled", "cancelled", "delivered"],
++        )
++
++    def test_http_delivered(self):
++        order = Order(2, "delivered")
++        self.assertEqual(cancel_http(order), (409, {"id": 2, "error": "conflict"}))
++        self.assertEqual(order.state, "delivered")
++
++    def test_unsupported_state_conflicts_without_mutation(self):
++        http_order = Order(5, "processing")
++        batch_order = Order(5, "processing")
++        self.assertEqual(
++            cancel_http(http_order), (409, {"id": 5, "error": "conflict"})
++        )
++        self.assertEqual(
++            cancel_batch([batch_order]), [{"id": 5, "result": "conflict"}]
++        )
++        self.assertEqual(http_order.state, "processing")
++        self.assertEqual(batch_order.state, "processing")
++

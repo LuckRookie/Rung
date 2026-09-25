@@ -1,0 +1,24 @@
+--- a/README.md
++++ b/README.md
+@@ -10 +10 @@
+-`shipped`, `delivered` and `cancelled`.
++`on_hold`, `shipped`, `delivered` and `cancelled`.
+@@ -12 +12 @@
+-- Pending orders may be cancelled.
++- Pending and on-hold orders may be cancelled.
+--- a/orders.py
++++ b/orders.py
+@@ -13 +13 @@
+-        if self.state != "pending":
++        if self.state not in {"pending", "on_hold"}:
+--- a/test_cancellation.py
++++ b/test_cancellation.py
+@@ -11,0 +12,5 @@
++        self.assertEqual(order.state, "cancelled")
++
++    def test_http_on_hold(self):
++        order = Order(5, "on_hold")
++        self.assertEqual(cancel_http(order), (200, {"id": 5, "state": "cancelled"}))
+@@ -38 +43 @@
+-            Order(50, "pending"),
++            Order(50, "on_hold"),

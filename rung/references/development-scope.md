@@ -28,7 +28,7 @@ Codebase relationship alone is insufficient. The following signals are also insu
 
 For implicit invocation, require a consequential decision about ownership, contracts, persistent state, failure semantics, compatibility, migration, verification authority, or delivery readiness. New maintained software can qualify when these decisions are still open. A small security fix or schema change can qualify; repository size, file count, a public caller, and ordinary tests do not establish materiality alone.
 
-When behavior, owner, impact, and checks are clear, and the change is local and reversible, bypass Rung and finish under host instructions. This is still development. Repairing an implementation to honor a known contract differs from choosing or changing the contract. A request to run tests or hand off a patch alone does not request governance.
+Before calling a bug fix local, inspect its cause, rule owner and sibling paths on the host. Even a known contract can need structural repair when duplicated policy, mixed responsibilities or invalid state causes failure. This can activate Rung without a refactor request. If cause, owner, impact and checks support a local reversible correction, bypass. Tests or patch handoff alone do not request governance.
 
 An explicit instruction to use Rung or perform development governance (such as architecture assessment, design trade-offs, or release readiness) can activate small in-scope work. Mentioning the skill, quoting a command, or finding its installed files does not constitute that instruction. Explicit invocation waives materiality only; it never supplies a missing development claim or codebase relationship.
 

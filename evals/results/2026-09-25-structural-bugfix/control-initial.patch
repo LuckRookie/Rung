@@ -1,0 +1,65 @@
+--- a/USER-NOTE.md
++++ b/USER-NOTE.md
+@@ -1,0 +2 @@
++User draft: preserve this line during the repair.
+--- a/batch.py
++++ b/batch.py
+@@ -7,5 +7,2 @@
+-        if order.state == "delivered":
+-            results.append({"id": order.id, "result": "conflict"})
+-            continue
+-        order.state = "cancelled"
+-        results.append({"id": order.id, "result": "cancelled"})
++        result = "cancelled" if order.cancel() else "conflict"
++        results.append({"id": order.id, "result": result})
+--- a/http_api.py
++++ b/http_api.py
+@@ -5 +5 @@
+-    if order.state not in {"pending", "cancelled"}:
++    if not order.cancel():
+@@ -7 +6,0 @@
+-    order.state = "cancelled"
+--- a/orders.py
++++ b/orders.py
+@@ -7,0 +8,9 @@
++
++    def cancel(self) -> bool:
++        """Cancel eligible orders, leaving rejected orders unchanged."""
++        if self.state == "cancelled":
++            return True
++        if self.state != "pending":
++            return False
++        self.state = "cancelled"
++        return True
+--- a/test_cancellation.py
++++ b/test_cancellation.py
+@@ -18,0 +19,5 @@
++    def test_http_delivered(self):
++        order = Order(4, "delivered")
++        self.assertEqual(cancel_http(order), (409, {"id": 4, "error": "conflict"}))
++        self.assertEqual(order.state, "delivered")
++
+@@ -25,0 +31,23 @@
++
++    def test_batch_mixed_states_preserves_order_and_conflicting_states(self):
++        orders = [
++            Order(40, "pending"),
++            Order(10, "shipped"),
++            Order(30, "cancelled"),
++            Order(20, "delivered"),
++            Order(50, "pending"),
++        ]
++        self.assertEqual(
++            cancel_batch(orders),
++            [
++                {"id": 40, "result": "cancelled"},
++                {"id": 10, "result": "conflict"},
++                {"id": 30, "result": "cancelled"},
++                {"id": 20, "result": "conflict"},
++                {"id": 50, "result": "cancelled"},
++            ],
++        )
++        self.assertEqual(
++            [order.state for order in orders],
++            ["cancelled", "shipped", "cancelled", "delivered", "cancelled"],
++        )

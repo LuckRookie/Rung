@@ -17,7 +17,7 @@ Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它为�
 | 项目适配 | 仓库事实、现有规则、工具链和用户修改进入当前判断 |
 | 项目画像 | 项目含义、语义中心、能力归属或演进方向存在实质不确定性时，将用户意图与项目现实合成为可修正的 Project Model |
 | 设计探索 | 重要设计仍存在多条后果明显不同的合理路径时，以最少代表性场景发现隐藏职责、状态、失败语义和真实权衡，再交给 Design 收敛 |
-| 工程结构治理 | Design、Implement 和 Review 出现实质结构信号时，按需检查归属、局部性、信息隐藏、依赖知识、状态语义和抽象依据 |
+| 工程结构治理 | Inspect、Design、Implement 和 Review 出现实质结构信号时，按需检查归属、局部性、信息隐藏、依赖知识、状态语义和抽象依据 |
 | 架构评估 | 已有系统审查需要形成改造、兼容或 Release 决策时，以变化场景、仓库证据、因果机制和反证识别主要结构矛盾 |
 | 架构设计 | 新子系统、公共契约或跨模块边界需要方向时，以变化场景、职责契约、状态、依赖和验证接缝收敛最小边界 |
 | 默认编码指导 | 在会话内联系目标、不变量、Owner、失败与证据；后续变化只在影响边界时检查 |
@@ -66,7 +66,7 @@ Lite / Standard / Strict 控制治理、协调和持久化深度；Verification 
 
 Rung 按实际加载量控制上下文：Development Scope Gate 在任何 Reference 前运行，`SKILL.md` 和 Concern Cards 保持短小，复杂领域使用按信号加载的详细 Domain Guides。默认一次只加载当前判断需要的一张 Reference，未来阶段不触发预加载。当前 Harness 关系为 `Test System ⊂ Verification Harness ⊂ Project Harness`；使用既有 Helper 新增回归用例仍是普通维护，共享判断或执行机制、覆盖政策、Gate、保护移除或放宽才进入 Harness Evolution。
 
-工程结构同样按两层加载：日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；已有系统审查需要形成改造、兼容或 Release 决策时，再读取 Architecture Assessment。重要 Finding 需要连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
+工程结构同样按两层加载：缺陷调查、日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；已有系统审查需要形成改造、兼容或 Release 决策时，再读取 Architecture Assessment。Bugfix 先检查致错原因与规则归属；结构本身造成问题时，必要的抽象、模块调整和职责分离纳入修复，无需额外的重构指令。纯局部错误仍直接修正。具体原则见 [Rung.md §5.8](Rung.md#58-工程结构与架构评估)。重要 Finding 连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
 
 默认编码指导直接写在入口中，完整架构、质量、债务和 Harness 指南由相应阶段卡按信号进入。没有默认质量 Guide、固定四步、必填 Change Contract 或自动 Python 启动命令。是否真正降低上下文占用，要观察宿主实际选中、读取与重复读取的内容。
 
