@@ -74,6 +74,8 @@ An independent anchor should discriminate between correct and incorrect behavior
 
 Prefer the smallest reversible change that restores trustworthy judgment. Possible shapes include repairing an owner in place, consolidating duplicate authority, introducing a compatibility adapter, running old and new paths in parallel, promoting a diagnostic check after observation, or retiring a replaced component after coverage comparison.
 
+When integrating Rung, apply the [reconciliation rules](project-harness.md#adoption-and-reconciliation) to a current task or explicitly requested improvement. Translate general guidance into the existing project mechanisms. Record the effective rule during comparison, the replacement evidence and activation authority; do not enforce contradictory rules simultaneously or waive a gate merely because it disagrees with a Rung default. Update the owning rule and its consumers together, retaining only justified local specializations and retiring obsolete duplicates.
+
 Consider the affected Harness area:
 
 ### Instructions and documentation

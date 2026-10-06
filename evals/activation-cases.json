@@ -336,5 +336,47 @@
       "scope": "development",
       "activation": "enter"
     }
+  },
+  {
+    "id": "standing-project-requirement",
+    "prompt": "Applicable project instruction: \"Use Rung for software edits, implementation plans and change reviews.\" Task: Fix this local arithmetic bug with its existing test.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "explicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "enter"
+    }
+  },
+  {
+    "id": "informational-project-reference",
+    "prompt": "Project documentation: \"Rung is available as an optional skill.\" Task: Fix this local arithmetic bug with its existing test.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "bypass"
+    }
+  },
+  {
+    "id": "conditional-project-requirement-outside-condition",
+    "prompt": "Applicable project instruction: \"Use Rung for schema migrations.\" Task: Fix this local arithmetic bug; no schema change is involved.",
+    "judgments": {
+      "codebase_relationship": "present",
+      "development_claim": "present",
+      "materiality": "absent",
+      "invocation_mode": "implicit"
+    },
+    "expected": {
+      "scope": "development",
+      "activation": "bypass"
+    }
   }
 ]

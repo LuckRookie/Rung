@@ -15,6 +15,7 @@
 - Product, Harness, coupled, or unresolved classification: {{classification}}
 - Canonical fact source: `{{authority_path_or_reference}}`
 - Authority basis and revision: {{authority_basis}}
+- Rules to reconcile and currently effective owner: {{rung_guidance_project_rule_scope_and_effective_rule}}
 - Affected consumers, platforms, and delivery paths: {{consumers_and_scope}}
 - User-owned work to preserve: {{existing_changes}}
 
@@ -48,6 +49,7 @@
 ## Rollout and cleanup
 
 - Comparison or compatibility window: {{old_new_comparison}}
+- Effective rule during transition: {{enforced_rule_diagnostic_candidate_and_any_authorized_exception}}
 - Diagnostic-to-required activation condition: {{activation_condition}}
 - Rollback trigger and action: {{rollback_condition_and_action}}
 - Old-path removal condition: {{removal_condition}}

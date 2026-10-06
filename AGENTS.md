@@ -6,9 +6,10 @@
 - `INSTALL.md` is the source of truth for package coordinates, installation scope, conflict handling, and installation verification.
 - `rung/SKILL.md` is the user-facing Skill entrypoint. Keep it concise and route conditional detail to references.
 - `rung/references/execution-model.md` is the source of truth for Primary Agent ownership, inspection radius, design persistence, plan and implementation ownership, Worker and Reviewer roles, cross-session recovery, and integrated responsibility.
+- `rung/references/change-planning.md` defines outcome-based decomposition, complete coverage, task granularity, document structure, readiness, execution order, cross-block work and progress; its overview and result-block templates support persisted plans.
 - `rung/references/development-scope.md` defines the two-part membership test for codebase relationship and active development claim, early exit, mixed ownership, and the separate materiality/explicit-invocation activation policy.
 - `rung/references/` contains concern cards and governance reminders loaded only when their signals are present.
-- `rung/references/project-harness.md` defines the Project Harness scope, Test System relationship, problem signals, and routing.
+- `rung/references/project-harness.md` defines the Project Harness scope, adoption, rule reconciliation, Test System relationship, problem signals, and routing.
 - `rung/references/harness-evolution.md` is the detailed guide for independently evidenced repair, coverage change, migration, rollback, and cleanup of an existing Harness.
 - `rung/references/verification-harness.md` is a specialized Verify reference for evidence gaps and growing test, documentation, build, CI, package, or end-to-end infrastructure.
 - `rung/references/engineering-structure.md` is the shared guide for contextual ownership, change locality, information hiding, dependency knowledge, state, data, errors, abstractions, and structural testability.
@@ -29,20 +30,23 @@
 
 - Define products through capabilities, behavior, inputs, outputs, and responsibility handoffs.
 - Use direct statements. Category-exclusion inventories and comparison slogans do not belong in product descriptions.
+- Use formal, precise technical language in maintained documentation. State responsibilities, conditions and outcomes explicitly; avoid conversational phrasing and informal metaphors. Preserve established terminology and readability, as well as verbatim user prompts and historical evaluation evidence.
 - Keep each fact in one maintained location and link to it from other documents.
-- Preserve the User Intent → Development Scope Gate → Active Codebase Development Claim → Claim-appropriate Handoff boundary established in `Rung.md`.
-- Before References, check codebase relationship and active development claim, then activation. Implicit use requires material engineering decisions; explicit governance requests waive materiality only. Routine local reversible work with direct checks bypasses Rung. Unknown activation uses minimal host inspection, not speculative governance or a classification question.
+- Protect user work, behavior compatibility, honest evidence and proportional effort. Scope rules, routing, cards and handoff presentation are current design choices described in `Rung.md`; they may evolve when a concrete user need or comparative evidence supports the change. Synchronize affected documentation and machine interfaces.
+- Before References, check codebase relationship and active development claim, then activation. Implicit use requires material engineering decisions; explicit governance requests, including applicable standing project requirements, waive materiality only. Routine implicit local work with direct checks bypasses Rung. Unknown activation uses minimal host inspection, not speculative governance or a classification question.
 - Treat a codebase relationship, repository presence, path, file type, tool use, and incidental code as insufficient scope evidence on their own. An outcome that ends with understanding current codebase facts exits before another Rung resource loads. Runtime guidance defines the positive set without inventorying the open-ended space outside it.
 - Keep work outside the positive set on the Host or its owning workflow. For mixed work, govern only the qualifying codebase portion through its claim-appropriate Handoff and preserve independent ownership and authorization for the rest.
-- Preserve progressive governance: thin by default, signal-driven, composable, and proportional to risk.
-- New prompt content must justify its context cost by changing a meaningful Agent decision.
+- Preserve progressive governance: a concise entrypoint, sufficient signal-driven guidance, composable concerns, and effort proportional to engineering benefit and risk.
+- New prompt content must improve a meaningful Agent decision. Evaluate context and execution cost together with correctness, rework, recovery and maintenance; minimum tokens and shortest documents are not independent goals.
+- For consequential prompt experiments, compare engineering outcomes with the host without Rung and the prior version. Routine wording edits can use direct review. Separate proven effects from hypotheses; rule compliance alone does not establish product value.
+- Test executable behavior, package interfaces and reference reachability. Evaluate instructional meaning through review and behavioral cases; do not pin explanatory prose to exact wording. Keep size limits as growth guardrails and remove redundant content before compressing unrelated sentences.
 - Concern cards provide questions and evidence hints; they do not impose a mandatory stage sequence or default Artifact set.
 - Keep one logical Primary Agent responsible for each DevelopmentRun. Concern Cards are capabilities of that role and do not map to separate Agents or Sessions.
 - Default to one Primary Agent in one main Session. Workers, independent Reviewers, and durable recovery state remain optional, signal-driven, and subject to Host capability and policy.
 - Give Workers bounded context and explicit, non-overlapping ownership. The Primary Agent owns global planning, integration, finding resolution, and final Handoff; Release applies to active delivery claims.
 - Verify completion against an identified integrated Commit or working-tree state. Evidence records target and final state plus Plan identity; drift removes applicability. Worker checks are candidate evidence until integration preserves their relevance.
 - Keep the entrypoint and Concern Cards short. Put complex domain reasoning in precisely routed Domain Guides; measure context cost by what a task actually loads.
-- Default to zero or one Reference for the current decision; reuse loaded guidance. Future phases do not justify preloading; combine References only when concerns interact in the current judgment.
+- Load the References needed for the current decision and reuse loaded guidance. Future phases do not justify unrelated preloading; a fixed Reference count must not limit necessary analysis or verification.
 - Treat Software Quality as current fitness and Technical Debt as avoidable future burden under credible evolution. Either axis can be high while the other remains low.
 - Keep ordinary implementation and review focused on the touched ownership boundary. A repository-wide quality audit or debt-system review requires a material current signal or an explicit request.
 - Qualify debt through a present construct, credible trigger or exposure, and an interest, propagation, risk, coordination, or option-loss mechanism. Smells, TODOs, age, size, and tool scores remain investigation signals.
@@ -54,6 +58,7 @@
 - Keep a reversible Project Model in the session. Persist it only for coordination, recovery, formal review, or recurring decisions; prefer an existing project fact owner and avoid duplicate identity documents.
 - Lite, Standard, and Strict govern decision and coordination depth. Verification Tier 0-3 governs evidence breadth. Keep these axes independent.
 - Treat the Test System as a subset of the Verification Harness and the Verification Harness as a subset of the Project Harness. Set membership alone does not escalate governance.
+- Integrate Rung through existing project owners. Resolve rule differences using the host instruction hierarchy, scope and evidence; preserve justified local specialization. Reconcile within existing authorization, identify the effective rule during transition, and retire superseded rules after replacement coverage is established.
 - An edited Harness component cannot be the sole evidence of its correctness. Relaxed or replaced protection records the claim-level coverage delta.
 - Write the installable Skill's runtime guidance in English: `rung/SKILL.md`, `rung/references/`, `rung/profiles/`, `rung/assets/`, and `rung/agents/`.
 - Route project-meaning and semantic-drift signals through Clarify, Inspect, Design, and Review to `project-model.md`; unresolved consequential design paths through Clarify, Project Model, and Design to `design-exploration.md`; material current-fitness signals through Design, Implement, and Review to `software-quality.md`; qualified future obligations through the concern that discovers them to `technical-debt.md`; material engineering-structure signals through Inspect, Design, Implement, and Review to `engineering-structure.md`; and decision-ready existing-system architecture assessment to `architecture-assessment.md`. Keep each route contextual and evidence-driven. Preserve the cause-and-owner check before classifying bug fixes as local; structural repair follows evidence without requiring an explicit refactor request (Rung.md §5.8).

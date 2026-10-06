@@ -128,8 +128,24 @@ class PrunedContractTests(unittest.TestCase):
         self.contract["activation"]["routine_activation"] = "enter"
         self.assertTrue(validator.validate_contract(self.skill, self.contract))
 
-    def test_entrypoint_growth_is_rejected(self):
-        with (self.skill / "SKILL.md").open("a") as output:
-            output.write("x" * 2400)
+    def test_entrypoint_budget_accepts_limit_and_rejects_byte_overflow(self):
+        budget = self.contract["entrypoint_max_bytes"]
+        entrypoint = self.skill / "SKILL.md"
+        with entrypoint.open("ab") as output:
+            output.write(b"x" * (budget - entrypoint.stat().st_size))
+        self.assertEqual(entrypoint.stat().st_size, budget)
+        self.assertEqual(validator.validate_contract(self.skill, self.contract), [])
+
+        with entrypoint.open("ab") as output:
+            output.write("é".encode())
         errors = validator.validate_contract(self.skill, self.contract)
-        self.assertIn("entrypoint exceeds 2400 bytes", errors)
+        self.assertIn(f"entrypoint exceeds {budget} bytes", errors)
+
+    def test_contract_cannot_remove_supported_entrypoint_budget(self):
+        for budget in [4001, 0, -1, True, "4000", None]:
+            with self.subTest(budget=budget):
+                self.contract["entrypoint_max_bytes"] = budget
+                errors = validator.validate_contract(self.skill, self.contract)
+                self.assertIn(
+                    "entrypoint_max_bytes must be an integer from 1 to 4000", errors
+                )

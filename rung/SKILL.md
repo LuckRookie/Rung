@@ -1,48 +1,37 @@
 ---
 name: rung
-description: "Guide material engineering decisions, including bug fixes with structural causes: ownership, contracts, state, migration, verification, and release. Clear local edits use the host path."
+description: "Software-development harness for engineering decisions, change planning, verification and delivery. Inspect bug causes and reconcile project rules when needed."
 ---
 
 # Rung
 
-## Scope gate
+Rung supplies reusable engineering guidance through a Skill, integrated with the project's own facts, tools and controls.
 
-Before references, require a codebase relationship and an active claim: durable change, a decision directing it, or current change/release evidence. Understanding-only exits; govern qualifying mixed work.
+Use for changes, decisions or evidence about maintained software when an engineering judgment is needed. Size alone does not qualify. Pure explanations and clear local work stay with the host; explicit Rung requests can include small software tasks. If impact is unclear, inspect first. Read [scope details](references/development-scope.md) only if needed.
 
-- **Implicit:** enter for material ownership, contract, state, failure, migration, verification, or delivery decisions. Clear local work bypasses; size and ordinary tests do not qualify.
-- **Explicit:** governance can enter small in-scope work; a mention alone does not qualify.
-- **Uncertain:** inspect minimally, then recheck. No classification-only questions or speculative loading.
+An applicable project instruction requiring Rung is an explicit request within its stated scope; an informational mention is not. Reapply standing instructions to each task without expanding their scope or authority.
 
-For bugs, inspect cause and rule owner before calling work local. Duplicated policy, mixed responsibilities or invalid state can require structural repair without a refactor request.
+## Engineering judgment
 
-Bypass loads nothing. If unresolved: [Development scope](references/development-scope.md).
+- Recover intended behavior and invariants from requirements, code and tests; existing structure may need to change.
+- Trace failures to rule, state or resource owners and sibling paths. Fix sound owners directly; if their boundary causes the defect, include necessary responsibility or abstraction changes without waiting for a refactor request.
+- Unify rules that must agree, such as CLI and API validation of the same account ID. Similar loops with different business meanings may remain independent.
+- Preserve behavior, data and user edits; retire replaced rules after checking consumers. Verify the failure, affected paths and compatibility on the final integrated state; disclose gaps or temporary containment.
 
-## Default work
+One agent owns the integrated result. Use the smallest coherent change. Documents, helpers and delegation need a concrete benefit; no fixed stages are required.
 
-One Primary Agent owns outcome, facts, invariants, owners, failures and evidence. Implement when authorized; verify and review actual state. Choose a coherent repair; probe credible evolution. No required stages.
+## Read when it helps the next decision
 
-## Routing
-
-Read zero or one reference per decision; follow links as needed.
-
-- Intent/authority: [Clarify](references/clarify.md)
+- Intent or authority: [Clarify](references/clarify.md)
 - Missing facts: [Inspect](references/inspect.md)
-- Behavior/boundaries: [Design](references/design.md)
-- Dependencies/recovery: [Plan](references/plan.md)
-- Editing/integration: [Implement](references/implement.md)
-- Proof: [Verify](references/verify.md)
-- Diff/architecture: [Review](references/review.md)
+- Behavior or boundaries: [Design](references/design.md)
+- Plan deliverables, decomposition or dependencies: [Plan](references/plan.md)
+- Editing or integration: [Implement](references/implement.md)
+- Evidence: [Verify](references/verify.md)
+- Diff or architecture: [Review](references/review.md)
 - Delivery: [Release](references/release.md)
+- Project adoption or rule conflicts: [Project Harness](references/project-harness.md)
 
-[Workflow](references/workflow.md).
+Read what the current decision needs and reuse loaded guidance. Allow sufficient context and verification for reliable results; avoid redundant work. [Workflow](references/workflow.md) covers interacting concerns.
 
-## Handoff
-
-- decision complete: actionable choice, evidence, unknowns.
-- review complete: bounded findings and counterevidence.
-- change verified: integrated change verified on identified state.
-- release ready: declared target conditions met.
-- published: authorized delivery target succeeded.
-- blocked handoff: blocker, impact, next owner and recovery condition.
-
-Report result, evidence and gaps. Preserve user work; persist for a future consumer. Optional scripts; external actions follow user authority and host policy.
+Implement only when authorized; decisions and reviews can finish without edits. Report results, evidence and limits; distinguish verified work from actual publication. For blockers, name recovery and the next owner. External actions follow user authority and host policy.

@@ -11,7 +11,7 @@ Read when future work, recovery, review, or release needs durable information.
 | Lasting requirement, contract, architecture, data, UX, build, test, or release fact | owning project document, config, or code |
 | Cross-session, multi-executor, comparison, or recovery state | existing issue or `.rung/runs/<run-id>/` |
 
-Create an Artifact when it improves resumption, coordination, review, migration, evidence, or handoff. Keep each fact with one owner. Promote stable decisions to their owner; retain or clean run state by project convention and an explicit condition.
+Create an Artifact when requested or useful for coordination, recovery, review or handoff. Keep each fact with one owner; retain or clean state by project convention.
 
 ## Run state
 
@@ -26,7 +26,7 @@ For recovery, retain outcome, decisions and delegated scope, root and baseline, 
 - shared project identity and fit: `assets/project-model.template.md`
 - durable design: `assets/solution-design.template.md`
 - qualified debt without a project issue shape: `assets/technical-debt-item.template.md`
-- coordinated execution: `assets/change-plan.template.md`
+- plan and result blocks: `assets/change-plan.template.md`, `assets/plan-result-block.template.md`; [Change Planning](change-planning.md)
 - existing Harness evolution: `assets/harness-change.template.md`
 - verification infrastructure: `assets/verification-harness.template.md`
 - repeatable checks: `assets/verification-plan.template.json`

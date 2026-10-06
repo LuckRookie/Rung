@@ -1,17 +1,37 @@
 # Rung
 
-Rung 是一个面向 Coding Agent 的软件开发渐进式治理 Skill。它为持续软件开发中的实质工程决定提供从设计到交付的按需指导；简单、局部、可逆且已有直接检查的修改沿用 Host 普通编码路径。
+Rung 是面向 Coding Agent 的通用软件开发 Harness，以 Skill 形式提供从设计到交付的工程指导、执行规范与验证要求。它通过渐进式治理与项目既有 Harness 融合，依据当前任务加载所需内容，并复用项目的事实源、工具链与交付机制。
 
 当前稳定版本为 [v0.1.0](https://github.com/LuckRookie/Rung/releases/tag/v0.1.0)；`main` 上的候选开发线版本为 `0.1.2`。稳定引用和候选版本由 [`rung/contracts/rung-contract.json`](rung/contracts/rung-contract.json) 维护。产品定义、系统边界和实现约束以 [Rung.md](Rung.md) 为准。
 
-`main` 分支当前形成 v0.1.2 候选开发内容；稳定安装坐标继续锁定 `v0.1.0` tag。
+## 快速开始
+
+安装稳定版本：
+
+```bash
+npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
+```
+
+安装完成后，可通过显式调用声明开发任务及其约束：
+
+```text
+$rung 修复批量取消订单的问题，保持 HTTP 行为与返回格式兼容，完成相关验证。
+$rung 为导出功能增加 JSON 格式，保持已有 CSV 行为，并明确相关规则的职责归属。
+```
+
+| 版本 | 适用范围 |
+|---|---|
+| `v0.1.0` | 稳定发布包；具体能力以该 tag 的文档为准 |
+| `main`（`0.1.2` 候选） | 评估当前入口、结构修复指导与 Evidence v2；使用时记录 Git 提交标识，行为收益尚在验证 |
+
+评估候选版时，应从指定 Git 提交复制完整 `rung/` 包至隔离的 Skill 目录；已有安装按照 [INSTALL.md](INSTALL.md#3-处理已有安装) 的更新约定处理。仓库变更不会自动同步至已安装副本。完整安装、作用域和验证说明见 [安装](#安装)。
 
 ## 核心能力
 
 | 能力 | 结果 |
 |---|---|
 | 开发意图路由 | 分别判断开发范围与治理启用；隐式调用需要实质工程决定，显式调用可用于范围内的小任务 |
-| 薄层导航 | 默认只提醒 Outcome、Context、Approach、Evidence 和 Handoff |
+| 默认工程判断 | 在入口明确预期行为、追溯规则归属、确定修改边界并验证结果；详细资源按需读取 |
 | 执行责任 | 每次 DevelopmentRun 由一个 Primary Agent 持有全局 Plan、集成结果与 Claim Handoff |
 | 按需治理 | 当前信号决定加载哪个开发关注面和治理深度 |
 | 项目适配 | 仓库事实、现有规则、工具链和用户修改进入当前判断 |
@@ -35,12 +55,12 @@ User Intent
    ↓
 Development Scope Gate
    ├─ 理解型结果或未建立代码库关系 → Host / 对应工作流
-   └─ 满足开发范围及启用条件的部分 → 按当前信号加载零到一张提示卡 → Claim-appropriate Handoff
+   └─ 满足开发范围及启用条件的部分 → 按当前需要组合工程指导 → Claim-appropriate Handoff
 ```
 
 Rung 先确认代码库关系与活跃开发 Claim，再决定是否启用。自动调用需要实质的职责、契约、状态、失败、兼容、迁移、验证或交付决定。行为、Owner、影响与检查已知的局部可逆修改直接由 Host 完成；文件数、项目规模和常规测试不单独触发。显式 `$rung` 或开发治理请求可用于小任务，仍须满足开发范围。边界的权威定义见 [Rung.md §4.1](Rung.md#41-开始边界user-intent)。
 
-未知情况先进行最小 Host 检查，发现实质影响后再进入。已安装或提到 Skill 不表示启用。每个新任务重新判断，实际需要哪个关注面才读取哪张卡。
+未知情况先进行最小 Host 检查，发现实质影响后再进入。已安装或信息性提及 Skill 不表示启用；项目常设指令明确要求使用 Rung 时，在声明范围内按显式调用执行。每个新任务结合适用指令重新判断，实际需要哪个关注面才读取哪张卡。采用方式见 [项目采用](INSTALL.md#项目采用候选开发线)。
 
 Rung 覆盖八个可组合关注面：
 
@@ -54,33 +74,33 @@ Agent 可以合并、跳过和回访这些关注面。普通任务不创建 Rung
 
 Handoff 跟随当前 Claim：设计或诊断可以形成 `decision complete`，审查与评估可以形成 `review complete`，已实施修改可以形成 `change verified`，交付请求继续形成 `release ready` 或经授权完成 `published`；阻塞结果记录恢复条件和下一 Owner。Release Card 只在发布就绪性、版本、制品、发布动作或下游交付进入当前请求时加载。
 
-项目检查从 Baseline 和 Target 开始，公共接口、持久数据、共享行为、依赖、平台或多模块影响会把半径扩展到 Impact；明确审查、核心架构、广泛迁移、安全边界或 Harness Evolution 使用声明过的 System 边界。局部可逆 Design 可以留在对话、代码与测试中，长期契约和架构事实进入项目自己的事实源，临时恢复状态可以按需进入 `.rung/`。
+项目检查从 Baseline 和 Target 开始；涉及公共接口、持久数据、共享行为、依赖、平台或多模块影响时，检查范围扩展至 Impact。明确的系统审查、核心架构变更、广泛迁移、安全边界或 Harness Evolution 使用已声明的 System 边界。局部可逆 Design 可记录于对话、代码与测试中，长期契约和架构事实纳入项目既有事实源，临时恢复状态可按需保存于 `.rung/`。
 
 当稀疏用户表达支持多个产品解释、已有项目事实描绘出冲突身份、新能力接近语义边界、用户准备主动扩展产品方向，或一个仓库包含多个产品中心时，Clarify 与 Inspect 可以按需建立 Project Model。它区分用户确认、仓库证据、Agent 推断、来源冲突和未知信息，并把人、核心情境、结果、语义中心、决策优先级、边界样例和可信演进提供给 Design 与 Review。普通明确任务不生成画像文件。
 
-Project Model 已经给出方向后，重要设计仍可能存在多条会改变 Owner、契约、状态、UX、风险或实现方向的合理路径。此时 Clarify、Project Model 或 Design 可以按需加载 Design Exploration：选择能够区分方向的最小代表性场景，沿成功、失败、恢复和生命周期发现隐藏职责与状态，只保留后果真实不同的候选方向，再把接受方向、权衡和 Revisit signal 交给 Design。清楚的局部修改不加载这份 Guide，探索结果默认留在 Session。
+Project Model 确定方向后，重要设计仍可能存在多条影响 Owner、契约、状态、UX、风险或实现方向的合理路径。此时 Clarify、Project Model 或 Design 可按需加载 Design Exploration：选择足以区分方案的最小代表性场景，分析成功、失败、恢复及生命周期中的潜在职责与状态，保留工程后果存在实质差异的候选方案，并向 Design 提供已接受方向、权衡与 Revisit signal。方向明确的局部修改不加载该 Guide，探索结果默认保存在 Session 中。
 
 Primary Agent 编写全局 Plan，也默认执行修改。Worker 接收互不重叠的有界 Task Packet，返回的局部结果由 Primary Agent 复查和集成；最终 Verification 针对组合后的实际代码状态。Multi-Agent 能力取决于 Host，单 Agent Host 可以完整运行 Rung。
 
 Lite / Standard / Strict 控制治理、协调和持久化深度；Verification Tier 0–3 控制证据覆盖范围。两条轴独立选择。完整的责任与覆盖流程见 [Rung.md 的责任流程图](Rung.md#131-责任流程图)。
 
-Rung 按实际加载量控制上下文：Development Scope Gate 在任何 Reference 前运行，`SKILL.md` 和 Concern Cards 保持短小，复杂领域使用按信号加载的详细 Domain Guides。默认一次只加载当前判断需要的一张 Reference，未来阶段不触发预加载。当前 Harness 关系为 `Test System ⊂ Verification Harness ⊂ Project Harness`；使用既有 Helper 新增回归用例仍是普通维护，共享判断或执行机制、覆盖政策、Gate、保护移除或放宽才进入 Harness Evolution。
+Rung 按任务收益管理上下文和执行成本：Development Scope Gate 核对任务范围，入口与提示卡保持易于读取，相关领域指导按需组合。必要的分析、完整计划和验证可以增加投入；评价时同时考虑正确性、后续返工、恢复和总耗时，不以最少 tokens 或最短文档作为目标。未来阶段不触发无关预加载。当前 Harness 关系为 `Test System ⊂ Verification Harness ⊂ Project Harness`；使用既有 Helper 新增回归用例仍是普通维护，共享判断或执行机制、覆盖政策、Gate、保护移除或放宽才进入 Harness Evolution。
 
 工程结构同样按两层加载：缺陷调查、日常方案、实现与 diff 复查在出现实质结构影响时读取 Engineering Structure；已有系统审查需要形成改造、兼容或 Release 决策时，再读取 Architecture Assessment。Bugfix 先检查致错原因与规则归属；结构本身造成问题时，必要的抽象、模块调整和职责分离纳入修复，无需额外的重构指令。纯局部错误仍直接修正。具体原则见 [Rung.md §5.8](Rung.md#58-工程结构与架构评估)。重要 Finding 连接 Driver、仓库证据、结构机制、实际成本或风险、最小干预和独立验证；文件大小、目录形态和模式名称只作为调查线索。
 
-默认编码指导直接写在入口中，完整架构、质量、债务和 Harness 指南由相应阶段卡按信号进入。没有默认质量 Guide、固定四步、必填 Change Contract 或自动 Python 启动命令。是否真正降低上下文占用，要观察宿主实际选中、读取与重复读取的内容。
+默认编码指导直接写在入口中，完整架构、质量、债务和 Harness 指南按相关信号进入。实际收益通过宿主选中、读取和执行的内容及其工程结果评价，避免将文档篇幅或加载量本身视为质量指标。
 
 [Software Quality](rung/references/software-quality.md) 与 [Technical Debt](rung/references/technical-debt.md) 是两个独立判断维度。前者关注软件当前对使用者、维护者、环境和已接受方向的适用性；后者关注当前工程状态在可信变化、维护事件或时间节点下产生的可避免未来负担。普通任务只整理 touched ownership boundary，详细质量 Guide 由实质权衡或 Finding 触发；代码异味、TODO、年龄和工具分数只产生 Debt Signal，当前 Construct、可信 Trigger 或 Exposure、Interest 或 Propagation 机制和管理决定共同限定 Qualified Debt Item。
 
-技术债覆盖 Code、Architecture、Data and Compatibility、Dependency and Platform、Verification and Harness、Build and Release、Documentation and Fact Sources。显式系统审查寻找驱动项目 Chaos 的少数 Debt Mechanism；日常开发只处理当前变化实际激活、引入、携带或偿还的义务。持久债务优先进入项目已有 Issue、Roadmap、Architecture、Dependency、Migration 或 Harness Owner；缺少合适形态且存在未来消费者时，才使用可选 Technical Debt Item 模板。
+技术债覆盖 Code、Architecture、Data and Compatibility、Dependency and Platform、Verification and Harness、Build and Release、Documentation and Fact Sources。显式系统审查识别造成系统性工程负担的主要 Debt Mechanism；日常开发仅处理当前变化实际激活、引入、携带或偿还的义务。持久债务优先纳入项目已有 Issue、Roadmap、Architecture、Dependency、Migration 或 Harness Owner；缺少合适的承载形式且存在后续使用需求时，才使用可选 Technical Debt Item 模板。
 
-Project Model 可以留在 Session 中；跨 Session、多人协作、正式审查或多个后续决策会复用时，可以进入项目已有 Product Definition、README、Requirement、Domain Glossary、Architecture Overview，或临时 `.rung/runs/<run-id>/project-model.md`。可选模板只在持久化具有消费者时使用。
+Project Model 默认保存在 Session 中；跨 Session、多人协作、正式审查或多个后续决策需要复用时，可纳入项目已有 Product Definition、README、Requirement、Domain Glossary、Architecture Overview，或临时 `.rung/runs/<run-id>/project-model.md`。仅在存在明确后续使用需求时采用持久化模板。
 
 ## Skill 包
 
 ```text
 rung/
-├── SKILL.md                 # 活跃开发范围门、薄提示与信号路由
+├── SKILL.md                 # 开发范围、工程指导与按需路由
 ├── agents/openai.yaml       # Codex UI 元数据
 ├── references/              # 阶段卡与按需领域指南
 ├── profiles/                # 可选治理深度提示
@@ -92,19 +112,13 @@ rung/
 
 Rung 采用 Agent Skills 仓库分发方式。`skills` CLI 会在仓库中发现 `rung/SKILL.md`，安装完整 Skill 包，并记录来源和内容哈希。
 
-安装稳定版本 v0.1.0：
-
-```bash
-npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
-```
-
 Codex 用户级安装：
 
 ```bash
 npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung --agent codex --global --yes
 ```
 
-安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。用户级安装会让 Rung 对该用户的不同项目与工作目录可见；项目级安装把发现范围限制在当前项目。Rung 默认保留隐式调用，description 聚焦实质软件开发决定，Development Scope Gate 负责误触后的二次核对。
+安装到当前项目时移除 `--global`，目标目录为 `.agents/skills/rung`。用户级安装使 Rung 对该用户的不同项目与工作目录可见；项目级安装将发现范围限定于当前项目。Rung 默认保留隐式调用，description 聚焦实质软件开发决定，Development Scope Gate 负责误触后的二次核对。
 
 Codex 提供 `$skill-installer` 时，也可以直接发送：
 
@@ -131,6 +145,8 @@ Rung 默认保持轻量，先确认当前验收对象同时具备代码库关系
 ## 可选确定性工具
 
 重复执行、结构化证据或可靠退出码能够改善任务时，可以使用以下脚本。
+
+运行指导由 Agent 遵循，检查脚本仅在实际调用时验证其覆盖的条件，项目 CI 或宿主控制负责已配置的强制检查。安装 Rung 不会自动建立强制拦截。Rung 助手是可选入口；项目要求的必需检查仍然有效，可以通过项目原生命令执行，不能因未使用助手而省略或报告为通过。
 
 项目检查：
 

@@ -7,9 +7,9 @@
 
 ## 1. 执行摘要
 
-Rung 是运行在 Coding Agent Host 之上的软件开发渐进式治理 Skill。它覆盖指导具体修改的决定、软件变更和可验证交付；自动调用由实质工程决定触发，明确而局部的修改使用 Host 普通编码路径。
+Rung 是面向 Coding Agent 的通用软件开发 Harness，以 Skill 形式提供从设计到交付的工程指导、执行规范与验证要求。它通过渐进式治理与项目既有 Harness 融合，复用项目的事实源、工具链与交付机制；按当前任务和适用项目指令决定启用范围与治理深度。
 
-Rung 的默认形态是一层很薄的提示：
+Rung 以简明入口组织工程判断，并按需提供充分的领域指导：
 
 ```text
 Outcome · Context · Approach · Evidence · Handoff
@@ -19,7 +19,7 @@ Coding Agent 保持原有的推理、工具选择和实现风格。Rung 负责�
 
 当用户表达、项目事实或后续能力无法直接形成一致的产品含义时，Rung 可以引导 Clarify 与 Inspect 建立一个可修正的 Project Model。它压缩项目当前服务的人、核心情境、可观察结果、语义中心、决策优先级、归属边界和可信演进，并供后续 Design、结构判断与 Review 使用。
 
-当下一项重要设计仍有多条会造成不同工程后果的合理路径时，Rung 可以加载 Design Exploration。它使用少量能够区分方向的代表性场景发现隐藏职责、状态、失败语义和权衡，再把已接受方向交给 Design；方向清楚的任务不会承担这份上下文。
+当下一项重要设计存在多条工程后果不同的合理路径时，Rung 可加载 Design Exploration。该指南通过少量具有区分度的代表性场景识别潜在职责、状态、失败语义与权衡，并将已接受方向提交给 Design；方向明确的任务无需加载该指南。
 
 当当前修改需要实质质量判断时，Rung 聚焦 touched ownership boundary 的当前适用性；当项目状态在可信变化、维护事件或时间节点下形成可避免未来负担时，Rung 单独判断 Technical Debt。两个 Guide 按信号加载，分别产生当前质量行动和未来义务管理决定。
 
@@ -27,7 +27,7 @@ Coding Agent 保持原有的推理、工具选择和实现风格。Rung 负责�
 
 Rung 的产品承诺是：
 
-> 以尽可能低的上下文和流程成本，帮助 Coding Agent 把当前软件开发 Claim 推进到有证据支持、与请求相称的交接状态。
+> 以与工程收益相称的上下文、执行和验证投入，支持 Coding Agent 将当前软件开发 Claim 推进至有证据支持、可可靠接续的交接状态，并控制返工、恢复和后续维护的总成本。
 
 一次 DevelopmentRun 从 Code Project Development Intent 开始，在当前 Claim 达到 `decision complete`、`review complete`、`change verified`、`release ready`、`published` 或具有明确恢复条件的 `blocked handoff` 时结束。Release 只在当前请求包含发布就绪性、版本、制品、发布动作或下游交付时进入。范围外工作由 Coding Agent Host 或对应下游系统接续。
 
@@ -53,7 +53,7 @@ Rung 的产品承诺是：
 所有任务都显式经历需求文档、设计、计划、Gate、Review 和 Release Artifact，会带来以下成本：
 
 - 小修改的准备时间超过实施时间；
-- 大量模板挤占项目代码与用户需求的上下文；
+- 大量模板加载占用项目代码与用户需求所需的上下文预算；
 - Agent 为满足流程字段生成低价值内容；
 - 固定顺序限制模型根据仓库与问题选择路径；
 - 边缘场景不断累积为更多规则和分支；
@@ -71,16 +71,16 @@ Rung 保留 Clarify、Inspect、Design、Plan、Implement、Verify、Review 和 
 
 ### 3.1 产品形态
 
-Rung 的第一产品形态是单一 Skill，由六类资源组成：
+Rung 以单一 Skill 交付通用 Harness 能力，由六类资源组成：
 
-1. **Core Prompt**：极小的默认治理提示与按需路由；
+1. **Core Prompt**：简明的工程指导、项目采用语义与按需路由；
 2. **Execution Model**：DevelopmentRun 的责任、检查半径、持久化、协作和恢复契约；
 3. **Concern Cards**：Clarify 到 Release 的独立提醒；
 4. **Domain Guides**：只在特定复杂信号出现时加载的详细工程指南；
 5. **Optional Assets**：复杂任务需要的开发制品模板；
 6. **Deterministic Helpers**：重复、可机器检查工作使用的脚本。
 
-自然语言判断由 Coding Agent 完成。确定性工具在能够提高可靠性、可复现性或效率时使用。
+自然语言判断由 Coding Agent 完成。确定性工具在能够提高可靠性、可复现性或效率时使用。运行指导由 Agent 遵循；脚本仅在实际执行时验证其覆盖条件；Host 与项目 CI 执行已配置的强制检查。安装 Skill 不会自动建立执行拦截，Rung 助手的可选性也不改变项目必需检查的效力。
 
 ### 3.2 核心能力
 
@@ -96,7 +96,7 @@ Rung 提供十四项核心能力：
 8. **工程结构治理**：在 Inspect、Design、Implement 和 Review 出现结构信号时，按需判断概念归属、修改局部性、信息隐藏、依赖知识、状态语义和抽象依据；
 9. **架构评估**：在已有系统审查需要形成改造、兼容或 Release 决策时，围绕当前驱动、变化场景和仓库证据识别主要结构矛盾；
 10. **软件质量与技术债治理**：分别判断软件当前适用性与可信演进中的未来工程负担，在触及范围内改善质量，并对有效债务作出携带、控制、偿还、替换或退役决定；
-11. **Project Harness 治理**：读取、诊断和渐进演进已有项目的事实源、测试、工程规则、构建、CI 与交付控制；
+11. **Project Harness 融合与演进**：结合现有项目指令采用 Rung，复用项目事实源与工具，处理规则冲突，并渐进演进测试、工程规则、构建、CI 与交付控制；
 12. **验证系统治理**：在证据缺口或 Harness 增长信号出现时，引导 Agent 分层构建和维护验证入口；
 13. **证据提醒**：完成、兼容和可发布结论关联实际观察；
 14. **发布交接**：根据项目形态整理 revision、制品、文档和已知风险。
@@ -115,11 +115,13 @@ Rung 的核心提示与语言、框架解耦。仓库事实和项目工具决定
 
 ### 3.4 成功标准
 
-Rung 的实际价值通过行为判断：
+Rung 的实际价值通过对用户结果的贡献判断：在相同任务、模型、权限和起始状态下，比较不加载 Rung、上一版本与候选版本的正确性、根因修复、职责归属、后续变化成本及实际上下文开销。触发与路由合规性用于解释行为，不能单独证明收益。少量重复运行用于识别明显差异；缺少对照证据或差异尚不明确时，结论应保留不确定性。
 
-- 普通任务的默认上下文开销很小；
+以下是当前设计的观察项，可随行为证据调整：
+
+- 上下文与执行投入和任务收益相称，必要指导与验证不因追求最少 tokens 而缺失；
 - Rung 只在开发范围成立且满足启用条件后进入 DevelopmentRun；
-- 主要验收结果止于理解代码库当前事实时，Skill 选择应保持安静；宿主偶发加载时，Scope Gate 在任何 Reference 或 Artifact 前退出；
+- 主要验收结果止于理解代码库当前事实时，Skill 应保持未选中状态；宿主偶发加载时，Scope Gate 在任何 Reference 或 Artifact 前退出；
 - 仓库存在、文件位置、文件类型、工具使用和偶然产生的代码不会单独建立治理范围；
 - 范围外工作在 Rung 偶发误触时于加载 Reference 前结束路由；混合任务中的各项结果保持清楚的 Owner、证据和授权；
 - Agent 不因 Rung 自动创建低价值文档或工作区；
@@ -136,11 +138,11 @@ Rung 的实际价值通过行为判断：
 - 显式架构评估围绕当前驱动和可信变化场景深入关键代码路径，并将重要 Finding 连接到仓库证据、结构机制、实际成本或风险；
 - 架构评估主动检查反证，控制由文件大小、目录形态、模式名称或一般性代码异味产生的无依据 Finding；
 - 架构修改建议说明最小连贯干预和独立验证方式，后续合理变化能够检验修改局部性、知识传播与兼容性是否真实改善；
-- 普通实现与 Review 会让触及的 Owner 在正确性、可理解性、可修改性、可验证性、可运行性、一致性和可预测性方面保持与当前项目相称的质量；
+- 普通实现与 Review 在受影响 Owner 范围内维持与当前项目相称的正确性、可理解性、可修改性、可验证性、可运行性、一致性和可预测性；
 - 质量判断围绕当前用户、维护者、环境、项目画像和实际证据展开，工具分数、文件大小与风格偏好只提供调查信号；
 - 代码异味、TODO、年龄、复杂度或依赖版本只有在连接到当前承载状态、可信触发和未来负担机制后，才形成可管理的技术债；
 - Agent 能够区分当前质量与未来负担，保留 Defect、Vulnerability、Risk、Feature Gap 和 Necessary Complexity 的主要分类与严重度；
-- 显式债务审查能够识别相互传播、放大利息或阻塞清理的少数主导机制，并避免用 TODO 数量或统一分数代表项目混乱程度；
+- 显式债务审查能够识别相互传播、放大利息或阻塞清理的主要机制，不以 TODO 数量或统一分数代替对系统性工程负担的判断；
 - 技术债优先进入项目已有 Issue、Roadmap、Architecture、Dependency、Migration 或 Harness Owner，只有未来消费者存在且缺少合适承载位置时才创建 Rung Artifact；
 - 已有 Project Harness 可靠时被直接复用，出现冲突、误报、漏报、波动、漂移或 Gate 变化时能够进入独立诊断与渐进演进；
 - 验证系统能够从支持当前声明的最低成本层开始，并明确入口、归属、环境、隔离、清理、诊断和维护条件；
@@ -174,9 +176,9 @@ Project Model 和 Design Exploration 可以在代码修改前进入 DevelopmentR
 
 Bugfix 在判定为局部修改前，先由 Host 沿失败行为检查致错原因、规则 Owner 和相关同类路径。契约已知也可能存在重复规则、职责混杂、隐式状态或边界错置；发现这些机制需要实质结构决定时进入 Rung，不依赖用户额外提出重构要求。证据支持局部实现错误时继续普通修复，不为分类扩大到全仓库调查。结构修复原则见 5.8。
 
-显式要求使用 Rung，或要求架构评估、设计权衡、发布就绪审查等开发治理，可以用于范围内的小任务；显式调用只豁免实质性判断，不能补齐缺失的代码库关系或活跃开发 Claim。提到 Rung、引用调用示例、发现已安装文件不等于显式调用。
+显式要求使用 Rung，或要求架构评估、设计权衡、发布就绪审查等开发治理，可以用于范围内的小任务；显式调用只豁免实质性判断，不能补齐缺失的代码库关系或活跃开发 Claim。适用项目指令明确要求使用 Rung 时，在其声明范围内同样构成显式调用，并在后续任务与会话中持续适用。条件性要求仅在条件成立时生效；信息性提及、引用调用示例或发现已安装文件不构成要求。按 Host 指令层级确定效力，不扩大原有权限，也不重复请求已有授权。
 
-实质性未知时先在 Host 中做最小检查，不预加载治理、不单为分类询问用户；发现实质影响后重新判断。Activation 为 `enter`、`bypass` 或 `defer`，分别表示启用、继续普通路径和先检查再判断。Scope 与 Activation 分别记录，当前任务的启用状态不自动沿用到同仓库的后续任务。
+实质性未知时先在 Host 中做最小检查，不预加载治理、不单为分类询问用户；发现实质影响后重新判断。Activation 为 `enter`、`bypass` 或 `defer`，分别表示启用、继续普通路径和先检查再判断。Scope 与 Activation 分别记录，每项任务重新结合当前事实和适用常设指令判断；前一任务的启用状态本身不构成后续任务的启用依据。
 
 ### 4.2 开发范围与责任
 
@@ -232,19 +234,11 @@ Rung 可以开发和验证 Dockerfile、CI 配置、Helm Chart、Terraform、迁
 
 ### 5.1 默认薄层
 
-Rung 被选中后先按 4.1 核对开发范围与启用条件。简单局部修改继续 Host 路径；显式的小任务可以启用 Lite。未知情况先做最小项目检查；仅当范围决定仍需要额外解释时读取 Development Scope。混合任务分别判断各部分，启用治理后才进入以下基础提示。
+入口以简要说明界定适用范围：维护软件的修改、指导修改的决定，以及当前变更与交付的证据判断。理解型和范围外工作继续沿用 Host 路径；已知局部修改直接使用项目检查；显式 Rung 请求可用于小型软件任务。影响未知时优先调查，仅在范围判断仍有歧义时读取 Development Scope。详细边界见 4.1。
 
-启用后把以下判断留在会话内，直接落实为行为、不变量、Owner、相关失败与证据，无默认表单或四步流水线：
+默认指导支持 Agent 作出工程判断：明确预期行为与不变量，沿规则、状态和资源追溯致错原因，确定局部修正或必要的职责调整，维持兼容性并保留用户修改，在最终集成状态执行验证。现有代码作为分析依据，其既有边界仍需结合当前需求评估；共同规则应具有统一归属，形式相似但独立演进的行为可保持独立。入口提供简短正反例，详细领域知识按需读取。
 
-| 提示 | 关注问题 |
-|---|---|
-| Outcome | 用户最终需要观察到什么结果？ |
-| Context | 哪些仓库事实、约束和已有修改影响这次工作？ |
-| Approach | 当前最小且连贯的实现方向是什么？ |
-| Evidence | 哪些实际结果足以支持完成声明？ |
-| Handoff | 结果、证据、缺口和当前 Claim 状态是否足以交给下一 Owner？ |
-
-Agent 可以在内部使用这些提示。用户侧只呈现有助于协作、决策或验证的信息。
+上述判断可在会话内完成，不要求输出分类过程、遵循固定阶段或新增文档。面向用户的交付说明包含结果、证据与剩余限制；正式交接状态由 Workflow、Release 和机器契约维护。指导内容的组织方式可依据行为证据调整，其有效性按照 3.4 的对照方法评估。
 
 ### 5.2 治理循环
 
@@ -265,7 +259,7 @@ Development Scope Gate
 
 ### 5.3 治理信号
 
-以下信号常常值得增加一层提醒：
+以下信号可触发补充治理指导：
 
 - 用户目标、公共行为或验收方式存在关键歧义；
 - 稀疏意图支持多个会改变产品、UX 或架构的合理解释；
@@ -321,10 +315,10 @@ Software Quality、Technical Debt、Project Model、Design Exploration、Enginee
 Rung 的 Reference 主要包含五类内容：
 
 1. 何时加载；
-2. 值得考虑的问题；
+2. 需要考虑的关键问题；
 3. 能够改变判断的失败模式与证据；
 4. 复杂领域需要的方案、迁移、恢复和复查细节；
-5. 值得进一步加深治理的信号。
+5. 可能需要提高治理深度的信号。
 
 Agent 根据项目事实决定顺序、工具、实现方式、测试策略和表达形式。项目已有规则与工具优先进入判断。
 
@@ -378,7 +372,7 @@ Primary Agent 选择能够区分方向的最小代表性场景。场景可以覆
 
 需要用户决定时，Clarify 用通俗语言给出推荐、当前可见后果、可信开发影响、可逆性和最小必要选择。用户委托范围内的专业选择由 Primary Agent 作为项目设计师完成，并对所有人相关表面进行 UX 判断。接受方向连同代表性场景、发现的职责与状态、失败语义、证据需要、重要替代方向、权衡、Owned Unknown 和 Revisit signal 交给 Design；Engineering Structure 再把这些语义映射到代码 Owner 与边界。
 
-当代表性场景足以区分重要方向、关键职责与失败语义达到当前决定所需清晰度、会改变方向的 Unknown 已有 Owner 或 Revisit signal，并且 Design 能够在不依赖关键脑补的情况下继续时停止探索。继续工作只增加低价值细节时立即退出这份 Guide。
+当代表性场景足以区分重要方向、关键职责与失败语义达到当前决定所需清晰度、可能改变方向的 Unknown 已明确 Owner 或 Revisit signal，且 Design 无需依赖未经证实的关键假设即可继续时，停止探索。进一步探索仅增加低价值细节时，应立即结束该过程。
 
 探索结果默认留在 Session。跨 Session、多个执行者、正式 Review 或重复决策形成未来消费者时，结果进入项目已有 Product、Design、Issue 或 Architecture 事实源；项目暂时没有承载位置时可以按需使用 `assets/solution-design.template.md`。Rung 不默认创建 Discovery 文档或 `.rung/` Artifact。
 
@@ -395,9 +389,9 @@ Rung 使用两层按需治理处理代码与架构的连续关系：
 
 日常 Engineering Structure 围绕以下问题提供判断：
 
-- 当前需求改变哪个稳定概念，规则、状态和不变量由谁拥有；
+- 当前需求影响的稳定概念，以及相关规则、状态和不变量的职责归属；
 - 因同一概念原因变化的代码是否集中，局部需求为何传播到其他 Owner；
-- 调用者需要知道哪些行为、数据和失败，SDK 类型、存储格式、重试、生命周期与执行顺序能够留在哪个边界；
+- 调用者所需的行为、数据与失败信息，以及 SDK 类型、存储格式、重试、生命周期和执行顺序的封装边界；
 - 新模块、公共表面、依赖或抽象由哪个当前需求、真实变体、不稳定边界或稳定契约支撑；
 - 条件、相关布尔值、Magic Value 与重复分支是否体现缺失的状态模型或领域概念；
 - 实际 diff 是否扩大跨模块知识、共享状态、持久语义、验证半径和后续修改范围。
@@ -458,7 +452,7 @@ Software Quality 描述当前适用性。Agent 从能够改变当前决定的最
 
 Security、Privacy、Performance、Accessibility、Portability、Compatibility 等条件属性只在需求、风险、证据或可信使用使其影响当前决定时进入。质量属性之间可以转移成本与风险，Design 记录真正改变方向的 Scenario、响应和 Trade-off。
 
-普通 Implement 与 Review 关注 **touched ownership boundary**：修改的 Owner 以及保持其连贯所需的最小周边。Agent 整理本次行为直接影响的目录放置、职责、命名、控制流、状态、错误、资源、测试和事实源；直接支撑修改且可验证的 Cleanup 与变更一起完成。宽泛 Restyle、推测性抽象和无关 Cleanup 保留在 diff 之外，实质邻近问题按 Owner 与后果进入 Finding。全仓库质量审查由明确请求或系统性质量信号触发。
+普通 Implement 与 Review 关注 **touched ownership boundary**：受修改影响的 Owner，以及维持其内部一致性所需的最小关联范围。Agent 调整本次行为直接影响的目录组织、职责、命名、控制流、状态、错误、资源、测试和事实源；直接支撑修改且可验证的 Cleanup 随变更完成。广泛的 Restyle、推测性抽象和无关 Cleanup 不纳入当前 diff；具有实质影响的邻近问题按 Owner 与后果记录为 Finding。全仓库质量审查由明确请求或系统性质量信号触发。
 
 行数、文件大小、复杂度、覆盖率、重复率、依赖数量、目录形状和工具评分提供调查入口。有效质量 Finding 连接当前质量目标、代码或运行证据、作用机制、当前使用者或维护者后果、最小响应和能够区分结果的 Evidence。稳定质量判断只有在保护真实重复问题或高影响契约、能够控制误报、具有 Owner 与例外边界，并说明 Rollout、成本和修订条件时，才晋升为 Project Harness 规则。
 
@@ -475,7 +469,7 @@ current debt-bearing construct
 
 Rung 保留三种证据状态：
 
-- **Debt Signal**：代码异味、TODO、旧技术、漂移、Workaround、重复痛点或临时路径值得调查；
+- **Debt Signal**：代码异味、TODO、旧技术、漂移、Workaround、反复出现的工程问题或临时路径构成调查线索；
 - **Debt Hypothesis**：可信未来负担已经形成解释，其中仍有关键因果环节等待验证；
 - **Qualified Debt Item**：仓库证据支持当前承载状态、可信 Trigger 或 Exposure、可避免后果和管理决定。
 
@@ -485,7 +479,7 @@ Interest 可以按三种机制产生：相关 Feature、Bugfix 或 Review 每次
 
 Rung 范围内的债务承载面包括 Code、Architecture、Data and Compatibility、Dependency and Platform、Verification and Harness、Build and Release、Documentation and Fact Sources。团队、预算、能力和流程可以成为原因；Rung 管理这些原因落实在代码库与持续耦合工程制品中的状态。当前错误继续作为 Defect，当前可利用弱点继续作为 Vulnerability，Feature Gap 进入产品 Backlog，Risk 表达未来事件与影响，Necessary Complexity 由真实约束支撑。债务标签不改变这些问题的主要 Owner 与严重度。
 
-显式系统债务审查声明检查边界，并观察 Debt System：临时路径是否成为新依赖，一项债务是否在数据、测试、构建或 Release 中强制产生另一项债务，例外与重复事实是否持续传播，局部修补是否保留更深约束，利息是否吞噬交付能力，Owner 缺失与过期假设是否阻止清理。Primary Agent 优先处理驱动最大当前或临近压力的少数机制；孤立异味清单无法代表项目 Chaos。
+显式系统债务审查声明检查边界，并分析 Debt System：临时路径是否形成新依赖，一项债务是否在数据、测试、构建或 Release 中引发其他债务，例外与重复事实是否持续传播，局部修补是否仍受深层约束限制，持续维护成本是否压缩交付能力，以及 Owner 缺失与失效假设是否阻碍清理。Primary Agent 优先处理造成最大当前或近期压力的主要机制；孤立的代码异味清单不足以反映项目的系统性工程负担。
 
 债务策略由当前相关性、Exposure、已观察 Interest、Propagation、不可逆性、证据强度、Principal、偿还风险、干预杠杆、Borrowed Value 和机会成本共同决定：
 
@@ -503,21 +497,29 @@ Rung 范围内的债务承载面包括 Code、Architecture、Data and Compatibil
 
 Project Harness 是目标项目中影响软件如何被理解、修改、检查、构建和交付的机制集合，包括项目指令与事实源、工程规则、Verification Harness、开发与构建工具，以及 CI 与 Release 控制。
 
-Rung 对成熟项目采用三种按信号选择的行为：
+Rung 提供可跨项目复用的通用指导，具体事实、命令和项目约束继续由项目维护。项目通过 Host 实际读取的现有指令入口声明采用范围；安装与项目采用的操作规则见 `INSTALL.md`。融合目标是形成一致的有效规则，保留项目合理特化，并避免重复维护。
+
+Rung 对项目既有 Harness 采用三种按信号选择的行为：
 
 - **Use**：相关事实一致、检查可靠时，直接遵循和复用现有 Harness；
 - **Extend**：当前 Claim 缺少证据或入口时，在最近的可靠边界增加必要能力；
 - **Evolve**：Harness 自身出现冲突、误报、漏报、漂移、波动、高成本或政策变化时，使用独立证据和渐进迁移修复判断系统。
 
+出现差异时，先依据 Host 指令层级确认权威，再识别适用范围、受保护行为、规则 Owner 与证据。同一要求的不同实现优先复用项目机制；缺少必要能力时补充既有承载位置；真正不兼容或失效的规则进入有证据的修订。Rung 的通用性、旧规则的存在时间或措辞严格程度都不单独决定优先级。项目特化有依据时予以保留，Rung 的一般指导也可成为修正对象。
+
+用户可以明确选择以 Rung 的建议作为目标规范，对指定范围的 Harness 实施改造。此时，已选择的建议构成改造方向与验收依据，范围内与之冲突的旧规则应予修订或替换；无需先证明旧机制存在缺陷，也不重复请求方向批准。将目标建议与适用范围记录在现有计划或指令维护位置。单纯要求使用 Rung 不等于授权全面替换；明确改造仍需遵循 Host 权限，保护未授权改变的行为与用户工作，并完成迁移、验证和旧规则清理。发现具体不适用条件时说明证据与影响，不静默改回原有约定。
+
+改造从当前任务或明确采用范围开始。常规范围内的不一致沿用已有授权处理；确需 Owner 决策或超出权限时，仅暂停依赖该决定的工作。过渡期间明确各项 Claim 的生效规则、候选规则的诊断用途、替换证据与生效权限；替代保护成立后同步更新消费者并清理旧规则。已有必需检查不能因采用 Rung 而被静默取消。相关记录优先进入现有计划、Issue 或规则文档；运行时细则由 `references/project-harness.md` 与 `references/harness-evolution.md` 维护。
+
 Test System 是 Verification Harness 的子集，Verification Harness 是 Project Harness 的子集。测试内容维护、Harness 能力扩展、共享测试系统演进和 Gate 政策演进采用不同治理深度。使用可靠既有 Helper 新增回归用例仍是内容维护；共享判断、执行、隔离或诊断机制、覆盖政策、Gate、保护移除或放宽发生实质变化时，才加载 Harness Evolution。用例覆盖增加本身不升级治理。
 
 修改 Harness 时，被修改组件不作为证明自身正确的唯一依据。删除、跳过、放宽、重试、隔离或替换已有保护时，记录原 Claim、替代证据、Coverage Delta 和残余风险。影响多个模块、平台、团队或 Release Gate 的变化保留生效、回退和旧机制清理条件。
 
-### 5.11 上下文预算
+### 5.11 上下文与执行成本
 
-Rung 将 Skill 包的信息容量与一次任务的实际上下文开销分别管理。复杂领域可以保留充分细节，加载路径保持轻量：
+Rung 将 Skill 包的信息容量与一次任务的实际投入分别管理。通用 Harness 应为充分分析、可执行计划、可靠验证与会话恢复提供必要指导；成本判断同时考虑正确性、返工、恢复、后续维护和总耗时。最少 tokens、最短文档或单次最快完成不作为独立优化目标，增加内容也不能自行证明收益。复杂领域保留充分细节，加载由当前任务需要决定：
 
-- `SKILL.md` 保留范围与启用判断、简短默认工作原则和阶段路由；详细领域由阶段卡路由；
+- `SKILL.md` 以简要范围说明支持选择，内容重点为具体工程判断与按需资源；完整交接状态和领域细节由对应 Reference 维护；
 - Scope Gate 先判断范围与启用条件；隐式的简单修改、理解型与范围外结果不读取 Reference 或创建 Artifact；未知情况先在 Host 检查；
 - Concern Card 保持短小，负责当前关注面的关键问题和下一级路由；
 - Domain Guide 可以详细描述复杂判断、失败模式、迁移和证据，只在精确领域信号出现时加载；
@@ -528,13 +530,15 @@ Rung 将 Skill 包的信息容量与一次任务的实际上下文开销分别�
 - 当前工程状态具有可信 Trigger 与未来负担机制，或者需要引入、携带、排序、降低、偿还或退役未来义务时，从当前 Concern 或 Domain Guide 加载 Technical Debt；
 - Inspect、Design、Implement 或 Review 出现实质结构信号时加载 Engineering Structure；普通局部修改继续沿用当前 Concern Card；
 - 已有系统审查需要形成改造、兼容或 Release 决策时加载 Architecture Assessment，并同时使用共享的 Engineering Structure 判断；
-- 隐式简单任务不选中 Rung；误触则在入口退出。已启用的有界任务加载入口与零到一张当前卡；深入领域需要新的当前信号，不预加载未来阶段，也不重复读取已加载内容；
+- 隐式简单任务不选中 Rung；适用项目指令要求使用时，按显式调用执行相称指导。已启用任务按当前决定需要组合提示卡与领域指导，不设置单张 Reference 的数量目标，不预加载无关未来阶段，也不重复读取已加载内容；
 - Profile、Domain Guide、Artifact 和脚本分别由风险、复杂度、持久化或确定性执行需要触发；
 - 模板作为输出资源使用，不作为默认指令加载；
 - 同一规则只保留一个维护位置；
-- 行为评测记录一次任务实际读取的 References、字节或 tokens，以及由此产生的工程收益。
+- 行为评测记录实际读取的 References、字节或 tokens、执行耗时与后续返工和恢复成本，并与工程收益共同评价。
 
-仓库测试使用 UTF-8 字节数设置分层上限：`SKILL.md` 2,400 bytes、单张 Concern Card 1,300 bytes、共享路由 Reference 2,200 bytes、复杂 Domain Guide 依职责设置 4,500 至 12,500 bytes、Profile 360 bytes。这些上限负责防止单层无界增长，不代表目标长度。宿主实际报告的 tokens 与一次任务加载总量进入行为评测。
+仓库测试使用 UTF-8 字节数设置分层上限：`SKILL.md` 4,000 bytes、单张 Concern Card 2,000 bytes、共享路由 Reference 3,200 bytes、复杂 Domain Guide 依职责设置 7,000 至 12,500 bytes、Profile 360 bytes。这些上限负责防止单层无界增长，不代表目标长度；可依据新增职责和工程证据修订。宿主实际报告的 tokens 与一次任务加载总量进入行为评测。
+
+接近上限时，优先删除重复说明或将条件细节纳入既有 Reference，避免为新增原则压缩无关语句。测试保护链接、包接口、结构化协议与脚本行为；正文表述及指导效果通过审阅和行为案例评估，不以逐字断言限制表述调整。
 
 ## 6. 产品包与渐进披露
 
@@ -586,9 +590,9 @@ Skill metadata
       ↓
 SKILL.md Scope Gate
       ├─ 理解型结果或范围外结果 → Host / 对应工作流
-      └─ 开发范围及启用条件成立 → 薄提示与信号路由
+      └─ 开发范围及启用条件成立 → 工程指导与按需路由
                          ↓
-              当前信号对应的一张 Reference
+              当前判断需要的 References
                          ↓
               精确领域信号对应的 Domain Guide
                          ↓
@@ -639,7 +643,7 @@ Implement 或集成变更
 与当前 Claim 相称的 Handoff
 ```
 
-这条最小执行脊柱说明完整责任闭环。Primary Agent 可以合并、跳过、调序和回访关注面。一个局部修复可以在一次短循环中完成设计、计划、实现、验证、复查和交接。
+该基本执行结构定义完整的责任闭环。Primary Agent 可合并、跳过、调整顺序或重新评估相关关注面。局部修复可在一次简短迭代中完成设计、计划、实现、验证、复查和交接。
 
 以下信号可以扩展默认形态：
 
@@ -658,7 +662,7 @@ Implement 或集成变更
 | Impact | 消费者、Schema、Migration、生成物、Lock 状态、Build、Package、CI 和 Release Control | 公共接口、持久数据、共享行为、依赖、平台或多模块变化 |
 | System | 事先声明的系统边界、包含表面与未检查区域 | 明确审查、核心架构、广泛迁移、安全边界、构建系统替换或 Harness Evolution |
 
-当下一步具有明确 Owner 和约束、相关用户工作得到保护、可能影响与检查路径已经有界、剩余未知项清楚可见时，当前检查已经足够。System 级检查需要声明可验证边界；仓库名称本身无法说明审查覆盖范围。
+当下一步具有明确 Owner 和约束、相关用户修改得到保护、潜在影响与验证路径已限定范围、剩余未知项已明确记录时，可结束当前检查。System 级检查需要声明可验证边界；仓库名称本身不能表明审查覆盖范围。
 
 ### 7.3 协作决策与设计权限
 
@@ -695,9 +699,19 @@ Primary Agent 编写并维护全局 Plan，也默认负责实际修改：
 |---|---|
 | 一个连贯且可直接检查的修改 | 内部 micro-plan |
 | 一个 Session 内的多个依赖步骤 | Host Plan |
-| 跨 Session、多执行者、迁移、兼容窗口、风险顺序或正式恢复 | 项目 Issue 或 `.rung/runs/<run-id>/plan.md` |
+| 用户要求持久计划，或跨 Session、多执行者、迁移、兼容窗口、风险顺序或正式恢复 | 项目既有计划目录或 Issue；缺少承载位置时使用 `.rung/runs/<run-id>/` |
 
-每个重要执行单元记录结果或 Acceptance、Owner、文件或模块、前置条件、需要保留的行为、预期修改、完成检查和恢复点。实现证据改变归属、接口、数据、风险或验收时，Primary Agent 回访 Inspect、Clarify 或 Design 并更新 Plan。
+复杂计划采用“总体计划 → 结果块 → 执行任务”的层级分解。总体计划维护目标、共同约束、范围覆盖、依赖与集成验收；结果块按可独立验收和交接的结果划分；执行任务使用稳定编号，明确前置输入、作用位置、具体动作、输出和完成检查。任务仍包含需要分别跟踪的产出、依赖链或验收条件时，继续分解，直至执行者能够在有界上下文中实施、验证并报告状态。层级、文件数和任务数由实际工作决定。
+
+用户要求完整实施计划时，所有已接受目标和验收条件必须落实到结果块或任务；子项及必要集成工作共同满足父级目标。后续结果块应具有与初始块同等充分的执行信息。较长计划先建立完整结构，再分块编写并检查覆盖，不能以简洁或渐进式治理为由缩减范围或用概述替代必要任务。未知项应形成有问题、产出、退出条件和依赖关系的调查任务；受其影响的实施内容标明待细化，不计为已就绪。
+
+较大持久计划在项目没有既定形式时，采用总览 `README.md` 与扁平编号结果块文件；较小计划可在单一文档中使用相同逻辑层次。总览维护跨块关系，各块维护任务和证据，长期事实引用项目 Owner。依赖可精确到任务编号，编号不表示全部串行。每块具有局部检查与退出条件，跨块汇合另有集成验收。
+
+计划编写完成、可开始实施、部分实现和验证完成应分别表达。必要结果块尚未写完或检查完成时，总体计划保持 Draft，并记录剩余编写工作；单个任务可执行不能推导出整份计划已就绪。执行后依据实际证据更新任务、结果块及总体状态；实现证据改变归属、接口、数据、风险或验收时，Primary Agent 回访相应决定并修订受影响的任务。运行时细则由 [Change Planning](rung/references/change-planning.md) 维护。
+
+执行默认优先满足当前结果块的退出条件，按真实任务依赖推进；后续任务已具备条件，本身不足以构成切换理由。解除阻塞、提前验证重要集成假设或取得有明确收益的独立产出，可以支持跨块工作。切换前在现有计划或会话记录中写明目标任务、原因、已满足的前置及证据、有界产出和返回条件；完成后返回主任务，或明确修订优先级与剩余工作。授权范围内的常规改序不新增审批，用户指定顺序和既有前置不能被静默绕过。按整块描述的依赖过粗时，应先细化任务依赖再执行。
+
+稳定契约可以支持适配准备或 fixture 测试；正式集成和验收必须具有相应前置实现与验证证据。Primary Agent 控制同时未完成的工作，多个块长期 Partial 时先核对剩余退出条件、阻塞与责任归属，再决定新增工作；过大的任务继续分解，已验证子结果独立记录，延期工作保留负责方。共享证据按所属任务编号映射，文件所在位置不决定成果归属。获准的独立任务可以并行，整体集成与当前完成目标仍由 Primary Agent 负责。
 
 Primary Agent 在实现期间保护用户修改，遵循适用指令，让 touched ownership boundary 保持当前质量，同步生成源和持久事实，并在低成本检查能够尽早暴露漂移时运行它们。当前修改引入、携带、控制或偿还未来义务时，同步对应 Debt 决定与 Owner。
 
@@ -842,7 +856,7 @@ Harness 的长期实现归目标项目所有。Rung 在证据缺口、基础设�
 
 ### 8.20 Development Scope Gate
 
-在任何 Reference 前按 4.1 核对开发范围与启用条件。Scope 表达责任关系，Activation 表达当前任务是否值得治理；显式调用只覆盖实质性条件。
+在任何 Reference 前按 4.1 核对开发范围与启用条件。Scope 表达责任关系，Activation 表达当前任务是否满足治理启用条件；显式调用仅豁免实质性判断。
 
 ## 9. 八个开发关注面
 
@@ -851,7 +865,7 @@ Harness 的长期实现归目标项目所有。Rung 在证据缺口、基础设�
 | Clarify | 用户与 Agent 需要形成有后果的决定、校准项目含义、进入设计探索，或用户委托当前范围内的设计选择 | 得到已接受决定、委托权限、画像校准与开放选择 |
 | Inspect | 相关产品事实、代码、规则、命令、接口或用户修改未知 | 以相称检查半径获得可执行、可追踪来源的项目事实 |
 | Design | 产品行为、UX、Project Model、设计探索结果、项目骨架、概念归属、边界、接口、数据、依赖、错误语义、质量权衡或未来义务需要选择 | 形成与项目相称、依据充分且可修正的专业方案 |
-| Plan | 多步骤、跨模块、迁移、协作或恢复需要协调 | 由 Primary Agent 建立有 Owner、依赖、检查与恢复点的全局 Plan |
+| Plan | 请求计划交付物，或多步骤、跨模块、迁移、协作与恢复需要协调 | 由 Primary Agent 将完整范围分解为结果块与可执行任务，维护依赖、验收及恢复 |
 | Implement | 进入代码、测试、配置或文档修改 | 实现并集成符合当前决定和事实的修改，保持触及 Owner 连贯 |
 | Verify | 需要证明行为、兼容、构建或制品结论 | 在集成状态上获取与 Claim 相称的 Evidence |
 | Review | diff、当前质量、未来负担、结构影响、风险或交付状态需要判断 | 由 Primary Agent 或独立 Reviewer 发现并处理遗漏 |
@@ -903,7 +917,7 @@ Strict 提示增加判断深度，同时保留 Agent 对具体方法的选择。
 
 ### 11.1 Artifact 使用信号
 
-以下情况常常值得持久化：
+以下情形可考虑持久化：
 
 - 任务跨会话或需要恢复；
 - 多个执行者共享当前决策；
@@ -923,7 +937,7 @@ ProjectContext 优先索引项目已有 README、Requirements、ADR、接口规�
 
 ### 11.3 模板
 
-`assets/` 提供 Development Brief、Project Context、Project Model、Solution Design、Change Plan、Technical Debt Item、Project Harness Change、Verification Harness、Verification Report、Review Result 和 Release Manifest 模板。Agent 可以复制完整模板，也可以只采用当前任务需要的字段。
+`assets/` 提供 Development Brief、Project Context、Project Model、Solution Design、Change Plan、Plan Result Block、Technical Debt Item、Project Harness Change、Verification Harness、Verification Report、Review Result 和 Release Manifest 模板。Agent 可以复制完整模板，也可以只采用当前任务需要的字段。计划模板的形式可调整，已要求的范围覆盖、工作分解、任务说明和验收信息仍须完整。
 
 ### 11.4 脚本
 
@@ -1175,7 +1189,7 @@ flowchart TB
 
 Scope Gate 先按 4.1 确认当前 Outcome 的范围与启用条件，再选择工作类型。工作类型不能反向替代成员判断；仓库和文件表面只在两项条件成立后帮助路由。
 
-| 类型 | 值得关注的特有信号 |
+| 类型 | 主要关注信号 |
 |---|---|
 | Greenfield | 人、核心情境、结果、语义中心、首个可交付能力、最小可运行骨架、首个 Release |
 | Feature | Project Model fit、可观察行为、接口与数据影响、回归范围 |
@@ -1205,7 +1219,7 @@ Rung 沿用用户、宿主和项目的安全边界：
 MVP 包含：
 
 - 一个可安装、可显式调用和可按描述触发的 Rung Skill；
-- 五个默认治理提示；
+- 直接支持行为、不变量、规则归属、修改边界和验证的默认工程判断；
 - 信号驱动的按需路由；
 - 一个按需加载的 Execution Model Guide，明确 Primary Agent、检查半径、Design 持久化、Plan 与 Implement 责任、Worker、Reviewer 和跨 Session 恢复；
 - Clarify 到 Release 的八张 Concern Card；
@@ -1362,7 +1376,7 @@ Hidden follow-up 检验画像的预测价值：新能力是否进入清楚 Owner
 Rung 后续实现保持以下设计事实：
 
 1. User Intent 按 4.1 通过开发范围与启用判断后进入 DevelopmentRun；隐式简单修改继续 Host 路径；
-2. 默认运行形态是薄提示层；
+2. 以 Skill 交付通用软件开发 Harness，简明入口与按需领域指导共同支持可靠执行；
 3. 治理内容由实际信号渐进加载；
 4. 八个关注面支持组合、跳过和回访；
 5. Agent 保留具体路径、工具和实现方式的选择；
@@ -1370,15 +1384,15 @@ Rung 后续实现保持以下设计事实：
 7. 项目事实、用户修改和宿主权限进入当前判断；
 8. DevelopmentRun 按当前 Claim 结束为 decision complete、review complete、change verified、release ready、published 或 blocked handoff；
 9. 外部动作遵循用户授权与宿主权限；
-10. 上下文成本和治理收益共同决定新增内容；
+10. 工程收益与上下文、执行、返工和恢复的总成本共同决定新增内容；
 11. 工程原则通过任务信号、情境问题和 diff 复查影响决策；
 12. 可安装 Skill 的运行时内容以英文维护；
 13. 验证 Harness 从证据缺口出发分层构建，并保留所有权、环境生命周期、失败诊断和维护条件；
-14. Skill 包可以拥有充分的领域细节，一次任务的上下文开销由渐进披露和实际加载量控制；
+14. Skill 包保留充分的领域细节，一次任务按实际判断需要渐进加载，不以最少 tokens 限制必要工作；
 15. Test System 属于 Verification Harness，Verification Harness 属于 Project Harness；集合归属与治理升级分别判断；
 16. 被修改的 Harness 组件不作为证明自身正确的唯一依据；
 17. Harness 保护被删除、放宽、重试、隔离或替换时记录 Claim-level Coverage Delta；
-18. 影响多个消费者或交付 Gate 的 Harness 演进保留生效、回退和旧机制清理条件；
+18. Harness 融合遵循适用指令权威并保留合理项目特化；影响多个消费者或交付 Gate 的演进保留当前生效规则、替代证据、生效权限、回退和旧机制清理条件；
 19. 每次 DevelopmentRun 由一个逻辑 Primary Agent 持有集成责任和与 Claim 相称的 Handoff；
 20. 默认执行形态是一个 Primary Agent 和一个主 Session；
 21. 检查从 Baseline 与 Target 开始，并按影响证据扩展到 Impact 或声明过的 System 边界；
@@ -1400,20 +1414,20 @@ Rung 后续实现保持以下设计事实：
 37. Scope Gate 在任何 Reference 之前运行，分别核对由 Outcome、长期 Owner、正确性来源与维护周期建立的代码库关系，以及当前活跃开发 Claim；
 38. 代码库关系、仓库存在、文件位置、工具使用和偶然产生的代码不能单独建立范围；理解型和范围外结果不读取 Rung Reference 或创建 Rung Artifact；
 39. 混合任务只让符合范围及启用条件的部分进入 DevelopmentRun，各结果分别维护 Owner、授权、证据和恢复信息；
-40. 默认零到一张当前 Reference，已加载内容复用；未来阶段不构成预加载信号；
+40. 按当前决定需要组合 References 并复用已加载内容；未来阶段不构成无关预加载的依据；
 41. Design Exploration 只在具体重要决定仍存在多条工程后果不同的合理路径时加载；
 42. 代表性场景与候选方向由区分当前决定的价值决定，不设置固定数量；
 43. Design Exploration 在 Design 能够继续且方向变化 Unknown 已有 Owner 或 Revisit signal 时停止；
 44. 探索结果默认留在 Session，只在确有未来消费者时持久化，不增加第九个必经关注面或默认 Artifact；
 45. Software Quality 描述当前适用性，Technical Debt 描述可信演进中的未来负担；两个判断维度相互独立；
 46. Software Quality 只在当前质量判断能够改变 Design、Implement、Review、Evidence 或 Release Readiness 时加载详细 Guide；
-47. 普通修改保持 touched ownership boundary 连贯，直接支撑修改且可验证的 Cleanup 可以同行，无关 Cleanup 保留在 diff 之外；
+47. 普通修改保持 touched ownership boundary 连贯，直接支撑修改且可验证的 Cleanup 可随变更完成，无关 Cleanup 不纳入当前 diff；
 48. 质量指标、文件形态和工具分数只提供调查信号，质量 Finding 连接当前目标、证据、机制、当前后果、响应与验证；
 49. Technical Debt 至少连接当前承载状态、可信 Trigger 或 Exposure、未来负担机制和携带、控制、降低、偿还、替换或退役决定；
 50. Debt Signal、Debt Hypothesis 与 Qualified Debt Item 保持可区分，静态异味与 TODO 不直接建立债务；
 51. Defect、Vulnerability、Risk、Feature Gap 和 Necessary Complexity 保留主要分类、Owner 与严重度，债务作为相关工程机制单独判断；
 52. Technical Debt 覆盖 Code、Architecture、Data and Compatibility、Dependency and Platform、Verification and Harness、Build and Release、Documentation and Fact Sources；
-53. 显式 Debt System 审查优先寻找驱动 Interest、Propagation、Option Loss 或清理阻塞的少数机制，不使用统一分数代表项目 Chaos；
+53. 显式 Debt System 审查优先识别导致 Interest、Propagation、Option Loss 或清理阻塞的主要机制，不使用统一分数代替对系统性工程负担的判断；
 54. 债务策略根据 Exposure、Interest、Propagation、Principal、偿还风险、Borrowed Value 与机会成本选择，不以零债务为目标；
 55. Durable Debt Item 优先进入项目已有 Issue、Roadmap、Architecture、Dependency、Migration 或 Harness Owner，只有未来消费者存在且缺少更好形态时使用 Rung Artifact；
 56. 稳定质量判断只有在保护真实重复问题或高影响契约、能够可靠区分合规与违规状态并具有 Owner、范围、例外、成本和修订条件时，才进入 Project Harness；

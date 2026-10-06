@@ -32,7 +32,9 @@ Before calling a bug fix local, inspect its cause, rule owner and sibling paths 
 
 An explicit instruction to use Rung or perform development governance (such as architecture assessment, design trade-offs, or release readiness) can activate small in-scope work. Mentioning the skill, quoting a command, or finding its installed files does not constitute that instruction. Explicit invocation waives materiality only; it never supplies a missing development claim or codebase relationship.
 
-Materiality that remains unknown is a reason for minimal host inspection, not speculative Guide loading or a question about whether to use Rung. Reassess if evidence exposes a consequential boundary; return to the host path when the need disappears. Activation applies to the current change, not every future task in the same repository.
+An applicable standing project instruction requiring Rung counts as explicit invocation for the tasks it covers. Distinguish a requirement from an informational reference by its wording and scope. Reapply it in later tasks and sessions until changed; do not reduce it to a discovery hint or repeatedly request permission. A conditional instruction applies only when its condition holds. Resolve instruction authority under the host's hierarchy; neither adoption nor an earlier task grants unrelated permissions.
+
+Materiality that remains unknown is a reason for minimal host inspection, not speculative Guide loading or a classification question. Reassess each task using its facts and applicable standing instructions; a prior task's activation alone does not activate later tasks.
 
 After entry, use Lite for a bounded decision or explicit small task, Standard for interacting owners or design choices, and Strict at high-impact contract, security, data, migration, or delivery boundaries. Depth does not prescribe a document, reviewer, test tier, or stage count.
 

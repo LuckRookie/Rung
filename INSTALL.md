@@ -46,9 +46,32 @@ npx skills add https://github.com/LuckRookie/Rung/tree/v0.1.0/rung --skill rung 
 
 用户级安装使 Rung 对该用户的不同项目和普通工作目录可见，适合希望在各项目中自动获得开发治理的用户。项目级安装只在对应项目的 Skill 扫描范围内可见，适合希望按仓库选择治理能力的团队。
 
-候选开发线保留隐式调用，通过 `SKILL.md` 的 name 与 description 聚焦持续软件中的实质工程决定；`agents/openai.yaml` 的 short_description 用于 UI 展示。完整入口加载后核对开发范围和启用条件，简单局部修改或只读理解立即回到 Host；未知先做最小项目检查。显式要求 `$rung` 或开发治理可用于范围内的小任务，不豁免开发范围。详细边界以 [Rung.md §4.1](Rung.md#41-开始边界user-intent) 为准。
+候选开发线保留隐式调用，通过 `SKILL.md` 的 name 与 description 描述软件开发 Harness 能力；`agents/openai.yaml` 的 short_description 用于 UI 展示。完整入口加载后核对开发范围和启用条件；简单隐式修改或只读理解由 Host 继续处理，影响未知时先执行最小范围的项目检查。显式要求 `$rung` 或开发治理可用于范围内的小任务，适用项目指令中的明确要求同样有效；显式调用不豁免开发范围。详细边界以 [Rung.md §4.1](Rung.md#41-开始边界user-intent) 为准。
 
 安装范围只影响可发现性，不强制每次任务加载。没有启动脚本。稳定 tag 与本地候选包的触发规则可能不同；修改仓库不会自动更新已安装副本，安装后记录实际来源与内容标识。
+
+### 项目采用（候选开发线）
+
+项目可在宿主实际读取的既有指令文件中声明采用 Rung，例如 `AGENTS.md` 或 `CLAUDE.md`。先核对现有规则和入口，合并所需引用；无需统一新建 `HARNESS.md`，也不复制已有命令、契约和计划状态。例如：
+
+```text
+本项目的软件修改、实施计划与变更评审使用 Rung。
+项目事实源、检查命令和交付约束沿用本文列出的维护位置。
+Rung 与现有规则出现差异时，先识别有效范围和依据；在授权范围内逐步修订，并保持同一事项的规则一致。
+```
+
+该示例是其范围内持续有效的明确使用要求；在每个适用任务中按显式调用解释，简单任务仍可采用简短执行方式。仅介绍 Rung、引用示例或列出安装位置属于信息性引用，不改变启用条件。项目也可以明确将使用范围限定为架构决定、迁移或复杂计划。持续要求不因换会话失效，也不自动扩大到未声明的任务或授权。
+
+用户也可以明确指定 Rung 为 Harness 改造的目标规范，例如：
+
+```text
+以 Rung 的计划拆分与执行建议为目标，改造本项目的计划规范和相关 Agent 指令。
+范围内与目标冲突的旧要求应予替换，同步更新引用与检查，完成验证并清理旧规则。
+```
+
+这种要求授权 Agent 在指定范围内落实选定建议，即使旧机制仍可运行；无需再次确认是否替换冲突约定。单纯采用 Rung 与按其建议改造 Harness 的授权范围不同，具体处理见下述融合原则。
+
+接入后通过一个实际任务核对宿主是否读取项目入口、是否按声明范围加载 Rung，以及是否继续使用正确的项目检查。现有使用要求已经明确时，不重复请求批准。升级沿用安装记录和项目规则，避免覆盖本地维护内容；既有 Harness 的融合原则见 [Project Harness](rung/references/project-harness.md)。
 
 ## Codex 原生安装器
 
@@ -80,7 +103,7 @@ https://github.com/LuckRookie/Rung/tree/v0.1.0/rung
 2. `npx skills add`；
 3. 手动安装。
 
-手动安装时，将仓库的 `v0.1.0` tag 下载到临时目录，验证 `rung/SKILL.md` 后，再把整个 `rung/` 目录复制到宿主可发现的 Skills 目录。当前 Codex 的手动安装位置为：
+手动安装时，将仓库的 `v0.1.0` tag 下载至临时目录，验证 `rung/SKILL.md` 后，将完整 `rung/` 目录复制至宿主可发现的 Skills 目录。当前 Codex 的手动安装位置为：
 
 | 作用域 | 目标目录 |
 |---|---|
@@ -124,7 +147,7 @@ method: <native-installer | skills-cli | manual>
 verification: <checks-and-results>
 ```
 
-## 让 AI 直接安装
+## 通过 Coding Agent 执行安装
 
 将下面的指令发送给能够访问 GitHub 和本地文件系统的 Coding Agent：
 
@@ -136,7 +159,7 @@ verification: <checks-and-results>
 
 私有仓库使用 Agent 环境中已经配置的 Git 或 GitHub 凭据。安装过程不要求用户把访问令牌写入提示词、项目文件或安装报告。
 
-仓库公开后，也可以把原始文档地址直接交给 Agent：
+仓库公开后，也可向 Agent 提供原始安装文档地址：
 
 ```text
 https://raw.githubusercontent.com/LuckRookie/Rung/v0.1.0/INSTALL.md

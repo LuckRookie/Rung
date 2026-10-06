@@ -1,6 +1,8 @@
 # Rung 行为评测
 
-本目录评估 Rung 是否改变 Coding Agent 的实际开发行为。评测关注正确性、治理触发、代码结构、后续修改成本和上下文开销，不检查回答是否复述了 Rung 的术语。
+本目录评估 Rung 对 Coding Agent 实际开发行为的影响。评测关注正确性、治理触发、代码结构、后续修改成本和上下文开销，术语复述不作为评分依据。
+
+通用 Harness 的成本评价同时考虑工程结果、上下文投入、执行耗时、返工与恢复负担。必要分析、完整计划和充分验证可以增加前期投入；更少 tokens 或更短文档不单独构成优势，更长输出也不代表更完整。保留各项实测值，区分已观察收益与尚未验证的总成本判断；新的评价取向不改写历史结果。
 
 ## 对照组
 
@@ -16,17 +18,21 @@
 
 开发 Scope 和治理 Activation 分别评测。候选的隐式调用只因实质工程决定进入；显式调用可用于小任务，但仍须具备开发范围。`activation-cases.json` 提供提示、人工标注的宿主判断和预期结果。确定性测试只证明给定判断的分类逻辑，不能证明模型能从提示正确判断。
 
+项目常设指令明确要求使用 Rung 时，在其声明范围内标注为显式调用；信息性引用不改变启用条件，条件性要求按条件判断。跨任务评测重新应用有效指令，区分持续要求与前一任务残留的启用状态。
+
 对真实 Agent，先只展示提示和可发现 metadata，隐藏判断与预期。分别记录是否选中 Skill、是否读取入口、实际 Reference Trace 与 `enter | bypass | defer`；明确区分未选中、误触后退出和主动治理。未知情形继续最小 Host 检查，事实改变后重新判断。隐式简单任务的目标是零 Reference、零治理 Artifact；显式小任务可使用 Lite。项目大小、公共调用者、普通测试和交接要求都不单独触发。
 
 历史场景的开发范围判断不等于自动启用；以当前 Scope + Activation 定义更新预期，不改变 fixture 的正确性要求。
 
-Case 15 将理解型首轮、后续实施请求和独立的当前决策变体分别评分。隐藏后续需求不进入首轮判断。普通测试新增与共享 Harness 变化也使用独立对照，覆盖增加本身不算治理升级信号。
+Case 15 对理解型首轮、后续实施请求和独立的当前决策变体分别评分。隐藏后续需求不参与首轮判断。普通测试新增与共享 Harness 变化分别设置对照，覆盖增加本身不构成治理升级信号。
 
 ## 可重建的内容边界 fixture
 
 [`fixtures/content-review/`](fixtures/content-review/README.md) 提供项目现状与后续决定、既有测试维护、部分发布失败三个小型 fixture 及隔离执行协议。被测 Agent 只接收其中的用户提示、项目副本和对应版本的 Skill，不读取评测预期。Fixture 代码和原始数据可复用；它们尚未覆盖全部场景。
 
 静态契约和给定标注的分类检查分别证明结构与映射。单次候选前向检查提供有限行为证据；只有在相同输入下进行多次 baseline/control/candidate 比较、保留真实读取与结果记录后，才能形成更广的质量或上下文收益结论。
+
+[2026-09-29 入口试验](results/2026-09-29-entrypoint-trial.md) 在移除历史提示的 Case 39 上比较不加载 Rung、旧版与最终候选，每组执行三次，并保留宿主工具读取记录。候选局部修复另设三次对照；结论仅适用于所测小型合成案例。
 
 ## 执行协议
 
@@ -45,8 +51,10 @@ Case 15 将理解型首轮、后续实施请求和独立的当前决策变体分
 | Invocation precision | 持久项目修改、指导具体修改的决定或当前 Release Claim 是否进入 Rung；只有代码库关系且结果止于当前事实理解时是否保持在 Host |
 | Scope recovery | 宿主偶发误触时，理解型或范围外结果是否在读取 Reference 或创建 Artifact 前结束 Rung 路由 |
 | Operational separation | 混合任务是否分别维护项目制品与环境执行的责任、授权、证据和恢复信息 |
-| Routing relevance | 相关信号是否加载了有用提醒；普通任务是否保持安静 |
+| Routing relevance | 指导加载是否响应相关信号；常规任务是否避免不必要的指导加载 |
 | Execution ownership | 是否始终有一个 Primary Agent 持有全局 Plan、集成结果、Finding 处理与 Handoff |
+| Plan executability | 完整范围是否分解为可验收结果和具体任务，依赖是否准确，后续执行者是否需要重建关键决定 |
+| Execution focus | 是否依据前置证据推进当前结果块，跨块工作是否具有明确目的、有界产出和返回条件，未完成工作是否按退出条件得到验证与完成 |
 | Inspection proportionality | 检查是否从安全所需的最小半径开始，并只按影响证据扩展 |
 | Persistence economy | Design、Plan 与恢复状态是否进入确实有未来消费者的承载位置 |
 | Semantic fidelity | Project Model 是否准确表达当前用户、核心情境、结果、概念、不变量和产品形态 |
@@ -78,13 +86,14 @@ Case 15 将理解型首轮、后续实施请求和独立的当前决策变体分
 | Debt qualification | 当前承载状态、可信 Trigger 或 Exposure、未来负担机制与管理决定是否形成完整因果链 |
 | Debt pressure | Interest、Exposure、Propagation、Option Loss 与 Principal 是否以证据支持的粒度进入判断 |
 | Debt strategy | Repay、Reduce、Contain、Carry、Replace 或 Retire 是否匹配当前压力、偿还风险、Borrowed Value 与机会成本 |
-| Debt-system prioritization | 系统审查是否识别驱动项目 Chaos 的主要交互机制，并控制容易计数但低影响的清理项 |
+| Debt-system prioritization | 系统审查是否识别造成系统性工程负担的主要交互机制，并合理控制易于量化但影响有限的清理项 |
 | False debt finding | 年龄、异味、TODO、复杂度和工具分数是否在缺少可信未来负担时保持为 Signal 或 Hypothesis |
 | Retirement evidence | 偿还后当前 Claim、激活 Scenario、传播停止、旧路径清理和负担转移是否得到验证 |
 | Test design | 测试是否保护行为、契约、不变量和失败路径 |
 | Harness economy | 验证入口是否复用项目能力，Fixture 与环境是否有归属，隔离、清理、诊断、成本和淘汰条件是否清楚 |
 | Harness evolution | 是否识别权威事实、产品与 Harness 问题，使用独立锚点，记录 Coverage Delta、生效、回退和旧路径清理 |
-| Context cost | 加载字节或 tokens、工具调用、耗时、额外文档和沟通成本 |
+| Harness integration | 是否复用有效项目规则与事实源，保留合理特化，并以明确生效规则与替代证据处理冲突 |
+| Context and execution cost | 加载字节或 tokens、工具调用、耗时、额外文档和沟通成本，结合正确性、返工与恢复负担评价 |
 | Solution diversity | 多次运行能否保留多个正确且可维护的方案 |
 
 文件数、类数、行数和修改模块数作为证据记录，不设置通用阈值。评审说明具体知识传播、依赖或后续变化成本。
@@ -105,7 +114,15 @@ Technical Debt 场景将当前质量与未来负担分别记录。Qualified Debt
 
 显式 Debt System 场景记录债务间传播、共同根因、交付能力消耗、Owner 缺失和过期清理条件。评审比较主要机制命中、False debt finding、干预杠杆、当前行为保护与 Hidden follow-up 的 Interest 变化，不设置统一债务分数、数量目标或零债务标准。
 
-Project Model 场景检查 Agent 能否把稀疏用户表达和项目现实合成为可修正的语义模型。评分关注模型是否帮助判断一个能力自然属于当前中心、构成相邻扩展，或需要用户确认产品身份变化；篇幅、术语数量和图表数量不产生分数。
+[`40-hierarchical-change-plan.md`](cases/40-hierarchical-change-plan.md) 复用 rota fixture，要求为文件兼容、CLI 与原子迁移编写完整计划，再由没有规划对话上下文的执行者实施。评测检查结果分解、全部验收条件的任务覆盖、后续块的具体程度、依赖、失败恢复和集成验证；小任务与未知合同分别检查过度分解和虚构确定性。文档长度、文件数和任务数不作为质量分数。
+
+[2026-10-05 规划检查](results/2026-10-05-planning-smoke.md) 记录一次三组规划对照及候选超时后的接续编写。候选形成了分层产物，但首次未在时限内完成，并暴露了提前标为 Ready 的问题；最终状态修正尚未行为复测，完整实施与总体效率收益未得到证明。
+
+[`41-plan-execution-order.md`](cases/41-plan-execution-order.md) 检查当前块验收、任务级前置与跨块执行纪律。对照覆盖真实阻塞时的独立工作、过粗依赖的显式修订、用户指定顺序、中断后返回主任务、多个 Partial 块的整理，以及获准并行；防止无依据跳序与机械串行两种偏差。该文件定义评测协议，不表示行为试验已执行。
+
+[`42-project-harness-integration.md`](cases/42-project-harness-integration.md) 检查项目采用、常设指令解释、现有规则复用与有证据的冲突处理，区分加载失败和指导失效。覆盖合理项目特化、检查缺陷、过渡期生效规则与授权边界；已定义评测协议，尚未执行行为试验。
+
+Project Model 场景检查 Agent 能否依据有限的用户描述和项目事实构建可修正的语义模型。评分关注模型能否支持能力归属判断：属于现有核心、构成相邻扩展，或涉及需要用户确认的产品身份变化。文档篇幅、术语数量和图表数量不作为评分依据。
 
 画像中的陈述分别记录为用户确认、仓库证据、推断、冲突或未知。现有代码和文档只提供证据，不自动成为产品意图。Hidden follow-up 检查画像能否预测实际 Owner、边界、UX 与变化传播；用户明确扩展产品方向时，能够修正画像也是成功行为。
 

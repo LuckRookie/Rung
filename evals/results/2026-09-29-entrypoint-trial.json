@@ -1,0 +1,588 @@
+{
+  "control_commit": "2745157f17322b9b8c7e1544bb5b048324fad3dc",
+  "candidate_skill_sha256": {
+    "SKILL.md": "767f45270e494799b69eefb9de3dba0ada068d44ef01b4c7d8bd03f2ce428554",
+    "agents/openai.yaml": "dcd5cf29f32e8f2745171b931f14e432f823f4fb61ee33aa1a404655acd1fc6e",
+    "assets/change-plan.template.md": "f6bc10b18d6cde9c15ab6a990b4253a77172098f0a51777dde5cd66d2a78f39a",
+    "assets/development-brief.template.md": "ba0389b9856a47033b499f21dd390203f8f0c40c643260bf9218ed7379d3ab00",
+    "assets/harness-change.template.md": "d8b77f39781666b6d40c05801402a58f26e072cc1f562c81e901f4aa13ddb40c",
+    "assets/project-context.template.md": "9fd31dd713975bb2e00926429a3b5b139b384b39ee12a292339c3830eb433a40",
+    "assets/project-model.template.md": "b622fcec93184fcaf68a4ec00e387d8cf141bc77ff396490118e33632bd43427",
+    "assets/release-manifest.template.yaml": "9bae4afcdfd3b3813daf7fb9dc0f454f1c98c3c87b374f7fc54f0166464b8a88",
+    "assets/review-result.template.md": "beb75cc018b4427c609e8f351e94748d5f207ac7a6009fdd9fa3238a2f9722b9",
+    "assets/solution-design.template.md": "872236d6c97b6b2d0de50386a2745a80e69a5514d53c781829b5c07e66063b59",
+    "assets/technical-debt-item.template.md": "56ef72215be273bf925532f7c9dc815077ff4384b57fe113bcbef888c1ee2642",
+    "assets/verification-harness.template.md": "3e24e60284cea75c8c17327c941fd9db462d726d1f52c1ac09ee408b29dad7ae",
+    "assets/verification-plan.template.json": "26fed34074333b4fbf9349950edb9033304ea66e144bf6e853cf48a4808c19a8",
+    "assets/verification-report.template.md": "c12ba9ce909996ea9fc82e335538209a1830e0fb749f09e575cd2332f56a2939",
+    "contracts/rung-contract.json": "99e2cd4ebe90dbed5e5b0924891d195fd8e5cd5e177b79c81476ce447923cab4",
+    "profiles/lite.md": "c127e61abebaad2ccaad2b3eb2a8ddb838d12cc83e94de75b26bdbdeb243e350",
+    "profiles/standard.md": "92aed67b9b8037fe47a1877328b8e7635a8fb73a89cb1afe372a3065a04c355e",
+    "profiles/strict.md": "246e157094c6c9903fb19a1d2894a497bab310bf3cd7f39ec44cc2b904c8f896",
+    "references/architecture-assessment.md": "10172e9c6da0d4404032933692221c63b8cb547829df4cdf374a0a53e7e5396b",
+    "references/architecture-design.md": "9cbce18d9403ddf421284e020a0e20dde323204f69ea84423918772c923e7cf5",
+    "references/artifacts.md": "f1c599285f050f6db554c0bcfa02b593d46c896a253e49bb06fcb633cbdc9e0c",
+    "references/clarify.md": "2c5b7a6b30544b559693139eb201a02c2ca614cdb3df93d4c604a5136d12b1e9",
+    "references/design-exploration.md": "bb2573555e95c4782734bb0eb8c6473a2a9ca9d87d8efb75d405e8a565ae9769",
+    "references/design.md": "28b63efa54608d341aac04a9e2bfb67d731b6730d4e9c0f9361a547fd2220d46",
+    "references/development-scope.md": "b2e95e0c544b5ba43cee9d3c88f252d5b19f971a7bd0a4e28815c0dd9cbb6b6a",
+    "references/engineering-structure.md": "e0024436e85ae89ef5c20b2dabb4cb35a3eba6e164065067eff82684e9791577",
+    "references/execution-model.md": "5f4aceb41203788ac257d901913d3c8ab58f421d46fd2b28c22f687e3db12b40",
+    "references/harness-evolution.md": "66c5b315c93503f94e88629c0128fe122699f564bac1f4b51abc0d236c14497d",
+    "references/implement.md": "d5c0bd1e265097b96f3181243b2146a1cc0aa20e30a7ebdd74a4e9db784d1aa7",
+    "references/inspect.md": "d4ed4b2149ca15a48e118e00d91843e1cbb0444e11988835a02e77fa3eb59c5a",
+    "references/plan.md": "331bc689ac82f9f13dd54557241022561fe3694e58c70e46aed1472d363a3197",
+    "references/project-harness.md": "5b70f6c9cd48bb175ab481abc70730db1128903a258c3f81432e8fd3471ecb40",
+    "references/project-model.md": "51b280c9ea987e6e812853e8cbf6aed8f87c4977eb1fd5dabaedc4fb102fc33c",
+    "references/release.md": "3931da854ae7c4b4cfd791677f3b5ca005f1ec30f4ff33a2595892da8352fd72",
+    "references/review.md": "43e4f75e60e9907e817c30bbe6a3ca68485aebb268f3dc700ab3e941caaae823",
+    "references/risk-signals.md": "7d3ab05437dfc42e31453728d81be898aee263b88965271bdc9cae8ace3129ed",
+    "references/software-quality.md": "04ee77d445dd223bb04045f7fbf9ef146f965cdffcbb345bc5730818d213724e",
+    "references/technical-debt.md": "7abea77078081bd531ca19f6b545b95170f775ab09e2a9623bc7092b94864062",
+    "references/verification-harness.md": "eed2c28923b66dfb6657eaa9b2e2710f8847460ba80d7ac298f5f438ebe540f5",
+    "references/verify.md": "254b31dd4d18f737f2201816deeed20c1feba316531b86d23fd7a186acc47561",
+    "references/workflow.md": "9c24f38ccccf31cfa2d6eb158965b4412fcb37855488dfffbcda0885a0d97b85",
+    "scripts/README.md": "beadb30bc835553c71742b102bc745d5d82caf366d2d9ab04ff2c264f995b359",
+    "scripts/check_release.py": "36b9e4a8c5e1fbee6d4992bff457cae12f8364555e98435033a5436fde230b18",
+    "scripts/evaluate_scope.py": "0558cf70134a977ed173b78e2567403da1f52d59bc0d2809c6ca1a1f0548e568",
+    "scripts/inspect_project.py": "78e3ec3af985f16ac2bf6676efdce91f691e98bb26de5e442d6be619e479e827",
+    "scripts/project_state.py": "9aa3d7d3e80fec383daf14473f0b15d0d2fccdf78ddc8a5d1af04470451dac38",
+    "scripts/run_verification.py": "8ba7771266173bdcf4fc44429edce6d564d77eafd8f33248dfe7a2ad87ff529c",
+    "scripts/validate_artifacts.py": "750ffd9cc8e461fab75ceb487ee9c95892d9e9287393963c4c34f112bf9997e9",
+    "scripts/validate_contract.py": "b14c1dbee4f46934d5245188cace3c1bb51237ae4e976edbd5283e32eb01c390"
+  },
+  "host": "Claude Code 2.1.281, safe mode, fresh nonpersistent sessions, default model, no overrides",
+  "discovery": "Only the assigned skill metadata/path was supplied in the task; native skill discovery disabled. Baseline had no skill. Tool calls captured in host JSON, not agent self-reports.",
+  "fixture": "Case 39 source at control_commit; remove README Change notes section in all structural arms; append the same user-owned note after initial commit. Local floor fixture sources are retained below.",
+  "evaluated_candidate": "Final snapshot only. Exploratory candidate runs before the authority clarification are excluded.",
+  "raw_archive": "/workplace/home/duanjw/reviews/rung-entry-trial-2026-09-29",
+  "rows": [
+    {
+      "label": "baseline-1",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 32.37,
+      "result_status": "success",
+      "tool_count": 7,
+      "skill_reads": [],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 6
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        if order.state not in {\"pending\", \"cancelled\"}:\n            results.append({\"id\": order.id, \"result\": \"conflict\"})\n            continue\n        order.state = \"cancelled\"\n        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n    return results\n",
+        "http_api.py": "from orders import Order\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if order.state not in {\"pending\", \"cancelled\"}:\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    order.state = \"cancelled\"\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n"
+      },
+      "source_hashes": {
+        "batch.py": "ccf65e81572f9d2967edd2c6c44e0635fe29a835b887e97fa126275062a74f93",
+        "http_api.py": "b378978bd1d9549c31fd8a6dfd10a3530d5a3c3aa39cb102a0a6e897f86d7fe5",
+        "orders.py": "4ee54b31a5034c259d9d74a009a7c45feb3c0887b4775c6e60ef53cefe53a277"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..d25e7e2 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -7 +7 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n+        if order.state not in {\"pending\", \"cancelled\"}:\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..9de35cc 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,26 @@ class CancellationTests(unittest.TestCase):\n+    def test_batch_shipped_conflict_preserves_order(self):\n+        orders = [\n+            Order(1, \"shipped\"),\n+            Order(2, \"pending\"),\n+            Order(3, \"delivered\"),\n+            Order(4, \"cancelled\"),\n+        ]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 1, \"result\": \"conflict\"},\n+                {\"id\": 2, \"result\": \"cancelled\"},\n+                {\"id\": 3, \"result\": \"conflict\"},\n+                {\"id\": 4, \"result\": \"cancelled\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"shipped\", \"cancelled\", \"delivered\", \"cancelled\"],\n+        )\n+\n+    def test_http_delivered(self):\n+        order = Order(5, \"delivered\")\n+        self.assertEqual(cancel_http(order), (409, {\"id\": 5, \"error\": \"conflict\"}))\n+        self.assertEqual(order.state, \"delivered\")\n+\n",
+      "structural_review": "separate HTTP and batch policy",
+      "scope_review": "Behavior fixed but policy remains duplicated.",
+      "usage": {
+        "input_tokens": 14,
+        "cache_creation_input_tokens": 11058,
+        "cache_read_input_tokens": 50771,
+        "output_tokens": 2619
+      }
+    },
+    {
+      "label": "baseline-2",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 34.04,
+      "result_status": "success",
+      "tool_count": 6,
+      "skill_reads": [],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 6
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        if order.state not in {\"pending\", \"cancelled\"}:\n            results.append({\"id\": order.id, \"result\": \"conflict\"})\n            continue\n        order.state = \"cancelled\"\n        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n    return results\n",
+        "http_api.py": "from orders import Order\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if order.state not in {\"pending\", \"cancelled\"}:\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    order.state = \"cancelled\"\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n"
+      },
+      "source_hashes": {
+        "batch.py": "ccf65e81572f9d2967edd2c6c44e0635fe29a835b887e97fa126275062a74f93",
+        "http_api.py": "b378978bd1d9549c31fd8a6dfd10a3530d5a3c3aa39cb102a0a6e897f86d7fe5",
+        "orders.py": "4ee54b31a5034c259d9d74a009a7c45feb3c0887b4775c6e60ef53cefe53a277"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..d25e7e2 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -7 +7 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n+        if order.state not in {\"pending\", \"cancelled\"}:\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..2217b07 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,26 @@ class CancellationTests(unittest.TestCase):\n+    def test_batch_shipped(self):\n+        order = Order(2, \"shipped\")\n+        self.assertEqual(cancel_batch([order]), [{\"id\": 2, \"result\": \"conflict\"}])\n+        self.assertEqual(order.state, \"shipped\")\n+\n+    def test_batch_mixed_preserves_order(self):\n+        orders = [\n+            Order(4, \"shipped\"),\n+            Order(1, \"pending\"),\n+            Order(3, \"cancelled\"),\n+            Order(2, \"delivered\"),\n+        ]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 4, \"result\": \"conflict\"},\n+                {\"id\": 1, \"result\": \"cancelled\"},\n+                {\"id\": 3, \"result\": \"cancelled\"},\n+                {\"id\": 2, \"result\": \"conflict\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"shipped\", \"cancelled\", \"cancelled\", \"delivered\"],\n+        )\n+\n",
+      "structural_review": "separate HTTP and batch policy",
+      "scope_review": "Behavior fixed but policy remains duplicated.",
+      "usage": {
+        "input_tokens": 14,
+        "cache_creation_input_tokens": 6702,
+        "cache_read_input_tokens": 55250,
+        "output_tokens": 2854
+      }
+    },
+    {
+      "label": "baseline-3",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 26.75,
+      "result_status": "success",
+      "tool_count": 6,
+      "skill_reads": [],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 5
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        if order.state not in {\"pending\", \"cancelled\"}:\n            results.append({\"id\": order.id, \"result\": \"conflict\"})\n            continue\n        order.state = \"cancelled\"\n        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n    return results\n",
+        "http_api.py": "from orders import Order\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if order.state not in {\"pending\", \"cancelled\"}:\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    order.state = \"cancelled\"\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n"
+      },
+      "source_hashes": {
+        "batch.py": "ccf65e81572f9d2967edd2c6c44e0635fe29a835b887e97fa126275062a74f93",
+        "http_api.py": "b378978bd1d9549c31fd8a6dfd10a3530d5a3c3aa39cb102a0a6e897f86d7fe5",
+        "orders.py": "4ee54b31a5034c259d9d74a009a7c45feb3c0887b4775c6e60ef53cefe53a277"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..d25e7e2 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -7 +7 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n+        if order.state not in {\"pending\", \"cancelled\"}:\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..383cf9b 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,14 @@ class CancellationTests(unittest.TestCase):\n+    def test_batch_shipped(self):\n+        orders = [Order(1, \"shipped\"), Order(2, \"pending\"), Order(3, \"shipped\")]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 1, \"result\": \"conflict\"},\n+                {\"id\": 2, \"result\": \"cancelled\"},\n+                {\"id\": 3, \"result\": \"conflict\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders], [\"shipped\", \"cancelled\", \"shipped\"]\n+        )\n+\n",
+      "structural_review": "separate HTTP and batch policy",
+      "scope_review": "Behavior fixed but policy remains duplicated.",
+      "usage": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 5726,
+        "cache_read_input_tokens": 44883,
+        "output_tokens": 2108
+      }
+    },
+    {
+      "label": "control-1",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 44.7,
+      "result_status": "success",
+      "tool_count": 10,
+      "skill_reads": [
+        {
+          "tool": "Read",
+          "input": {
+            "file_path": "/tmp/rung-entry-trial-20260929-y_ym4xa_/skills/control/rung/SKILL.md"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 7
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order, cancel\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        result = \"cancelled\" if cancel(order) else \"conflict\"\n        results.append({\"id\": order.id, \"result\": result})\n    return results\n",
+        "http_api.py": "from orders import Order, cancel\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if not cancel(order):\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\n\nCANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n\n\ndef cancel(order: Order) -> bool:\n    if order.state not in CANCELLABLE_STATES:\n        return False\n    order.state = \"cancelled\"\n    return True\n"
+      },
+      "source_hashes": {
+        "batch.py": "5efef0bbb98a0c32ef92ae6b2ac3fdfe8db023a7f74a2078f4332e09eb03b893",
+        "http_api.py": "d6eb4815d7659e4e95fa4db62c2c7d6742532c92b7ab7bfe18ea1995c843013b",
+        "orders.py": "8ea282ed7ce83d0bdb25d289b31dcbff950f83a082545c6a6c495b6b72993ce9"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..b75c53b 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -1 +1 @@\n-from orders import Order\n+from orders import Order, cancel\n@@ -7,5 +7,2 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n-            results.append({\"id\": order.id, \"result\": \"conflict\"})\n-            continue\n-        order.state = \"cancelled\"\n-        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n+        result = \"cancelled\" if cancel(order) else \"conflict\"\n+        results.append({\"id\": order.id, \"result\": result})\ndiff --git a/http_api.py b/http_api.py\nindex 6992a79..e8867f4 100644\n--- a/http_api.py\n+++ b/http_api.py\n@@ -1 +1 @@\n-from orders import Order\n+from orders import Order, cancel\n@@ -5 +5 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    if order.state not in {\"pending\", \"cancelled\"}:\n+    if not cancel(order):\n@@ -7 +6,0 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    order.state = \"cancelled\"\ndiff --git a/orders.py b/orders.py\nindex 252a78c..d22fb20 100644\n--- a/orders.py\n+++ b/orders.py\n@@ -3,0 +4,3 @@ from dataclasses import dataclass\n+CANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n+\n+\n@@ -7,0 +11,7 @@ class Order:\n+\n+\n+def cancel(order: Order) -> bool:\n+    if order.state not in CANCELLABLE_STATES:\n+        return False\n+    order.state = \"cancelled\"\n+    return True\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..142cdcb 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,35 @@ class CancellationTests(unittest.TestCase):\n+    def test_batch_shipped(self):\n+        orders = [Order(1, \"shipped\")]\n+        self.assertEqual(cancel_batch(orders), [{\"id\": 1, \"result\": \"conflict\"}])\n+        self.assertEqual(orders[0].state, \"shipped\")\n+\n+    def test_batch_preserves_input_order(self):\n+        orders = [\n+            Order(4, \"shipped\"),\n+            Order(1, \"pending\"),\n+            Order(3, \"delivered\"),\n+            Order(2, \"cancelled\"),\n+        ]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 4, \"result\": \"conflict\"},\n+                {\"id\": 1, \"result\": \"cancelled\"},\n+                {\"id\": 3, \"result\": \"conflict\"},\n+                {\"id\": 2, \"result\": \"cancelled\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"shipped\", \"cancelled\", \"delivered\", \"cancelled\"],\n+        )\n+\n+    def test_entry_points_agree_for_released_states(self):\n+        for state in (\"pending\", \"shipped\", \"delivered\", \"cancelled\"):\n+            with self.subTest(state=state):\n+                http_order, batch_order = Order(5, state), Order(5, state)\n+                status, _ = cancel_http(http_order)\n+                [result] = cancel_batch([batch_order])\n+                self.assertEqual(status == 200, result[\"result\"] == \"cancelled\")\n+                self.assertEqual(http_order.state, batch_order.state)\n+\n",
+      "structural_review": "orders.py owns eligibility and mutation",
+      "scope_review": "Adapters delegate policy and retain response translation; no extra framework or documents.",
+      "usage": {
+        "input_tokens": 16,
+        "cache_creation_input_tokens": 13677,
+        "cache_read_input_tokens": 66725,
+        "output_tokens": 3974
+      }
+    },
+    {
+      "label": "control-2",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 47.29,
+      "result_status": "success",
+      "tool_count": 9,
+      "skill_reads": [
+        {
+          "tool": "Bash",
+          "input": {
+            "command": "cat /tmp/rung-entry-trial-20260929-y_ym4xa_/skills/control/rung/SKILL.md",
+            "description": "Read the rung skill instructions"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 7
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        result = \"cancelled\" if order.cancel() else \"conflict\"\n        results.append({\"id\": order.id, \"result\": result})\n    return results\n",
+        "http_api.py": "from orders import Order\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if not order.cancel():\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n\n    def cancel(self) -> bool:\n        if self.state == \"pending\":\n            self.state = \"cancelled\"\n        return self.state == \"cancelled\"\n"
+      },
+      "source_hashes": {
+        "batch.py": "61268f68d3590f982a4620036d91aea04a25a70cddc5b95c5689281e6c5f16c6",
+        "http_api.py": "0a89ec5105dd88b1dccaf46e8d249e814a354ca47d0edffeffeb2a81f905e7f7",
+        "orders.py": "7d857673711f7a83d7f9d254a7bc4f41ad310491b84a73a6e357ff65d3f95d2c"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..9791ce5 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -7,5 +7,2 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n-            results.append({\"id\": order.id, \"result\": \"conflict\"})\n-            continue\n-        order.state = \"cancelled\"\n-        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n+        result = \"cancelled\" if order.cancel() else \"conflict\"\n+        results.append({\"id\": order.id, \"result\": result})\ndiff --git a/http_api.py b/http_api.py\nindex 6992a79..1fb8b0c 100644\n--- a/http_api.py\n+++ b/http_api.py\n@@ -5 +5 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    if order.state not in {\"pending\", \"cancelled\"}:\n+    if not order.cancel():\n@@ -7 +6,0 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    order.state = \"cancelled\"\ndiff --git a/orders.py b/orders.py\nindex 252a78c..ea83d91 100644\n--- a/orders.py\n+++ b/orders.py\n@@ -7,0 +8,5 @@ class Order:\n+\n+    def cancel(self) -> bool:\n+        if self.state == \"pending\":\n+            self.state = \"cancelled\"\n+        return self.state == \"cancelled\"\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..970e388 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,35 @@ class CancellationTests(unittest.TestCase):\n+    def test_batch_shipped(self):\n+        order = Order(2, \"shipped\")\n+        self.assertEqual(cancel_batch([order]), [{\"id\": 2, \"result\": \"conflict\"}])\n+        self.assertEqual(order.state, \"shipped\")\n+\n+    def test_batch_mixed_preserves_order(self):\n+        orders = [\n+            Order(4, \"delivered\"),\n+            Order(1, \"pending\"),\n+            Order(3, \"shipped\"),\n+            Order(2, \"cancelled\"),\n+        ]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 4, \"result\": \"conflict\"},\n+                {\"id\": 1, \"result\": \"cancelled\"},\n+                {\"id\": 3, \"result\": \"conflict\"},\n+                {\"id\": 2, \"result\": \"cancelled\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"delivered\", \"cancelled\", \"shipped\", \"cancelled\"],\n+        )\n+\n+    def test_entry_points_agree(self):\n+        for state in [\"pending\", \"shipped\", \"delivered\", \"cancelled\"]:\n+            with self.subTest(state=state):\n+                http_order, batch_order = Order(1, state), Order(1, state)\n+                status, _ = cancel_http(http_order)\n+                [result] = cancel_batch([batch_order])\n+                self.assertEqual(status == 200, result[\"result\"] == \"cancelled\")\n+                self.assertEqual(http_order.state, batch_order.state)\n+\n",
+      "structural_review": "orders.py owns eligibility and mutation",
+      "scope_review": "Adapters delegate policy and retain response translation; no extra framework or documents.",
+      "usage": {
+        "input_tokens": 14,
+        "cache_creation_input_tokens": 8603,
+        "cache_read_input_tokens": 59300,
+        "output_tokens": 4621
+      }
+    },
+    {
+      "label": "control-3",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 47.28,
+      "result_status": "success",
+      "tool_count": 10,
+      "skill_reads": [
+        {
+          "tool": "Bash",
+          "input": {
+            "command": "cat -n /tmp/rung-entry-trial-20260929-y_ym4xa_/skills/control/rung/SKILL.md",
+            "description": "读取 rung 技能说明"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 8
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        if not order.cancel():\n            results.append({\"id\": order.id, \"result\": \"conflict\"})\n            continue\n        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n    return results\n",
+        "http_api.py": "from orders import Order\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if not order.cancel():\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\nCANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n\n    def cancel(self) -> bool:\n        if self.state not in CANCELLABLE_STATES:\n            return False\n        self.state = \"cancelled\"\n        return True\n"
+      },
+      "source_hashes": {
+        "batch.py": "bcc2e04aaf6e923e23370367336e1fb3262d8387d648eebbdaa5066065090670",
+        "http_api.py": "0a89ec5105dd88b1dccaf46e8d249e814a354ca47d0edffeffeb2a81f905e7f7",
+        "orders.py": "1c8f44c419f0c0cee9979360a5c905c2276ba06870a11499fb5a5ed6ec63d790"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..922c9f4 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -7 +7 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n+        if not order.cancel():\n@@ -10 +9,0 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        order.state = \"cancelled\"\ndiff --git a/http_api.py b/http_api.py\nindex 6992a79..1fb8b0c 100644\n--- a/http_api.py\n+++ b/http_api.py\n@@ -5 +5 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    if order.state not in {\"pending\", \"cancelled\"}:\n+    if not order.cancel():\n@@ -7 +6,0 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    order.state = \"cancelled\"\ndiff --git a/orders.py b/orders.py\nindex 252a78c..d28a548 100644\n--- a/orders.py\n+++ b/orders.py\n@@ -2,0 +3,2 @@ from dataclasses import dataclass\n+CANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n+\n@@ -7,0 +10,6 @@ class Order:\n+\n+    def cancel(self) -> bool:\n+        if self.state not in CANCELLABLE_STATES:\n+            return False\n+        self.state = \"cancelled\"\n+        return True\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..3fc7f94 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,40 @@ class CancellationTests(unittest.TestCase):\n+    def test_http_delivered(self):\n+        order = Order(4, \"delivered\")\n+        self.assertEqual(cancel_http(order), (409, {\"id\": 4, \"error\": \"conflict\"}))\n+        self.assertEqual(order.state, \"delivered\")\n+\n+    def test_batch_shipped(self):\n+        order = Order(2, \"shipped\")\n+        self.assertEqual(cancel_batch([order]), [{\"id\": 2, \"result\": \"conflict\"}])\n+        self.assertEqual(order.state, \"shipped\")\n+\n+    def test_batch_mixed_preserves_order(self):\n+        orders = [\n+            Order(5, \"shipped\"),\n+            Order(1, \"pending\"),\n+            Order(4, \"delivered\"),\n+            Order(3, \"cancelled\"),\n+        ]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 5, \"result\": \"conflict\"},\n+                {\"id\": 1, \"result\": \"cancelled\"},\n+                {\"id\": 4, \"result\": \"conflict\"},\n+                {\"id\": 3, \"result\": \"cancelled\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"shipped\", \"cancelled\", \"delivered\", \"cancelled\"],\n+        )\n+\n+    def test_entry_points_agree(self):\n+        for state in (\"pending\", \"shipped\", \"delivered\", \"cancelled\"):\n+            with self.subTest(state=state):\n+                http_order, batch_order = Order(1, state), Order(1, state)\n+                status, _ = cancel_http(http_order)\n+                [result] = cancel_batch([batch_order])\n+                self.assertEqual(status == 200, result[\"result\"] == \"cancelled\")\n+                self.assertEqual(http_order.state, batch_order.state)\n+\n",
+      "structural_review": "orders.py owns eligibility and mutation",
+      "scope_review": "Adapters delegate policy and retain response translation; no extra framework or documents.",
+      "usage": {
+        "input_tokens": 16,
+        "cache_creation_input_tokens": 9163,
+        "cache_read_input_tokens": 74325,
+        "output_tokens": 4372
+      }
+    },
+    {
+      "label": "candidate-1",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 39.64,
+      "result_status": "success",
+      "tool_count": 9,
+      "skill_reads": [
+        {
+          "tool": "Read",
+          "input": {
+            "file_path": "/tmp/rung-entry-trial-20260929-y_ym4xa_/final/skills/candidate/rung/SKILL.md"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 7
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        result = \"cancelled\" if order.cancel() else \"conflict\"\n        results.append({\"id\": order.id, \"result\": result})\n    return results\n",
+        "http_api.py": "from orders import Order\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if not order.cancel():\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\nCANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n\n    def cancel(self) -> bool:\n        if self.state not in CANCELLABLE_STATES:\n            return False\n        self.state = \"cancelled\"\n        return True\n"
+      },
+      "source_hashes": {
+        "batch.py": "61268f68d3590f982a4620036d91aea04a25a70cddc5b95c5689281e6c5f16c6",
+        "http_api.py": "0a89ec5105dd88b1dccaf46e8d249e814a354ca47d0edffeffeb2a81f905e7f7",
+        "orders.py": "1c8f44c419f0c0cee9979360a5c905c2276ba06870a11499fb5a5ed6ec63d790"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..9791ce5 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -7,5 +7,2 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n-            results.append({\"id\": order.id, \"result\": \"conflict\"})\n-            continue\n-        order.state = \"cancelled\"\n-        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n+        result = \"cancelled\" if order.cancel() else \"conflict\"\n+        results.append({\"id\": order.id, \"result\": result})\ndiff --git a/http_api.py b/http_api.py\nindex 6992a79..1fb8b0c 100644\n--- a/http_api.py\n+++ b/http_api.py\n@@ -5 +5 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    if order.state not in {\"pending\", \"cancelled\"}:\n+    if not order.cancel():\n@@ -7 +6,0 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    order.state = \"cancelled\"\ndiff --git a/orders.py b/orders.py\nindex 252a78c..d28a548 100644\n--- a/orders.py\n+++ b/orders.py\n@@ -2,0 +3,2 @@ from dataclasses import dataclass\n+CANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n+\n@@ -7,0 +10,6 @@ class Order:\n+\n+    def cancel(self) -> bool:\n+        if self.state not in CANCELLABLE_STATES:\n+            return False\n+        self.state = \"cancelled\"\n+        return True\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..07d731f 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,35 @@ class CancellationTests(unittest.TestCase):\n+    def test_batch_shipped(self):\n+        order = Order(2, \"shipped\")\n+        self.assertEqual(cancel_batch([order]), [{\"id\": 2, \"result\": \"conflict\"}])\n+        self.assertEqual(order.state, \"shipped\")\n+\n+    def test_batch_preserves_input_order(self):\n+        orders = [\n+            Order(4, \"shipped\"),\n+            Order(1, \"pending\"),\n+            Order(3, \"delivered\"),\n+            Order(2, \"cancelled\"),\n+        ]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 4, \"result\": \"conflict\"},\n+                {\"id\": 1, \"result\": \"cancelled\"},\n+                {\"id\": 3, \"result\": \"conflict\"},\n+                {\"id\": 2, \"result\": \"cancelled\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"shipped\", \"cancelled\", \"delivered\", \"cancelled\"],\n+        )\n+\n+    def test_http_and_batch_agree_on_released_states(self):\n+        for state in [\"pending\", \"shipped\", \"delivered\", \"cancelled\"]:\n+            with self.subTest(state=state):\n+                http_order, batch_order = Order(1, state), Order(1, state)\n+                status, _ = cancel_http(http_order)\n+                [result] = cancel_batch([batch_order])\n+                self.assertEqual(status == 200, result[\"result\"] == \"cancelled\")\n+                self.assertEqual(http_order.state, batch_order.state)\n+\n",
+      "structural_review": "orders.py owns eligibility and mutation",
+      "scope_review": "Adapters delegate policy and retain response translation; no extra framework or documents.",
+      "usage": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 8759,
+        "cache_read_input_tokens": 51158,
+        "output_tokens": 4004
+      }
+    },
+    {
+      "label": "candidate-2",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 44.35,
+      "result_status": "success",
+      "tool_count": 10,
+      "skill_reads": [
+        {
+          "tool": "Read",
+          "input": {
+            "file_path": "/tmp/rung-entry-trial-20260929-y_ym4xa_/final/skills/candidate/rung/SKILL.md"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 8
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order, cancel\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        result = \"cancelled\" if cancel(order) else \"conflict\"\n        results.append({\"id\": order.id, \"result\": result})\n    return results\n",
+        "http_api.py": "from orders import Order, cancel\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if not cancel(order):\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\nCANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n\n\ndef cancel(order: Order) -> bool:\n    if order.state not in CANCELLABLE_STATES:\n        return False\n    order.state = \"cancelled\"\n    return True\n"
+      },
+      "source_hashes": {
+        "batch.py": "5efef0bbb98a0c32ef92ae6b2ac3fdfe8db023a7f74a2078f4332e09eb03b893",
+        "http_api.py": "d6eb4815d7659e4e95fa4db62c2c7d6742532c92b7ab7bfe18ea1995c843013b",
+        "orders.py": "47fa462441e9222dd996617973a9033b92ba23cc2a275257b8163abcf792a033"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..b75c53b 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -1 +1 @@\n-from orders import Order\n+from orders import Order, cancel\n@@ -7,5 +7,2 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n-            results.append({\"id\": order.id, \"result\": \"conflict\"})\n-            continue\n-        order.state = \"cancelled\"\n-        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n+        result = \"cancelled\" if cancel(order) else \"conflict\"\n+        results.append({\"id\": order.id, \"result\": result})\ndiff --git a/http_api.py b/http_api.py\nindex 6992a79..e8867f4 100644\n--- a/http_api.py\n+++ b/http_api.py\n@@ -1 +1 @@\n-from orders import Order\n+from orders import Order, cancel\n@@ -5 +5 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    if order.state not in {\"pending\", \"cancelled\"}:\n+    if not cancel(order):\n@@ -7 +6,0 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    order.state = \"cancelled\"\ndiff --git a/orders.py b/orders.py\nindex 252a78c..233f79a 100644\n--- a/orders.py\n+++ b/orders.py\n@@ -2,0 +3,2 @@ from dataclasses import dataclass\n+CANCELLABLE_STATES = frozenset({\"pending\", \"cancelled\"})\n+\n@@ -7,0 +10,7 @@ class Order:\n+\n+\n+def cancel(order: Order) -> bool:\n+    if order.state not in CANCELLABLE_STATES:\n+        return False\n+    order.state = \"cancelled\"\n+    return True\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..d96d475 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,40 @@ class CancellationTests(unittest.TestCase):\n+    def test_http_delivered(self):\n+        order = Order(4, \"delivered\")\n+        self.assertEqual(cancel_http(order), (409, {\"id\": 4, \"error\": \"conflict\"}))\n+        self.assertEqual(order.state, \"delivered\")\n+\n+    def test_batch_shipped(self):\n+        order = Order(5, \"shipped\")\n+        self.assertEqual(cancel_batch([order]), [{\"id\": 5, \"result\": \"conflict\"}])\n+        self.assertEqual(order.state, \"shipped\")\n+\n+    def test_batch_mixed_preserves_order(self):\n+        orders = [\n+            Order(6, \"shipped\"),\n+            Order(7, \"pending\"),\n+            Order(8, \"delivered\"),\n+            Order(9, \"cancelled\"),\n+        ]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 6, \"result\": \"conflict\"},\n+                {\"id\": 7, \"result\": \"cancelled\"},\n+                {\"id\": 8, \"result\": \"conflict\"},\n+                {\"id\": 9, \"result\": \"cancelled\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"shipped\", \"cancelled\", \"delivered\", \"cancelled\"],\n+        )\n+\n+    def test_http_and_batch_agree_for_released_states(self):\n+        for state in [\"pending\", \"shipped\", \"delivered\", \"cancelled\"]:\n+            with self.subTest(state=state):\n+                http_order, batch_order = Order(10, state), Order(10, state)\n+                status, _ = cancel_http(http_order)\n+                [result] = cancel_batch([batch_order])\n+                self.assertEqual(status == 200, result[\"result\"] == \"cancelled\")\n+                self.assertEqual(http_order.state, batch_order.state)\n+\n",
+      "structural_review": "orders.py owns eligibility and mutation",
+      "scope_review": "Adapters delegate policy and retain response translation; no extra framework or documents.",
+      "usage": {
+        "input_tokens": 14,
+        "cache_creation_input_tokens": 9401,
+        "cache_read_input_tokens": 65491,
+        "output_tokens": 4348
+      }
+    },
+    {
+      "label": "candidate-3",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 50.12,
+      "result_status": "success",
+      "tool_count": 10,
+      "skill_reads": [
+        {
+          "tool": "Read",
+          "input": {
+            "file_path": "/tmp/rung-entry-trial-20260929-y_ym4xa_/final/skills/candidate/rung/SKILL.md"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 9
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 8
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "batch.py": "from orders import Order\n\n\ndef cancel_batch(orders: list[Order]) -> list[dict]:\n    results = []\n    for order in orders:\n        result = \"cancelled\" if order.cancel() else \"conflict\"\n        results.append({\"id\": order.id, \"result\": result})\n    return results\n",
+        "http_api.py": "from orders import Order\n\n\ndef cancel_http(order: Order) -> tuple[int, dict]:\n    if not order.cancel():\n        return 409, {\"id\": order.id, \"error\": \"conflict\"}\n    return 200, {\"id\": order.id, \"state\": order.state}\n",
+        "orders.py": "from dataclasses import dataclass\n\n\n@dataclass\nclass Order:\n    id: int\n    state: str\n\n    def cancel(self) -> bool:\n        if self.state == \"pending\":\n            self.state = \"cancelled\"\n        return self.state == \"cancelled\"\n"
+      },
+      "source_hashes": {
+        "batch.py": "61268f68d3590f982a4620036d91aea04a25a70cddc5b95c5689281e6c5f16c6",
+        "http_api.py": "0a89ec5105dd88b1dccaf46e8d249e814a354ca47d0edffeffeb2a81f905e7f7",
+        "orders.py": "7d857673711f7a83d7f9d254a7bc4f41ad310491b84a73a6e357ff65d3f95d2c"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/batch.py b/batch.py\nindex 79429c6..9791ce5 100644\n--- a/batch.py\n+++ b/batch.py\n@@ -7,5 +7,2 @@ def cancel_batch(orders: list[Order]) -> list[dict]:\n-        if order.state == \"delivered\":\n-            results.append({\"id\": order.id, \"result\": \"conflict\"})\n-            continue\n-        order.state = \"cancelled\"\n-        results.append({\"id\": order.id, \"result\": \"cancelled\"})\n+        result = \"cancelled\" if order.cancel() else \"conflict\"\n+        results.append({\"id\": order.id, \"result\": result})\ndiff --git a/http_api.py b/http_api.py\nindex 6992a79..1fb8b0c 100644\n--- a/http_api.py\n+++ b/http_api.py\n@@ -5 +5 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    if order.state not in {\"pending\", \"cancelled\"}:\n+    if not order.cancel():\n@@ -7 +6,0 @@ def cancel_http(order: Order) -> tuple[int, dict]:\n-    order.state = \"cancelled\"\ndiff --git a/orders.py b/orders.py\nindex 252a78c..ea83d91 100644\n--- a/orders.py\n+++ b/orders.py\n@@ -7,0 +8,5 @@ class Order:\n+\n+    def cancel(self) -> bool:\n+        if self.state == \"pending\":\n+            self.state = \"cancelled\"\n+        return self.state == \"cancelled\"\ndiff --git a/test_cancellation.py b/test_cancellation.py\nindex 927a4d6..0bb384e 100644\n--- a/test_cancellation.py\n+++ b/test_cancellation.py\n@@ -26,0 +27,37 @@ class CancellationTests(unittest.TestCase):\n+    def test_http_delivered(self):\n+        order = Order(4, \"delivered\")\n+        self.assertEqual(cancel_http(order), (409, {\"id\": 4, \"error\": \"conflict\"}))\n+        self.assertEqual(order.state, \"delivered\")\n+\n+    def test_batch_shipped(self):\n+        order = Order(2, \"shipped\")\n+        self.assertEqual(cancel_batch([order]), [{\"id\": 2, \"result\": \"conflict\"}])\n+        self.assertEqual(order.state, \"shipped\")\n+\n+    def test_batch_preserves_input_order(self):\n+        states = [\"shipped\", \"pending\", \"delivered\", \"cancelled\", \"pending\"]\n+        orders = [Order(i, state) for i, state in enumerate(states, start=10)]\n+        self.assertEqual(\n+            cancel_batch(orders),\n+            [\n+                {\"id\": 10, \"result\": \"conflict\"},\n+                {\"id\": 11, \"result\": \"cancelled\"},\n+                {\"id\": 12, \"result\": \"conflict\"},\n+                {\"id\": 13, \"result\": \"cancelled\"},\n+                {\"id\": 14, \"result\": \"cancelled\"},\n+            ],\n+        )\n+        self.assertEqual(\n+            [order.state for order in orders],\n+            [\"shipped\", \"cancelled\", \"delivered\", \"cancelled\", \"cancelled\"],\n+        )\n+\n+    def test_http_and_batch_agree(self):\n+        for state in [\"pending\", \"shipped\", \"delivered\", \"cancelled\"]:\n+            with self.subTest(state=state):\n+                http_order, batch_order = Order(5, state), Order(5, state)\n+                status, _ = cancel_http(http_order)\n+                [result] = cancel_batch([batch_order])\n+                self.assertEqual(status == 200, result[\"result\"] == \"cancelled\")\n+                self.assertEqual(http_order.state, batch_order.state)\n+\n",
+      "structural_review": "orders.py owns eligibility and mutation",
+      "scope_review": "Adapters delegate policy and retain response translation; no extra framework or documents.",
+      "usage": {
+        "input_tokens": 14,
+        "cache_creation_input_tokens": 9455,
+        "cache_read_input_tokens": 66003,
+        "output_tokens": 4866
+      }
+    },
+    {
+      "label": "local-1",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 20.88,
+      "result_status": "success",
+      "tool_count": 6,
+      "skill_reads": [
+        {
+          "tool": "Read",
+          "input": {
+            "file_path": "/tmp/rung-entry-trial-20260929-y_ym4xa_/final/skills/candidate/rung/SKILL.md"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 36
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 2
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "cart.py": "def total(subtotal: int, credit: int) -> int:\n    return max(subtotal - credit, 0)\n"
+      },
+      "source_hashes": {
+        "cart.py": "15130b5cd2baf0b0d19550a2a7a3c1c11d90ca37c700c123085960d3411f98ca"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/cart.py b/cart.py\nindex d34ba41..4172260 100644\n--- a/cart.py\n+++ b/cart.py\n@@ -2 +2 @@ def total(subtotal: int, credit: int) -> int:\n-    return subtotal - credit\n+    return max(subtotal - credit, 0)\n",
+      "structural_review": "local calculation",
+      "scope_review": "One existing calculation line changed; no new abstraction or document.",
+      "usage": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 4114,
+        "cache_read_input_tokens": 44504,
+        "output_tokens": 1378
+      }
+    },
+    {
+      "label": "local-2",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 28.0,
+      "result_status": "success",
+      "tool_count": 6,
+      "skill_reads": [
+        {
+          "tool": "Read",
+          "input": {
+            "file_path": "/tmp/rung-entry-trial-20260929-y_ym4xa_/final/skills/candidate/rung/SKILL.md"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 36
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 2
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "cart.py": "def total(subtotal: int, credit: int) -> int:\n    return max(0, subtotal - credit)\n"
+      },
+      "source_hashes": {
+        "cart.py": "e726ddfa072f6d33b80e258d985b25e18804d98e009899ce0a72f6991e0e5275"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/cart.py b/cart.py\nindex d34ba41..0a97c4f 100644\n--- a/cart.py\n+++ b/cart.py\n@@ -2 +2 @@ def total(subtotal: int, credit: int) -> int:\n-    return subtotal - credit\n+    return max(0, subtotal - credit)\n",
+      "structural_review": "local calculation",
+      "scope_review": "One existing calculation line changed; no new abstraction or document.",
+      "usage": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 4683,
+        "cache_read_input_tokens": 45474,
+        "output_tokens": 2002
+      }
+    },
+    {
+      "label": "local-3",
+      "model": "claude-opus-5-5",
+      "host_version": "2.1.281",
+      "elapsed_seconds": 20.12,
+      "result_status": "success",
+      "tool_count": 6,
+      "skill_reads": [
+        {
+          "tool": "Read",
+          "input": {
+            "file_path": "/tmp/rung-entry-trial-20260929-y_ym4xa_/final/skills/candidate/rung/SKILL.md"
+          }
+        }
+      ],
+      "oracle": {
+        "passed": true,
+        "check_count": 36
+      },
+      "suite": {
+        "returncode": 0,
+        "test_count": 2
+      },
+      "user_note_preserved": true,
+      "source_files": {
+        "cart.py": "def total(subtotal: int, credit: int) -> int:\n    return max(subtotal - credit, 0)\n"
+      },
+      "source_hashes": {
+        "cart.py": "15130b5cd2baf0b0d19550a2a7a3c1c11d90ca37c700c123085960d3411f98ca"
+      },
+      "diff": "diff --git a/USER-NOTE.md b/USER-NOTE.md\nindex 6221f7a..61e28f7 100644\n--- a/USER-NOTE.md\n+++ b/USER-NOTE.md\n@@ -1,0 +2 @@ Local operator notes.\n+User draft: preserve this line during the repair.\ndiff --git a/cart.py b/cart.py\nindex d34ba41..4172260 100644\n--- a/cart.py\n+++ b/cart.py\n@@ -2 +2 @@ def total(subtotal: int, credit: int) -> int:\n-    return subtotal - credit\n+    return max(subtotal - credit, 0)\n",
+      "structural_review": "local calculation",
+      "scope_review": "One existing calculation line changed; no new abstraction or document.",
+      "usage": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 4218,
+        "cache_read_input_tokens": 44571,
+        "output_tokens": 1435
+      }
+    }
+  ],
+  "test_controls": {
+    "old_tests_paraphrase": {
+      "exit_code": 1,
+      "test_count": 19,
+      "outcome": "FAILED (failures=1)"
+    },
+    "new_tests_paraphrase": {
+      "exit_code": 0,
+      "test_count": 19,
+      "outcome": "OK"
+    },
+    "new_tests_broken_link": {
+      "exit_code": 1,
+      "test_count": 19,
+      "outcome": "FAILED (failures=3)"
+    },
+    "new_tests_broken_protocol": {
+      "exit_code": 1,
+      "test_count": 19,
+      "outcome": "FAILED (failures=2)"
+    }
+  },
+  "oracle_source": "import json\nimport sys\nfrom batch import cancel_batch\nfrom http_api import cancel_http\nfrom orders import Order\nstates = ['pending', 'cancelled', 'shipped', 'delivered']\nallowed = {'pending', 'cancelled'}\nchecks=[]\nfor state in states:\n    accepted=state in allowed\n    for entry in ['http','batch']:\n        order=Order(7,state)\n        if entry=='http':\n            actual=cancel_http(order)\n            expected=(200,{'id':7,'state':'cancelled'}) if accepted else (409,{'id':7,'error':'conflict'})\n        else:\n            actual=cancel_batch([order])\n            expected=[{'id':7,'result':'cancelled' if accepted else 'conflict'}]\n        checks.append({'entry':entry,'state':state,'pass':actual==expected and order.state==('cancelled' if accepted else state)})\norders=[Order(20-i,state) for i,state in enumerate(reversed(states))]\nexpected=[{'id':o.id,'result':'cancelled' if o.state in allowed else 'conflict'} for o in orders]\nexpected_states=['cancelled' if o.state in allowed else o.state for o in orders]\nchecks.append({'entry':'mixed-batch','pass':cancel_batch(orders)==expected and [o.state for o in orders]==expected_states})\nprint(json.dumps({'passed':all(c['pass'] for c in checks),'checks':checks}))\nsys.exit(0 if all(c['pass'] for c in checks) else 1)\n",
+  "local_oracle_source": "import json\nfrom cart import total\nvalues=[0,1,20,100,120,1000]\nchecks=[total(s,c)==max(0,s-c) for s in values for c in values]\nprint(json.dumps({'passed':all(checks),'check_count':len(checks)}))\n",
+  "local_fixture_sources": {
+    "README.md": "# Cart total\n\nPython 3.11 standard library. Run `python -B -m unittest discover -v`.\n\n`total(subtotal, credit)` accepts nonnegative integer cents and returns remaining payable cents, floored at zero.\n",
+    "cart.py": "def total(subtotal: int, credit: int) -> int:\n    return subtotal - credit\n",
+    "test_cart.py": "import unittest\n\nfrom cart import total\n\n\nclass CartTests(unittest.TestCase):\n    def test_remaining(self):\n        self.assertEqual(total(100, 20), 80)\n\n    def test_excess_credit(self):\n        self.assertEqual(total(100, 120), 0)\n",
+    "USER-NOTE.md": "Local operator notes.\n"
+  }
+}

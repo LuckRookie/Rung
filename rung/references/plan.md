@@ -1,17 +1,16 @@
 # Plan Card
 
-Read when dependent units, multiple modules, migration, collaboration, recovery, or risky order needs coordination.
+Read when a plan is requested or dependencies, migration, collaboration or recovery need coordination.
 
 ## Operate
 
 The Primary Agent owns the integrated plan.
 
-- Define coherent units by outcome or acceptance, owner, files or modules, prerequisites, behavior to preserve, intended change, completion check, and recovery point.
-- Order interface, data, compatibility, migration, verification, documentation, version, and release work by real dependencies.
-- Separate external or irreversible actions behind their authorization and preflight conditions.
-- Give any worker a bounded unit and stable shared contract; keep global order and integration with the Primary Agent.
-- Revisit Clarify, Inspect, or Design when evidence changes direction, ownership, data, interface, scope, or risk.
+- Decompose complex work into outcomes, result blocks and executable tasks. Follow [Change Planning](change-planning.md) for decomposition, complete coverage and plan delivery.
+- Give tasks stable IDs, inputs, owned scope, concrete changes, outputs and completion checks. Split further while distinct outcomes or dependencies remain concealed.
+- Prioritize current-block closure; order by real prerequisites. Record reasons and return conditions for cross-block work; include block and integration checks.
+- Revise affected tasks when evidence changes design, scope or acceptance; track verified progress and the next action.
 
-Stop when the next executable unit, dependencies, owner, check, and recovery point are clear. Output an internal micro-plan, host plan, or persistent Change Plan proportional to coordination need.
+For immediate coordination, stop when the next coherent unit is executable. A requested complete plan must cover the entire agreed scope at executable depth; visible unresolved work cannot be reported as ready.
 
-Persist for cross-session work, multiple executors, migration, compatibility windows, or formal recovery using `assets/change-plan.template.md`. Read [Execution Model](execution-model.md) for planning and worker contracts.
+Use a host plan for session work. Persist when requested or needed for handoff or recovery; Change Planning provides overview and result-block templates. See [Execution Model](execution-model.md) for ownership and workers.

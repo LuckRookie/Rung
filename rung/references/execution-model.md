@@ -104,9 +104,9 @@ The Primary Agent owns the integrated plan.
 
 - Use an internal micro-plan for one coherent, directly checkable edit.
 - Use the host plan surface for several dependent steps that fit one session.
-- Use a project issue or `.rung/runs/<run-id>/plan.md` for cross-session work, multiple executors, migration, compatibility windows, risky ordering, or formal recovery.
+- Persist when requested or needed for cross-session work, multiple executors, migration or recovery. Prefer the project's plan location or issue; `.rung/runs/<run-id>/` is a fallback.
 
-Each material change unit identifies its outcome or acceptance, owner, files or modules, prerequisites, behavior to preserve, intended change, completion check, and recovery point. Workers may refine their unit and report findings; the Primary Agent updates global order, contracts, and status.
+Use [Change Planning](change-planning.md) for full-scope decomposition into result blocks and executable tasks, document structure, readiness and progress. Workers refine bounded tasks; the Primary Agent owns coverage, dependencies and integrated acceptance.
 
 Plans follow evidence. When implementation changes ownership, interface, data, risk, or acceptance, revisit Inspect, Clarify, or Design before continuing under a stale plan.
 

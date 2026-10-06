@@ -1,55 +1,54 @@
-# Change Plan
+# Change Plan: {{change_name}}
 
-| Field | Value |
-|---|---|
-| Run ID | `{{run_id}}` |
-| Primary Agent | `{{primary_agent}}` |
-| Baseline revision | `{{revision}}` |
-| Governance depth | `{{governance_depth_or_none}}` |
-| Execution mode | `{{single_session_cross_session_or_worker_assisted}}` |
-| Plan status | `{{status}}` |
+- Status: Draft
+- Primary owner: {{owner}}
+- Baseline and protected work: {{revision_and_user_owned_changes}}
+- Next action: {{ready_task_id_or_planning_gap}}
 
-## Change units
+Keep Draft until all required blocks are written and coverage, dependencies and checks have been reviewed. Then update readiness or execution status from actual evidence; identify partial, blocked or superseded work explicitly.
 
-| Order | Acceptance | Owner | Files or modules | Prerequisite | Change | Completion check | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | AC-1 | {{primary_or_worker}} | `{{path}}` | {{prerequisite}} | {{change}} | {{completion_check}} | pending |
+## Goal and accepted direction
 
-## Behaviors and areas to preserve
+{{target_behavior_and_accepted_decisions_with_fact_source_links}}
 
-- {{preserved_behavior_or_area}}
+- Scope and preserved behavior: {{included_outcomes_excluded_work_and_invariants}}
+- Authority: {{authorized_work_and_relevant_action_limits}}
+- Assumptions and open decisions: {{evidence_needed_owner_and_affected_task_ids}}
 
-## Interface, data and dependency changes
+## Result blocks and coverage
 
-- Interface: {{interface_change}}
-- Data: {{data_change}}
-- Dependency: {{dependency_change}}
-
-## Verification sequence
-
-| Order | Claim | Check | Tier | Evidence destination |
-|---|---|---|---|---|
-| 1 | {{claim}} | `{{command}}` | {{tier}} | `{{evidence_path}}` |
-
-## Documentation and Release work
-
-- {{documentation_or_release_update}}
-
-## Approvals and external actions
-
-| Trigger | Action | Required approval | State |
-|---|---|---|---|
-| {{trigger}} | {{action}} | {{approval}} | pending |
-
-## Worker task packets and integration
-
-| Worker | Owned scope | Shared contract | Protected user work | Handoff | Integration check |
+| ID / Link | Verifiable outcome | Acceptance covered | Prerequisite outputs / Task IDs | Integration handoff | Status |
 |---|---|---|---|---|---|
-| {{worker}} | `{{owned_scope}}` | {{shared_contract}} | {{protected_work}} | {{handoff}} | {{integration_check}} |
+| {{block_id_and_link}} | {{outcome}} | {{acceptance_ids}} | {{dependencies}} | {{consumer_and_output}} | {{status}} |
 
-## Failure and recovery
+Expand each block using `plan-result-block.template.md`, in its own file or inline for a smaller plan. Keep task details in the block. Add blocks until the agreed scope is covered; numbering does not prescribe execution order.
 
-- Failure signal: {{failure_signal}}
-- Return concern or recovery point: {{return_concern_or_recovery_point}}
-- Recovery or rollback: {{recovery}}
-- Resume state and next action: {{resume_state_and_next_action}}
+## Integrated acceptance
+
+| Acceptance | Observable condition | Check / Expected result | Required blocks or tasks |
+|---|---|---|---|
+| {{acceptance_id}} | {{condition}} | {{check_and_assertion}} | {{ids}} |
+
+- Remaining planning or evidence gaps: {{gap_affected_outcome_and_resolution_condition}}
+- Overall completion: {{all_required_outputs_and_integrated_checks}}
+
+## Cross-block risks and recovery
+
+| Risk / Trigger | Owning block | Response / Recovery point |
+|---|---|---|
+| {{risk}} | {{block_id}} | {{response}} |
+
+## Progress and handoff
+
+- Current focus: {{block_id_current_task_and_exit_conditions_to_close}}
+- Remaining work: {{unfinished_exit_conditions_blockers_and_responsible_task_ids}}
+- Latest integrated evidence: {{revision_or_patch_checks_results_and_evidence_links}}
+- Decision changes: {{change_reason_and_affected_ids}}
+- Final or partial handoff: {{verified_outputs_remaining_work_risks_and_next_owner}}
+- Closure or replacement: {{completion_cancellation_or_superseding_plan_and_project_archive_convention}}
+
+For cross-block work, record the following here or link the existing session note. Omit when unused; return to the current focus after the bounded work, or record an explicit priority change.
+
+| Target task | Reason to advance now | Satisfied prerequisites / Evidence | Bounded output | Return condition / Main task |
+|---|---|---|---|---|
+| {{task_id}} | {{reason}} | {{required_outputs_and_evidence}} | {{preparation_or_integrated_result}} | {{condition_and_task_to_resume}} |

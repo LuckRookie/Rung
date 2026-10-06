@@ -1,0 +1,199 @@
+{
+  "case": "40-hierarchical-change-plan",
+  "date": "2026-10-05",
+  "raw_archive": "/workplace/home/duanjw/reviews/rung-planning-trial-2026-10-05-oehvy_48",
+  "exposure": "Controlled skill metadata; no native skill-discovery claim.",
+  "repetitions_per_matched_variant": 1,
+  "fixture_digest": "0d1c76080f41add4a78c04c7e6acb7864554aca4aa6cda8db9e6781ed1e94f54",
+  "skill_source_snapshot_digests": {
+    "control": "ba3dc53d9bc39b8d670657ba45a6e2c3966112d9b4435f7c8cc3f0a5ff584939",
+    "candidate_tested": "eac27cfa44339a0b82016d1284ad0980ca7f5ce1a0c67a8256ecf7fe65ece42c",
+    "candidate_final": "5d46c6c8e624430ff92377d6be9dd7eaa0f72effc1031f5eba65a7f2b85a8518"
+  },
+  "final_runtime_delta_from_tested": [
+    "assets/change-plan.template.md",
+    "references/change-planning.md"
+  ],
+  "runs": [
+    {
+      "label": "baseline",
+      "model": "claude-opus-5-5",
+      "process": {
+        "variant": "baseline",
+        "returncode": 0,
+        "elapsed_seconds": 430.94
+      },
+      "completed_handoff": true,
+      "tool_calls": 8,
+      "skill_reads": [],
+      "unique_skill_read_bytes": 0,
+      "documents": [
+        {
+          "path": "docs/plans/schedule-files/plan.md",
+          "bytes": 33432,
+          "sha256": "78ada5075c557c393cfb39dae7b7c882fdc96c42d909857b9a7e22d2e7bf4a14"
+        }
+      ],
+      "missing_link_targets": [],
+      "changed_original_files": []
+    },
+    {
+      "label": "control",
+      "model": "claude-opus-5-5",
+      "process": {
+        "variant": "control",
+        "returncode": 0,
+        "elapsed_seconds": 533.13
+      },
+      "completed_handoff": true,
+      "tool_calls": 20,
+      "skill_reads": [
+        "skills/control/rung/SKILL.md",
+        "skills/control/rung/references/plan.md",
+        "skills/control/rung/references/design.md",
+        "skills/control/rung/references/artifacts.md",
+        "skills/control/rung/references/verify.md"
+      ],
+      "unique_skill_read_bytes": 8280,
+      "documents": [
+        {
+          "path": "docs/plans/schedule-files/plan.md",
+          "bytes": 31375,
+          "sha256": "c82fa25867454048f29e3c5594761f7a44c334f64f4c2ea433761438dafcc1dd"
+        }
+      ],
+      "missing_link_targets": [],
+      "changed_original_files": []
+    },
+    {
+      "label": "candidate",
+      "model": "claude-opus-5-5",
+      "process": {
+        "variant": "candidate",
+        "returncode": 143,
+        "elapsed_seconds": 600.57,
+        "timeout": true
+      },
+      "completed_handoff": false,
+      "tool_calls": 18,
+      "skill_reads": [
+        "skills/candidate/rung/SKILL.md",
+        "skills/candidate/rung/references/plan.md",
+        "skills/candidate/rung/references/design.md",
+        "skills/candidate/rung/references/change-planning.md"
+      ],
+      "unique_skill_read_bytes": 11558,
+      "documents": [
+        {
+          "path": "docs/plans/schedule-files/01-shared-slot-validation.md",
+          "bytes": 5954,
+          "sha256": "121251b9fb34f853e2ea483466274eec7805990d61b4974fa5edc08efb6c259b"
+        },
+        {
+          "path": "docs/plans/schedule-files/02-schedule-file-format.md",
+          "bytes": 10240,
+          "sha256": "bafc22c9e2ab99f19836cf88b6ee2d52696527ca799d26974d95881a10b24d86"
+        },
+        {
+          "path": "docs/plans/schedule-files/README.md",
+          "bytes": 19170,
+          "sha256": "e3edafcf4ce3383ff7ed16dc9fce14f5b17bc7b99a2b81c5d9911f8024c6cfd8"
+        }
+      ],
+      "missing_link_targets": [
+        {
+          "from": "README.md",
+          "target": "04-cli.md"
+        },
+        {
+          "from": "README.md",
+          "target": "05-docs-and-acceptance.md"
+        },
+        {
+          "from": "README.md",
+          "target": "03-safe-migration.md"
+        },
+        {
+          "from": "README.md",
+          "target": "04-cli.md"
+        },
+        {
+          "from": "README.md",
+          "target": "05-docs-and-acceptance.md"
+        }
+      ],
+      "changed_original_files": []
+    },
+    {
+      "label": "candidate-resume",
+      "model": "claude-opus-5-5",
+      "process": {
+        "variant": "candidate-resume",
+        "returncode": 0,
+        "elapsed_seconds": 761.22
+      },
+      "completed_handoff": true,
+      "tool_calls": 33,
+      "skill_reads": [
+        "skills/candidate/rung/SKILL.md",
+        "skills/candidate/rung/references/plan.md",
+        "skills/candidate/rung/references/change-planning.md"
+      ],
+      "unique_skill_read_bytes": 10281,
+      "documents": [
+        {
+          "path": "docs/plans/schedule-files/01-shared-slot-validation.md",
+          "bytes": 5954,
+          "sha256": "121251b9fb34f853e2ea483466274eec7805990d61b4974fa5edc08efb6c259b"
+        },
+        {
+          "path": "docs/plans/schedule-files/02-schedule-file-format.md",
+          "bytes": 10240,
+          "sha256": "bafc22c9e2ab99f19836cf88b6ee2d52696527ca799d26974d95881a10b24d86"
+        },
+        {
+          "path": "docs/plans/schedule-files/03-safe-migration.md",
+          "bytes": 18017,
+          "sha256": "2d991f205ddb6bfc1c88f40fa3e1a23906e22bd27f0b93d5dd294de8f660231d"
+        },
+        {
+          "path": "docs/plans/schedule-files/04-cli.md",
+          "bytes": 14216,
+          "sha256": "258213a052bb2d5a397e1d25bb72041ac9f0d99e49e440e174892371e54bb461"
+        },
+        {
+          "path": "docs/plans/schedule-files/05-docs-and-acceptance.md",
+          "bytes": 15737,
+          "sha256": "17310d4a7ac5e846984018dafb8b0d1e59b7d95e0aa028a79bcd5f3302690ade"
+        },
+        {
+          "path": "docs/plans/schedule-files/README.md",
+          "bytes": 22160,
+          "sha256": "3d526f1664bed1094a0f363559a19f0877ca9583f151e466b6f5fe41550b1a75"
+        }
+      ],
+      "missing_link_targets": [],
+      "changed_original_files": []
+    }
+  ],
+  "implementation_followup_executed": false,
+  "small_task_and_unknown_contract_controls_executed": false,
+  "readiness_correction_behaviorally_retested": false,
+  "static_validation": {
+    "unit_tests": 81,
+    "unit_tests_status": "pass",
+    "ruff": "pass",
+    "contract": "pass",
+    "scope": "pass",
+    "skill_validator": "pass",
+    "diff_whitespace": "pass"
+  },
+  "observations": {
+    "baseline_and_control": "Both produced detailed plans; this request did not reproduce consistently short planning.",
+    "control_dependencies": "All units were declared sequential, each depending on its predecessor.",
+    "candidate_initial": "Overview plus two result blocks were saved before the 600-second cutoff; the overview prematurely claimed ready to execute.",
+    "candidate_resume": "A new session completed five result blocks plus the overview, with task IDs, coverage and task-level dependencies.",
+    "correction": "Final guide and template require Draft during incomplete writing and whole-plan readiness only after coverage/dependency/check review.",
+    "general_quality_or_efficiency_improvement_established": false
+  }
+}

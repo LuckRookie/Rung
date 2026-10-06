@@ -58,7 +58,7 @@
       "id": "clarify",
       "entry": "references/clarify.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
         "direction",
         "identity",
@@ -69,7 +69,7 @@
       "id": "inspect",
       "entry": "references/inspect.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
         "missing facts",
         "user work",
@@ -80,7 +80,7 @@
       "id": "design",
       "entry": "references/design.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
         "behavior",
         "UX",
@@ -93,8 +93,10 @@
       "id": "plan",
       "entry": "references/plan.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
+        "plan deliverable",
+        "work decomposition",
         "migration",
         "collaboration",
         "recovery"
@@ -104,7 +106,7 @@
       "id": "implement",
       "entry": "references/implement.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
         "editing",
         "overlap",
@@ -115,7 +117,7 @@
       "id": "verify",
       "entry": "references/verify.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
         "behavior",
         "compatibility",
@@ -126,7 +128,7 @@
       "id": "review",
       "entry": "references/review.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
         "diff",
         "structure",
@@ -138,11 +140,23 @@
       "id": "release",
       "entry": "references/release.md",
       "kind": "card",
-      "max_bytes": 1300,
+      "max_bytes": 2000,
       "signals": [
         "revision",
         "artifact",
         "publication"
+      ]
+    },
+    {
+      "id": "change-planning",
+      "entry": "references/change-planning.md",
+      "kind": "guide",
+      "max_bytes": 7500,
+      "signals": [
+        "complete implementation plan",
+        "hierarchical work decomposition",
+        "task selection and cross-block execution",
+        "plan executability review"
       ]
     },
     {
@@ -216,8 +230,9 @@
       "id": "project-harness",
       "entry": "references/project-harness.md",
       "kind": "guide",
-      "max_bytes": 4500,
+      "max_bytes": 7000,
       "signals": [
+        "project adoption and rule reconciliation",
         "project controls conflict or change"
       ]
     },
@@ -280,5 +295,5 @@
     "routine_activation": "bypass",
     "uncertain_activation": "defer"
   },
-  "entrypoint_max_bytes": 2400
+  "entrypoint_max_bytes": 4000
 }

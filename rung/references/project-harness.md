@@ -1,6 +1,6 @@
 # Project Harness
 
-Read when project instructions, documentation, tests, static rules, build tooling, CI, or release policies may conflict, be unreliable, or become part of the requested change.
+Read when adopting Rung in a project, reconciling project rules, or changing unreliable instructions, checks, build tooling, CI or release policies.
 
 ## Scope and relationship
 
@@ -19,9 +19,28 @@ Project Harness
 
 The Test System is a subset of the Verification Harness, which is a subset of the Project Harness. One file or service may serve several roles: CI can execute tests and enforce release policy; a schema can be both an authoritative fact and contract-check input.
 
+Rung contributes reusable methods and development requirements to this system. Project facts, commands and effective local constraints retain their owning documents or tools. Adoption aims at one consistent set of effective rules, not two independently maintained Harnesses or a mandatory new instruction file.
+
+## Adoption and reconciliation
+
+Use the host's instruction hierarchy to establish applicable authority. Neither the Rung label, an older project rule, nor the stricter wording establishes universal precedence. Identify each difference's scope, protected behavior, owner and evidence before treating it as a conflict.
+
+| Relationship | Response |
+|---|---|
+| Equivalent rules | Reuse the project owner and link to it; avoid duplicate instructions. |
+| Project-specific implementation of a general principle | Reuse local mechanisms unless an explicit adoption target calls for their replacement. |
+| Missing capability | Add the smallest useful guidance or check at its existing owner. |
+| Incompatible requirements or unreliable checks | Establish the currently effective rule and its authority, then use [Harness Evolution](harness-evolution.md) for an evidenced revision. |
+
+Default to the rules touched by the current task. If the user explicitly selects Rung's recommendations as the target for a defined adoption scope, implement that target and replace conflicting local rules; no prior defect or repeated approval is required. Record the selected guidance and scope in the existing plan or instruction owner. A general request to use Rung alone does not authorize wholesale replacement. Preserve unaffected behavior, user work and migration evidence under host authority. Report concrete incompatibilities instead of silently substituting the old convention or treating generic guidance as infallible.
+
+Reconcile ordinary in-scope inconsistencies under existing authorization. A genuinely unresolved owner decision or an action outside that authority needs resolution before dependent work; continue unaffected work where useful. Adoption does not silently remove a required check, override a supported contract, or authorize external operations.
+
+During a transition, state which rule governs each claim. A replacement may first run diagnostically; make it required only under the established activation conditions and authority. Until then, retain effective protection or explicitly record an authorized exception with replacement evidence and remaining risk. Retire superseded instructions and checks once replacement coverage is established. Use an existing plan, issue or rule document for this record, not a separate conflict-management system.
+
 ## Ordinary use
 
-When relevant sources agree and configured checks produce reliable evidence, use the existing Harness directly. Follow its local instructions, reuse its commands and fixtures, update lasting facts in their owning documents or configuration, and keep the change within the established delivery path.
+Absent an explicit replacement target, use a reliable existing Harness directly. Follow its local instructions, reuse its commands and fixtures, update lasting facts in their owning documents or configuration, and keep the change within the established delivery path.
 
 ## Problem signals
 

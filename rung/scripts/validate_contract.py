@@ -226,8 +226,8 @@ def validate_contract(skill_root: Path, contract: dict[str, Any]) -> list[str]:
         problems.append("activation must preserve implicit materiality and explicit scope limits")
 
     budget = contract.get("entrypoint_max_bytes")
-    if type(budget) is not int or not 0 < budget <= 2400:
-        problems.append("entrypoint_max_bytes must be an integer from 1 to 2400")
+    if type(budget) is not int or not 0 < budget <= 4000:
+        problems.append("entrypoint_max_bytes must be an integer from 1 to 4000")
     elif (
         entrypoint == "SKILL.md"
         and (skill_root / entrypoint).is_file()
